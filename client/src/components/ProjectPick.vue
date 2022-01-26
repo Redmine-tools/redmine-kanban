@@ -1,8 +1,7 @@
 <template>
   <article class="full-screen">
     <form @submit.prevent="addProject">
-      <h1>Settings</h1>
-      <p>Select a project!</p>
+      <h1>Select a project</h1>
       <div>
         <Multiselect 
         required 
@@ -28,10 +27,11 @@ import { useStore } from "vuex"
 
 export default {
   name: "ProjectPick",
+  emits: ["projectPicked"],
   components: {
     Multiselect
   },
-  setup() {
+  setup(_,{ emit }) {
     let projectsOrdered = ref()
     let selectedProject = ref()
     const store = useStore()
@@ -68,6 +68,7 @@ export default {
         type: 'addQuerie',
         payload: null
       })
+      emit('projectPicked', true)
     }
 
     onMounted(getProjects) 

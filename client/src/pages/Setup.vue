@@ -1,27 +1,38 @@
 <template>
+  <section id="setup-container">
     <article>
-        <ProjectPick/>
+      <ProjectPick @projectPicked="loadQueriesPick"/>
     </article>
-    <article>
-        <QueriesPick/>
+    <article v-if="projectSelected">
+      <component :is="QueriesPick"/>
     </article>
+  </section>
 </template>
 
 <script>
+import { ref, shallowRef } from 'vue'
 import ProjectPick from '@/components/ProjectPick'
-import QueriesPick from '@/components/QueriesPick'
 
 export default {
   name: "Setup",
   components: {
-    ProjectPick,
-    QueriesPick
+    ProjectPick
   },
   setup() {
+    const projectSelected = ref(false)
+    let QueriesPick = shallowRef('')
 
+    function loadQueriesPick() {
+      import('@/components/QueriesPick.vue').then(val => {
+        projectSelected.value = true
+        QueriesPick.value = val.default
+      })
+    }
 
     return {
-        
+      projectSelected,
+      loadQueriesPick,
+      QueriesPick
     }
   }
 }

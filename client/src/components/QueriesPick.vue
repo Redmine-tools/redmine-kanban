@@ -1,8 +1,7 @@
 <template>
   <article class="full-screen">
     <form @submit.prevent="addQuerie">
-      <h1>Settings</h1>
-      <p>Select a query!</p>
+      <h1>Select a query</h1>
       <div>
         <Multiselect 
         required 
