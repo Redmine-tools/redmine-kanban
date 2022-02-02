@@ -1,29 +1,29 @@
 <template>
   <section class="login-container">
-    <h1>Redmine kanban board</h1>
-    <p class="info">Fill in API key for login. API key is available at the link below: <button class="as-link" @click="getAPILink">API key</button></p>
-    <h4>Log in with API key</h4>
+    <h1>{{ $t("header") }}</h1>
+    <p class="info">{{ $t("apiKeyHelp") }} <button class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button></p>
+    <h4>{{ $t("loginWApiKey") }}</h4>
     <form @submit.prevent="getUser" class="form-control">
       <div class="omrs-input-group">
         <label class="omrs-input-underlined">
           <input v-model="apiKey" id="api-token" name="api-token" type="text">
-          <span class="omrs-input-label">API key</span>
+          <span class="omrs-input-label">{{ $t("apiKey") }}</span>
         </label>
       </div>
-      <h4>Log in with username and password</h4>
+      <h4>{{ $t("loginWPwd") }}</h4>
       <div class="omrs-input-group">
         <label class="omrs-input-underlined">
         <input v-model="username" id="username" name="username" type="text">
-        <span class="omrs-input-label">Username</span>
+        <span class="omrs-input-label">{{ $t("username") }}</span>
         </label>
       </div>
       <div class="omrs-input-group">
         <label class="omrs-input-underlined">
         <input v-model="password" id="password" name="password" type="password" autocomplete="on">
-        <span class="omrs-input-label">Password</span>
+        <span class="omrs-input-label">{{ $t("password") }}</span>
         </label>
       </div>
-      <button class="action">LOG IN</button>
+      <button class="action">{{ $t("login") }}</button>
     </form>
   </section>
   <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">Sikertelen bejelentkezés</div>

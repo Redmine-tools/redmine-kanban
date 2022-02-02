@@ -2,21 +2,21 @@
   <header>
     <router-link :to="{name: 'Setup'}">
       <div class="info" v-if="project.name">
-        <span class="small-text">Project:</span>
+        <span class="small-text">{{ $t("project") }}</span>
         <span class="large-text">{{ project.name }}</span>
       </div>
     </router-link>
 
     <router-link :to="{name: 'Setup'}">
       <div class="info" v-if="query.name">
-        <span class="small-text">Query:</span>
+        <span class="small-text">{{ $t("query") }}</span>
         <span class="large-text">{{ query.name }}</span>
       </div>
     </router-link>
 
     <div class ="float-right">
       <button class="logout" v-if="user.firstname" @click="logoutUser">
-        Logout
+        {{ $t("logout") }}
       </button>
     </div>
   </header>

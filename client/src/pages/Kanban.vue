@@ -1,6 +1,6 @@
 <template>
   <section class="app-container">
-    <h1>Kanban board</h1>
+    <h1>{{ $t("kanbanBoard") }}</h1>
     <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
     <div class="kanban">
       <div v-for="status in columnConfig" :key="status.id">

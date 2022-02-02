@@ -9,6 +9,7 @@
 import HeaderComponent from '@/components/HeaderComponent'
 import { computed } from 'vue'
 import { useStore } from "vuex"
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'App',
@@ -16,10 +17,20 @@ export default {
     HeaderComponent
   },
   setup() {
-    const store = useStore();
-    const user = computed(() => store.state.user);
+    const store = useStore()
+    const user = computed(() => store.state.user)
+    const { t, locale } = useI18n({ useScope: 'global' });
+    const localeFromStorage = localStorage.getItem('locale');
+    if (localeFromStorage) {
+      locale.value = localeFromStorage;
+    } else if (navigator.language) {
+      locale.value = navigator.language.substring(0, 2);
+    }
+
     return {
-      user
+      user,
+       t,
+       locale 
     }
   }
 }

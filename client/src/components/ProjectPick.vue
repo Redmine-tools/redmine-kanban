@@ -1,7 +1,7 @@
 <template>
   <article class="full-screen">
     <form @submit.prevent="addProject">
-      <h1>Select a project</h1>
+      <h1>{{ $t("pSelect") }}</h1>
       <div>
         <Multiselect 
         required 
@@ -14,7 +14,7 @@
         placeholder="Type to search"
        />
       </div>
-      <button class="action">Select</button>
+      <button class="action">{{ $t("select") }}</button>
     </form>
   </article>
 </template>

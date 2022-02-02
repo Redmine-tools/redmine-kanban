@@ -1,0 +1,18 @@
+{
+    "header": "Redmine kanban board",
+    "apiKeyHelp": "Az API kulcs elérhetp az alábbi linken:",
+    "apiKey": "API kulcs",
+    "loginWApiKey": "Bejelentkezés API kulccsal",
+    "loginWPwd": "Bejelentkezés felhasználónév és jelszó segítségével",
+    "username": "Felhasználónév",
+    "password": "Jelszó",
+    "login": "Bejelentkezés",
+    "logout": "Kijelentkezés",
+    "pSelect": "Válassz projektet",
+    "search": "Keresés",
+    "select": "Kiválasztás",
+    "qSelect": "Válassz lekérdezést",
+    "project": "Project",
+    "query": "Lekérdezés",
+    "kanbanBoard": "Kanban board"
+}

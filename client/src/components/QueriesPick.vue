@@ -1,7 +1,7 @@
 <template>
   <article class="full-screen">
     <form @submit.prevent="addQuerie">
-      <h1>Select a query</h1>
+      <h1>{{ $t("qSelect") }}</h1>
       <div>
         <Multiselect 
         required 
@@ -13,7 +13,7 @@
         :options="queiresOrdered"
         placeholder="Type to search"/>
       </div>
-      <button class="action">Select</button>
+      <button class="action">{{ $t("select") }}</button>
     </form>
   </article>
 </template>
