@@ -1,8 +1,7 @@
 <template>
   <article class="full-screen">
     <form @submit.prevent="addQuerie">
-      <h1>Settings</h1>
-      <p>Select a query!</p>
+      <h1>Select a query</h1>
       <div>
         <Multiselect 
         required 
@@ -14,7 +13,7 @@
         :options="queiresOrdered"
         placeholder="Type to search"/>
       </div>
-      <button class="primary">Select</button>
+      <button class="action">Select</button>
     </form>
   </article>
 </template>
@@ -25,7 +24,6 @@ import RedmineService from '@/services/RedmineService.js'
 import Multiselect from '@vueform/multiselect'
 import { useStore } from "vuex"
 import { useRouter } from 'vue-router'
-
 
 export default {
   name: "ProjectPick",
@@ -50,8 +48,8 @@ export default {
     
     async function getProjectQueries() {
       const PAGE_SIZE = 100;
-      const { queries: firstQueries, total_count } = await _getProjectQueriesWithOffset();
-      queries = [...firstQueries];
+      const { queries: firstQueries, total_count } = await _getProjectQueriesWithOffset()
+      queries = [...firstQueries]
       if(total_count > PAGE_SIZE) {
         const iterations = Math.ceil(total_count / PAGE_SIZE)
         for(let i = 1; i < iterations; i++) {

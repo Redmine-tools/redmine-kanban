@@ -1,35 +1,32 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '@/components/Login'
-import Kanban from '@/pages/Kanban'
-import NotFound from '@/pages/NotFound'
-import ProjectPick from "../components/ProjectPick";
-import QueriesPick from "../components/QueriesPick";
+import store from "@/store"
 
 const routes = [
   {
     path: '/',
     name: 'Login',
-    component: Login
+    component: () => import(/* webpackChunkName: "Login" */ '@/pages/Login')
   },
   {
-    path: '/project_pick',
-    name: 'ProjectPick',
-    component: ProjectPick
-  },
-  {
-    path: '/query_pick',
-    name: 'QueryPick',
-    component: QueriesPick
+    path: '/setup',
+    name: 'Setup',
+    component: () => import(/* webpackChunkName: "ProjectPick" */ '@/pages/Setup'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/kanban',
     name: 'Kanban',
-    component: Kanban
+    component: () => import(/* webpackChunkName: "Kanban" */ '@/pages/Kanban'),
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/:pathMatch(.*)*',
     name: 'NotFound',
-    component: NotFound
+    component: () => import(/* webpackChunkName: "NotFound" */ '@/pages/NotFound')
   }
 ]
 
@@ -37,6 +34,18 @@ const router = createRouter({
   mode: 'history',
   history: createWebHistory(),
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.state.user.api_key) {
+      next({ name: 'Login' })
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

@@ -1,8 +1,7 @@
 <template>
   <article class="full-screen">
     <form @submit.prevent="addProject">
-      <h1>Settings</h1>
-      <p>Select a project!</p>
+      <h1>Select a project</h1>
       <div>
         <Multiselect 
         required 
@@ -15,7 +14,7 @@
         placeholder="Type to search"
        />
       </div>
-      <button class="primary">Select</button>
+      <button class="action">Select</button>
     </form>
   </article>
 </template>
@@ -25,15 +24,14 @@ import { ref, onMounted } from 'vue'
 import RedmineService from '@/services/RedmineService.js'
 import Multiselect from '@vueform/multiselect'
 import { useStore } from "vuex"
-import { useRouter } from 'vue-router'
 
 export default {
   name: "ProjectPick",
+  emits: ["projectPicked"],
   components: {
     Multiselect
   },
-  setup() {
-    const router = useRouter()
+  setup(_,{ emit }) {
     let projectsOrdered = ref()
     let selectedProject = ref()
     const store = useStore()
@@ -48,9 +46,9 @@ export default {
     }
     
     async function getProjects() {
-      const PAGE_SIZE = 100;
-      const { projects: firstProjects, total_count } = await _getProjectsWithOffset();
-      projects = [...firstProjects];
+      const PAGE_SIZE = 100
+      const { projects: firstProjects, total_count } = await _getProjectsWithOffset()
+      projects = [...firstProjects]
       if(total_count > PAGE_SIZE) {
         const iterations = Math.ceil(total_count / PAGE_SIZE)
         for(let i = 1; i < iterations; i++) {
@@ -58,7 +56,6 @@ export default {
           projects = [...projects, ...currentProjects]
         }
       }
-      console.log(projects)
       projectsOrdered.value = projects.map(({ id, name }) => ({ value:id, name:name }))
     }
 
@@ -71,8 +68,7 @@ export default {
         type: 'addQuerie',
         payload: null
       })
-
-      router.push('/query_pick')
+      emit('projectPicked', true)
     }
 
     onMounted(getProjects) 

@@ -1,6 +1,7 @@
 <template>
   <section class="app-container">
     <h1>Kanban board</h1>
+    <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
     <div class="kanban">
       <div v-for="status in columnConfig" :key="status.id">
         <h2 class="status-name">{{ status.name }}</h2>
@@ -13,7 +14,7 @@
                 group="issues"
         >
           <template #item="{ element }">
-            <div class="list-item">
+            <div class="list-item" v-bind:id="element.id">
               <div class="title">#{{ element.id }}</div>
               <div class="title">{{ element.subject }}</div>
               <div>Szerző: {{ element.author.name }} </div>
@@ -27,11 +28,12 @@
 </template>
 
 <script>
-  import { ref, onMounted } from 'vue'
+  import { ref, onMounted, watch } from 'vue'
   import draggable from 'vuedraggable'
   import RedmineService from '@/services/RedmineService.js'
   import { useStore } from "vuex"
   import lodash from "lodash"
+  import useDebouncedRef from '@/composables/useDebouncedRef'
 
   export default {
     name: "Kanban",
@@ -45,9 +47,10 @@
       const wipLimit = ref()
       const fallbackColumnConfig = ["Új", "Folyamatban", "Megoldva"]
       const fallbackWipLimit = 20
-
+      const searchKeyWord = useDebouncedRef('', 800)
       let issuesForProject = []
       let issuesByStatus = ref()
+      let originalIssuesStringifyed
 
       function log() {
         //window.console.log(evt)
@@ -60,7 +63,10 @@
         let wipLimitFromConfig
         try {
           redmineStatuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses
-          configIssue = (await RedmineService.getKanbanConfig(store.state.user.api_key, store.state.project.id)).data.issues[0]
+          configIssue = await RedmineService.getKanbanConfigTracker(store.state.user.api_key).then(async (res) =>
+            (await RedmineService.getKanbanConfig(store.state.user.api_key, store.state.project.id, res.data.trackers.find(tracker => tracker.name === 'Kanban').id)).data.issues[0]
+          )
+          
           let config = JSON.parse(configIssue.description).config
           columnNames = config.columns || fallbackColumnConfig
           wipLimitFromConfig = config.WIP || fallbackWipLimit
@@ -71,8 +77,27 @@
         columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
         wipLimit.value = wipLimitFromConfig
       }
+
+      async function _getIssuesWithOffset(offset=0) {
+        const response = (await RedmineService.getIssuesForProject(store.state.user.api_key, store.state.query.id, store.state.project.id, offset))
+        return {
+          issues: response?.data?.issues || [],
+          total_count: response?.data?.total_count || 0
+        }
+      }
+
       async function getIssuesForProject() {
-        issuesForProject.value = (await RedmineService.getIssuesForProject(store.state.user.api_key, store.state.query.id, store.state.project.id)).data.issues
+        const PAGE_SIZE = 100
+        const { issues, total_count } = await _getIssuesWithOffset()
+        issuesForProject.value = [...issues]
+        if(total_count > PAGE_SIZE) {
+          const iterations = Math.ceil(total_count / PAGE_SIZE)
+          for(let i = 1; i < iterations; i++) {
+            const { issues: currentIssues } = await _getIssuesWithOffset(i * PAGE_SIZE)
+            issuesForProject.value = [...issues, ...currentIssues]
+          }
+        }
+        originalIssuesStringifyed = JSON.stringify(issuesForProject.value).split('},{')
         issuesByStatus.value = lodash.groupBy(issuesForProject.value, 'status.name')
       }
 
@@ -94,6 +119,32 @@
         }
       }
 
+      const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), [])
+    
+      const searchByKeyWord = (searchKeyWord) => {
+        const foundIndexes = indexOfAll(originalIssuesStringifyed, searchKeyWord)
+        let foundItems = []
+        foundIndexes.forEach(i => foundItems.push(issuesForProject.value[i]))
+        return foundItems
+      }
+
+      watch(searchKeyWord, () => {
+        if (searchKeyWord.value != '') {
+          const issuesToHighlight = searchByKeyWord(searchKeyWord.value.toString())
+          const matches = document.querySelectorAll(".list-item")
+          matches.forEach(i => {
+            if(!(issuesToHighlight.some(j => j.id == i.id))) {
+              i.style.display = 'none'
+            }
+          })
+        } else {
+          const matches = document.querySelectorAll(".list-item")
+          matches.forEach(i => {
+              i.style.display = 'flex'
+          })
+        }
+      })
+
       onMounted(() => {
         setupColumnConfig()
         getIssuesForProject()
@@ -104,7 +155,8 @@
         add,
         issuesByStatus,
         columnConfig,
-        getLimitedList
+        getLimitedList,
+        searchKeyWord
       }
     }
   }
@@ -142,5 +194,10 @@
 
   .status-name {
     margin: 30px;
+  }
+
+  .filter-field {
+    padding: 4px;
+    margin: 0 20px 20px;
   }
 </style>

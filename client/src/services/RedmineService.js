@@ -1,17 +1,17 @@
 import Api from '@/services/Api'
 
-export default class RedmineService{
-  static getRedmineUrl() {
+export default {
+  getRedmineUrl() {
     return Api().get("redmine_url")
-  }
-  static getUser(apiKey) {
+  },
+  getUser(apiKey) {
     return Api().get("users/current.json", {
       headers: {
         'X-Redmine-API-Key': apiKey
       }
     })
-  }
-  static getProjects(apiKey, offset) {
+  },
+  getProjects(apiKey, offset) {
     return Api().get('projects.json', {
       headers: {
         'X-Redmine-API-Key': apiKey
@@ -21,8 +21,8 @@ export default class RedmineService{
         'offset': offset
       }
     })
-  }
-  static getProjectQueries(apiKey, offset) {
+  },
+  getProjectQueries(apiKey, offset) {
     return Api().get('queries.json', {
       headers: {
         'X-Redmine-API-Key': apiKey
@@ -32,8 +32,8 @@ export default class RedmineService{
         'offset': offset
       }
     })
-  }
-  static getIssuesForProject(apiKey, queryId, projectId) {
+  },
+  getIssuesForProject(apiKey, queryId, projectId, offset) {
     return Api().get('issues.json', {
       headers: {
         'X-Redmine-API-Key': apiKey
@@ -41,37 +41,42 @@ export default class RedmineService{
       params: {
         'project_id' : projectId,
         'query_id' : queryId,
-        'limit': 100
+        'limit': 100,
+        'offset': offset
       }
     })
-  }
-  static getKanbanConfigTracker(apiKey) {
+  },
+  getKanbanConfigTracker(apiKey) {
     return Api().get('trackers.json', {
       headers: {
         'X-Redmine-API-Key': apiKey
       }
     })
-  }
-  static async getKanbanConfig(apiKey, projectId) {
+  },
+  getKanbanConfig(apiKey, projectId, trackerID) {
     return Api().get('issues.json', {
       headers: {
         'X-Redmine-API-Key': apiKey
       },
       params: {
         'project_id': projectId,
-        'tracker_id': (await RedmineService.getKanbanConfigTracker(apiKey)).data.trackers.find(tracker => tracker.name === 'Kanban').id,
+        'tracker_id': trackerID,
         'limit': 100
       }
     })
-  }
-  static async getRedmineStatuses(apiKey) {
+  },
+  getRedmineStatuses(apiKey, offset) {
     return Api().get('issue_statuses.json', {
       headers: {
         'X-Redmine-API-Key': apiKey
+      },
+      params: {
+        'limit': 100,
+        'offset': offset
       }
     })
-  }
-  static updateIssueStatus(apiKey, issueId, statusId) {
+  },
+  updateIssueStatus(apiKey, issueId, statusId) {
     return Api().put(`issues/${issueId}.json`, {
       "issue": {
         "status_id": statusId
@@ -82,5 +87,8 @@ export default class RedmineService{
         'X-Redmine-API-Key': apiKey
       }
     })
+  },
+  getUserByPassword(user) {
+    return Api().post('login', user)
   }
 }

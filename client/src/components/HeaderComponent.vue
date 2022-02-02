@@ -1,27 +1,24 @@
 <template>
   <header>
-    <router-link :to="{name: 'Login'}">
-      <div class="info" v-if="user.firstname">
-        <span class="small-text">Name:</span>
-        <span class="large-text">{{ user.lastname + " " + user.firstname }}</span>
-      </div>
-      <span class="Large-text info" v-else>Home</span>
-    </router-link>
-
-    <router-link :to="{name: 'ProjectPick'}">
+    <router-link :to="{name: 'Setup'}">
       <div class="info" v-if="project.name">
         <span class="small-text">Project:</span>
         <span class="large-text">{{ project.name }}</span>
       </div>
     </router-link>
 
-    <router-link :to="{name: 'QueryPick'}">
+    <router-link :to="{name: 'Setup'}">
       <div class="info" v-if="query.name">
-        <ico class="small-text">Query:</ico>
+        <span class="small-text">Query:</span>
         <span class="large-text">{{ query.name }}</span>
       </div>
     </router-link>
 
+    <div class ="float-right">
+      <button class="logout" v-if="user.firstname" @click="logoutUser">
+        Logout
+      </button>
+    </div>
   </header>
 </template>
 
@@ -36,10 +33,16 @@ export default {
     const user = computed(() => store.state.user);
     const project = computed(() => store.state.project);
     const query = computed(() => store.state.query);
+
+    const logOutUser = () => {
+
+    }
+
     return {
       user,
       project,
-      query
+      query,
+      logOutUser
     }
   }
 }
@@ -70,5 +73,17 @@ header {
 .large-text {
   font-size: 18px;
   font-weight: 700;
+}
+
+.logout {
+  cursor: pointer;
+  padding: 6px;
+  background: none;
+  border: none;
+}
+
+.float-right {
+  display: flex;
+  margin-left: auto;
 }
 </style>
