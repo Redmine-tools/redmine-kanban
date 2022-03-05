@@ -4,5 +4,5 @@ const common = `
   `;
 
 module.exports = {
-  default: `${common} features/*.feature`
+  default: `${common} features/*.feature --publish-quiet --format html:report/report.html`
 };

@@ -1,5 +1,5 @@
 {
         "scripts": {
-        "test": "cucumber-js --parallel 1 -f json:report/report.json"
+        "test": "cucumber-js"
     }
 }
