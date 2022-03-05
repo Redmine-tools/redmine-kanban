@@ -1,29 +1,34 @@
 <template>
   <section class="login-container">
+    <div class="img-container">
+      <img class="company-logo" src="@/assets/logo.png" alt="company-logo">
+    </div>
     <h1>{{ $t("header") }}</h1>
-    <p class="info">{{ $t("apiKeyHelp") }} <button class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button></p>
-    <h4>{{ $t("loginWApiKey") }}</h4>
     <form @submit.prevent="getUser" class="form-control">
-      <div class="omrs-input-group">
-        <label class="omrs-input-underlined">
-          <input v-model="apiKey" id="api-token" name="api-token" type="text">
-          <span class="omrs-input-label">{{ $t("apiKey") }}</span>
-        </label>
+      <div class="input-container">
+        <q-input outlined label="Username" v-model="username" id="username" name="username" type="text"/>
+        <q-input outlined label="Password" v-model="password" id="password" name="password" :type="isPwd ? 'password' : 'text'" autocomplete="on">
+          <template v-slot:append>
+            <q-icon
+              :name="isPwd ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPwd = !isPwd"
+            />
+          </template>
+        </q-input>
+        <p class="separator">{{ $t("apiKeyOption") }}</p>
+        <p class="info">{{ $t("apiKeyHelp") }} <button class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button></p>
+        <q-input outlined label="api key" v-model="apiKey" id="api-token" name="api-token" :type="isApiKey ? 'password' : 'text'">
+          <template v-slot:append>
+            <q-icon
+              :name="isApiKey ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isApiKey = !isApiKey"
+            />
+          </template>
+        </q-input>
+        <button class="action">{{ $t("login") }}</button>
       </div>
-      <h4>{{ $t("loginWPwd") }}</h4>
-      <div class="omrs-input-group">
-        <label class="omrs-input-underlined">
-        <input v-model="username" id="username" name="username" type="text">
-        <span class="omrs-input-label">{{ $t("username") }}</span>
-        </label>
-      </div>
-      <div class="omrs-input-group">
-        <label class="omrs-input-underlined">
-        <input v-model="password" id="password" name="password" type="password" autocomplete="on">
-        <span class="omrs-input-label">{{ $t("password") }}</span>
-        </label>
-      </div>
-      <button class="action">{{ $t("login") }}</button>
     </form>
   </section>
   <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">Sikertelen bejelentkezés</div>
@@ -44,6 +49,8 @@ export default {
     const password = ref('')
     let user = ref('')
     let isActive = ref(false)
+    let isPwd = ref(true)
+    let isApiKey = ref(true)
 
     async function getUser() {
       try {
@@ -89,7 +96,9 @@ export default {
       username,
       password,
       getAPILink,
-      apiKey
+      apiKey,
+      isPwd,
+      isApiKey
     }
   }
 }
@@ -99,8 +108,33 @@ export default {
 .login-container {
   display: flex;
   flex-direction: column;
-  max-width: 400px;
-  padding: 24px;
+  max-width: 600px;
+  padding: 20px 80px 48px 80px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+@media screen and (max-width: 960px) {
+  .login-container {
+    padding: 20px 36px 48px 36px;
+  }
+}
+
+.img-container {
+  width: 100%;
+  text-align: right;
+  position: relative;
+
+}
+
+.q-input {
+  margin-bottom: 12px;
+}
+
+.company-logo {
+  width: 98px;
+  height: 24px;
 }
 
 .form-control {
@@ -109,7 +143,31 @@ export default {
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 400px;
+  max-width: 600px;
+}
+
+.separator {
+  padding: 16px 0px;
+  margin: 0px;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #393939;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid #c1c1c1 ;
+}
+
+.separator:not(:empty)::before {
+  margin-right: .25em;
+}
+
+.separator:not(:empty)::after {
+  margin-left: .25em;
 }
 
 img {
@@ -121,6 +179,11 @@ img {
 h1 {
   margin-bottom: 0px;
   font-size: 30px;
+  text-align: left;
+  font-size: xx-large;
+  font-weight: bold;
+  line-height: 3rem;
+  padding-bottom: 36px;
 }
 
 a {
@@ -141,9 +204,9 @@ input {
 .action {
   margin-top: 10px;
   margin-bottom: 0px;
-  width: 328px;
-  height: 40px;
-  background: #005457;
+  width: 100%;
+  height: 48px;
+  background: #295365;
   border-radius: 4px;
   color: #ffffff;
   cursor: pointer;
@@ -184,89 +247,8 @@ input {
   z-index: 5;
 }
 
-
-:root {
-	--omrs-color-ink-lowest-contrast: rgba(47, 60, 85, 0.18);
-	--omrs-color-ink-low-contrast: rgba(60, 60, 67, 0.3);
-	--omrs-color-ink-medium-contrast: rgba(19, 19, 21, 0.6);
-	--omrs-color-interaction: #000000;
-	--omrs-color-interaction-minus-two: rgba(98, 224, 73, 0.12);
-	--omrs-color-danger: #b50706;
-	--omrs-color-bg-low-contrast: #eff1f2;
-	--omrs-color-ink-high-contrast: #121212;
-	--omrs-color-bg-high-contrast: #ffffff;
-	
-}
-/** END: Non Openmrs CSS **/
-div.omrs-input-group {
+div.input-container {
   margin-bottom: 1.5rem;
-  position: relative;
-  width: 20.4375rem;
-}
-
-.omrs-input-underlined > input,
-.omrs-input-filled > input {
-	border: none;
-	border-bottom: 0.125rem solid var(--omrs-color-ink-medium-contrast);
-	width: 100%;
-	height: 3rem;
-	font-size: 1.0625rem;
-	padding-left: 0rem;
-	line-height: 147.6%;
-	padding-top: 0.825rem;
-	padding-bottom: 0.5rem;
-}
-
-.omrs-input-underlined > input:focus,
-.omrs-input-filled > input:focus {
-	outline: none;
-}
-
-.omrs-input-underlined > .omrs-input-label,
-.omrs-input-filled > .omrs-input-label {
-	position: absolute;
-	top: 0.9375rem;
-	left: 0rem;
-	line-height: 147.6%;
-	color: var(--omrs-color-ink-medium-contrast);
-	transition: top .2s;
-}
-
-.omrs-input-underlined > svg,
-.omrs-input-filled > svg {
-	position: absolute;
-	top: 0.9375rem;
-	right: 0.875rem;
-	fill: var(--omrs-color-ink-medium-contrast);
-}
-
-.omrs-input-underlined > input:hover,
-.omrs-input-filled > input:hover {
-	background: var(--omrs-color-interaction-minus-two);
-	border-color: var(--omrs-color-ink-high-contrast);
-}
-
-.omrs-input-underlined > input:focus + .omrs-input-label,
-.omrs-input-underlined > input:valid + .omrs-input-label,
-.omrs-input-filled > input:focus + .omrs-input-label,
-.omrs-input-filled > input:valid + .omrs-input-label {
-	top: 0;
-	font-size: 0.9375rem;
-	margin-bottom: 32px;;
-}
-
-.omrs-input-underlined:not(.omrs-input-danger) > input:focus + .omrs-input-label,
-.omrs-input-filled:not(.omrs-input-danger) > input:focus + .omrs-input-label {
-	color: var(--omrs-color-interaction);
-}
-
-.omrs-input-underlined:not(.omrs-input-danger) > input:focus,
-.omrs-input-filled:not(.omrs-input-danger) > input:focus {
-	border-color: var(--omrs-color-interaction);
-}
-
-.omrs-input-underlined:not(.omrs-input-danger) > input:focus ~ svg,
-.omrs-input-filled:not(.omrs-input-danger) > input:focus ~ svg {
-	fill: var(--omrs-color-ink-high-contrast);
+  width: 100%;
 }
 </style>

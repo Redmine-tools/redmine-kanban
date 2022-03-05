@@ -1,5 +1,5 @@
 {
-    "header": "Redmine kanban board",
+    "header": "Login",
     "apiKeyHelp": "Fill in API key for login. API key is available at the link below:",
     "apiKey": "API key",
     "loginWApiKey": "Log in with API key",
@@ -14,5 +14,6 @@
     "qSelect": "Select a query",
     "project": "Project",
     "query": "Query",
-    "kanbanBoard": "Kanban board"
+    "kanbanBoard": "Kanban board",
+    "apiKeyOption": "or with API key"
 }
