@@ -51,13 +51,14 @@ export default {
 }
 
 body {
-  background: linear-gradient(100deg, #36B342 0%, rgba(0, 0, 0, 0.37) 100%);
+  background-color: F8F9FF;
 }
+
 .app-container {
-  display: inline-block;
-  background: #FFFFFF;
-  border-radius: 10px;
-  padding: 20px;
-  margin: 5rem;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
 }
 </style>
