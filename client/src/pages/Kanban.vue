@@ -14,7 +14,7 @@
                 group="issues"
         >
           <template #item="{ element }">
-            <div class="list-item" v-bind:id="element.id">
+            <div class="list-item" v-bind:id="element.id" @click="openTicket(element.id)">
               <div class="title">#{{ element.id }}</div>
               <div class="title">{{ element.subject }}</div>
               <div>Szerző: {{ element.author.name }} </div>
@@ -56,6 +56,11 @@
         //window.console.log(evt)
       }
 
+      async function openTicket(id) {
+        const response = await RedmineService.getRedmineUrl()
+        window.open(response.data + 'issues/' + id, '_blank');
+      }
+    
       async function setupColumnConfig() {
         let redmineStatuses
         let configIssue
@@ -156,7 +161,8 @@
         issuesByStatus,
         columnConfig,
         getLimitedList,
-        searchKeyWord
+        searchKeyWord,
+        openTicket
       }
     }
   }
@@ -178,7 +184,7 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    cursor: move;
+    cursor: pointer;
     display: flex;
     flex-direction: column;
   }
