@@ -8,7 +8,7 @@ Given("the login page is loaded", async () => {
   await loginPage.at();
 });
 
-When("user {string} logs in", async (userName) => {
+When("user {string} logs in with API key", async (userName) => {
   var user = config.users.filter(function (item) { return item.userName == userName })[0];
   await loginPage.login(user.apiKey);
 });
