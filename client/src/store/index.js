@@ -10,7 +10,8 @@ const store = createStore({
       },
       query: {
 
-      }
+      },
+      kanbanTrackerId: null
    },
    mutations: {
       addUser (state, payload) {
@@ -21,6 +22,9 @@ const store = createStore({
       },
       addQuerie (state, payload) {
          state.query = {...payload.payload}
+      },
+      addKanbanTrackerId (state, payload) {
+         state.kanbanTrackerId = {...payload.payload}
       }
    }
 })

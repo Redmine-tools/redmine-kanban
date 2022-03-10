@@ -52,34 +52,57 @@ export default {
     let isPwd = ref(true)
     let isApiKey = ref(true)
 
+    async function getKanbanTracker() {
+      const configTrackerName = process.env.CONFIG_TRACKER_NAME || 'Kanban'
+      console.log(configTrackerName)
+      let trackers = await RedmineService.getKanbanConfigTracker(store.state.user.api_key)
+              //.then((trackers) => {
+        console.log(trackers)
+        console.log(trackers.data.trackers.find(tracker => tracker.name === configTrackerName))
+        return trackers.data.trackers.find(tracker => tracker.name === configTrackerName)
+      // })/
+
+      // console.log("cioca")
+
+    }
+
     async function getUser() {
       try {
-        if(username.value && password.value) {
-          let response = await RedmineService.getUserByPassword({
-            "username": username.value, 
-            "password": password.value 
+        let response;
+        if (username.value && password.value) {
+          response = await RedmineService.getUserByPassword({
+            "username": username.value,
+            "password": password.value
           })
-          user.value = response.data
+        } else {
+          response = (await RedmineService.getUser(apiKey.value))
+        }
+        user.value = response.data
+        store.commit({
+          type: 'addUser',
+          payload: response.data.user
+        })
+        let configTracker = await getKanbanTracker()
+        console.log(configTracker)
+
+        if (configTracker){
           store.commit({
-            type: 'addUser',
-            payload: response.data.user
+            type: 'addKanbanTrackerId',
+            payload: configTracker.id
           })
           router.push('/setup')
         } else {
-          const response = (await RedmineService.getUser(apiKey.value))
-          user.value = response.data
-          store.commit({
-            type: 'addUser',
-            payload: response.data.user
-          })
-          router.push('/setup')
+          console.log("nincs kanban")
+          throw 'Nincs Kanban típus'
+          //router.push('/configurator')
         }
+
       } catch (error) {
-          isActive.value = true
-          setTimeout(() => isActive.value = false, 2000)
-          apiKey.value = ""
-          username.value = ""
-          password.value = ""
+        isActive.value = true
+        setTimeout(() => isActive.value = false, 2000)
+        apiKey.value = ""
+        username.value = ""
+        password.value = ""
       }
     }
 
