@@ -1,12 +1,10 @@
 <template>
-  <HeaderComponent/>
   <div  class="app-container">
     <router-view/>
   </div>
 </template>
 
 <script>
-import HeaderComponent from '@/components/HeaderComponent'
 import { computed } from 'vue'
 import { useStore } from "vuex"
 import { useI18n } from 'vue-i18n';
@@ -14,7 +12,6 @@ import { useI18n } from 'vue-i18n';
 export default {
   name: 'App',
   components: {
-    HeaderComponent
   },
   setup() {
     const store = useStore()

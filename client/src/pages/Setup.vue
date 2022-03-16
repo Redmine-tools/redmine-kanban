@@ -1,12 +1,28 @@
 <template>
-  <section id="setup-container">
-    <article>
-      <ProjectPick @projectPicked="loadQueriesPick"/>
-    </article>
-    <article v-if="projectSelected">
-      <component :is="QueriesPick"/>
-    </article>
-  </section>
+  <q-layout view="hHh lpR fFf">
+
+    <q-drawer
+      v-model="leftDrawerOpen" side="left"
+      overlay
+      bordered
+      show-if-above
+      :mini="!leftDrawerOpen || miniState"
+      @click.capture="drawerClick"
+      :width="315"
+      :breakpoint="500"
+      class="bg-white-3">
+      <p>beállítások</p>
+    </q-drawer>
+    <section id="setup-container">
+      <article>
+        <ProjectPick @projectPicked="loadQueriesPick"/>
+      </article>
+      <article v-if="projectSelected">
+        <component :is="QueriesPick"/>
+      </article>
+    </section>
+
+  </q-layout>
 </template>
 
 <script>
@@ -21,6 +37,7 @@ export default {
   setup() {
     const projectSelected = ref(false)
     let QueriesPick = shallowRef('')
+    const leftDrawerOpen = ref(true)
 
     function loadQueriesPick() {
       import('@/components/QueriesPick.vue').then(val => {
@@ -32,7 +49,8 @@ export default {
     return {
       projectSelected,
       loadQueriesPick,
-      QueriesPick
+      QueriesPick,
+      leftDrawerOpen
     }
   }
 }
