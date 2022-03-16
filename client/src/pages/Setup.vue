@@ -34,10 +34,10 @@
         <img class="company-logo" src="@/assets/logo.svg" alt="company-logo">
       </aside>
       <q-select
-      rounded
-      filled
+      outlined
       v-model="selectedLang"
       :options="langOptions"
+      class="vertical-bottom"
       label="Language" />
     </q-drawer>
     <q-page-container>
