@@ -64,6 +64,10 @@ export default {
         type: 'addProject',
         payload: projects.filter(i => i.id === selectedProject.value)[0]
       })
+      store.commit({
+        type: 'addQuerie',
+        payload: null
+      })
       emit('projectPicked', true)
     }
 
