@@ -27,7 +27,7 @@
             />
           </template>
         </q-input>
-        <button class="action">{{ $t("login") }}</button>
+        <q-btn type="submit" class="action">{{ $t("login") }}</q-btn>
       </div>
     </form>
   </section>
