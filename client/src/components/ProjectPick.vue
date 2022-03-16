@@ -1,11 +1,11 @@
 <template>
   <article class="full-screen">
     <form @submit.prevent="addProject">
-      <h1>{{ $t("pSelect") }}</h1>
+      <p class="section-title">{{ $t("pSelect") }}</p>
       <div>
         <Multiselect 
         required 
-        v-model="selectedProject" 
+        v-model="selectedProject"
         label="name" 
         trackBy="name" 
         :searchable="true"  
@@ -14,7 +14,10 @@
         placeholder="Type to search"
        />
       </div>
-      <button class="action">{{ $t("select") }}</button>
+      <q-btn
+        color="green-10"
+        type="submit"
+        style="margin-block-start:12px;">{{ $t("select") }}</q-btn>
     </form>
   </article>
 </template>
@@ -83,5 +86,12 @@ export default {
 </script>
 
 <style src="@vueform/multiselect/themes/default.css">
+
+.section-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
 
 </style>

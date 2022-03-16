@@ -1,7 +1,7 @@
 <template>
   <article class="full-screen">
     <form @submit.prevent="addQuerie">
-      <h1>{{ $t("qSelect") }}</h1>
+      <p class="section-title">{{ $t("qSelect") }}</p>
       <div>
         <Multiselect 
         required 
@@ -13,7 +13,10 @@
         :options="queiresOrdered"
         placeholder="Type to search"/>
       </div>
-      <button class="action">{{ $t("select") }}</button>
+      <q-btn
+        color="green-10"
+        type="submit"
+        style="margin-block-start:12px;">{{ $t("select") }}</q-btn>
     </form>
   </article>
 </template>
@@ -83,5 +86,12 @@ export default {
 </script>
 
 <style src="@vueform/multiselect/themes/default.css">
+
+.section-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
 
 </style>

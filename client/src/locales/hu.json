@@ -15,5 +15,7 @@
     "project": "Project",
     "query": "Lekérdezés",
     "kanbanBoard": "Kanban board",
-    "apiKeyOption": "vagy API kulccsal"
+    "apiKeyOption": "vagy API kulccsal",
+    "setupTitle": "Kanban board konfiguráció",
+    "setupHelper": "A következő a lenyílómenük/opciók segítéségel tudod kiválasztani a kanban boardod-ra vonatkozó beállításokat."
 }

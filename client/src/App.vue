@@ -16,8 +16,8 @@ export default {
   setup() {
     const store = useStore()
     const user = computed(() => store.state.user)
-    const { t, locale } = useI18n({ useScope: 'global' });
-    const localeFromStorage = localStorage.getItem('locale');
+    const { t, locale } = useI18n({ useScope: 'global' })
+    const localeFromStorage = localStorage.getItem('locale')
     if (localeFromStorage) {
       locale.value = localeFromStorage;
     } else if (navigator.language) {
@@ -26,8 +26,8 @@ export default {
 
     return {
       user,
-       t,
-       locale 
+      t,
+      locale 
     }
   }
 }
