@@ -1,6 +1,6 @@
 <template>
   <article class="full-screen">
-    <form @submit.prevent="addQuerie">
+    <form @submit.prevent>
       <p class="section-title">{{ $t("qSelect") }}</p>
       <div>
         <Multiselect 
@@ -11,12 +11,10 @@
         :searchable="true"  
         :minChars="1" 
         :options="queiresOrdered"
-        placeholder="Type to search"/>
+        placeholder="Type to search"
+        @change="updateQuery"
+        />
       </div>
-      <q-btn
-        color="green-10"
-        type="submit"
-        style="margin-block-start:12px;">{{ $t("select") }}</q-btn>
     </form>
   </article>
 </template>
@@ -65,7 +63,7 @@ export default {
       queiresOrdered.value = filteredQueries.map(({ id, name }) => ({ value:id, name:name }))
     }
   
-    function addQuerie() {
+    function updateQuery() {
       store.commit({
         type: 'addQuerie',
         payload: queries.filter(i => i.id === selectedQuerie.value)[0]
@@ -79,7 +77,7 @@ export default {
       projectsOrdered,
       selectedQuerie,
       queiresOrdered,
-      addQuerie
+      updateQuery
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <article class="full-screen">
-    <form @submit.prevent="addProject">
+    <form @submit.prevent>
       <p class="section-title">{{ $t("pSelect") }}</p>
       <div>
         <Multiselect 
@@ -12,12 +12,9 @@
         :minChars="1" 
         :options="projectsOrdered"
         placeholder="Type to search"
+        @change="updateProject"
        />
       </div>
-      <q-btn
-        color="green-10"
-        type="submit"
-        style="margin-block-start:12px;">{{ $t("select") }}</q-btn>
     </form>
   </article>
 </template>
@@ -62,14 +59,10 @@ export default {
       projectsOrdered.value = projects.map(({ id, name }) => ({ value:id, name:name }))
     }
 
-    function addProject() {
+    function updateProject() {
       store.commit({
         type: 'addProject',
         payload: projects.filter(i => i.id === selectedProject.value)[0]
-      })
-      store.commit({
-        type: 'addQuerie',
-        payload: null
       })
       emit('projectPicked', true)
     }
@@ -79,7 +72,7 @@ export default {
     return {
       projectsOrdered,
       selectedProject,
-      addProject
+      updateProject
     }
   }
 }
