@@ -1,7 +1,7 @@
 <template>
   <section class="login-container">
     <div class="img-container">
-      <img class="company-logo" src="@/assets/logo.png" alt="company-logo">
+      <img class="company-logo" src="@/assets/logo.svg" alt="company-logo">
     </div>
     <h1>{{ $t("header") }}</h1>
     <form @submit.prevent="getUser" class="form-control">

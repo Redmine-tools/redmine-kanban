@@ -1,9 +1,8 @@
 <template>
   <q-layout view="hHh lpR fFf">
-
     <q-drawer
-      v-model="leftDrawerOpen" side="left"
-      overlay
+      v-model="leftDrawerOpen"
+      side="left"
       bordered
       show-if-above
       :mini="!leftDrawerOpen || miniState"
@@ -11,17 +10,40 @@
       :width="315"
       :breakpoint="500"
       class="bg-white-3">
-      <p>beállítások</p>
+      <div class="q-mini-drawer-hide absolute" style="top: 30px; right: -17px;">
+        <q-btn
+          dense
+          round
+          elevated
+          color="grey-6"
+          icon="chevron_left"
+          @click="miniState = true"
+        />
+      </div>
+      <div v-if="miniState" class="q-mini-drawer-show absolute" style="top: 30px; right: -17px;">
+        <q-btn
+          dense
+          round
+          elevated
+          color="grey-6"
+          icon="chevron_right"
+          @click="leftDrawerOpen = true; miniState = false"
+        />
+      </div>
+      <aside class="image-container">
+        <img class="company-logo" src="@/assets/logo.svg" alt="company-logo">
+      </aside>
     </q-drawer>
-    <section id="setup-container">
-      <article>
-        <ProjectPick @projectPicked="loadQueriesPick"/>
-      </article>
-      <article v-if="projectSelected">
-        <component :is="QueriesPick"/>
-      </article>
-    </section>
-
+    <q-page-container>
+      <section id="setup-container">
+        <article>
+          <ProjectPick @projectPicked="loadQueriesPick"/>
+        </article>
+        <article v-if="projectSelected">
+          <component :is="QueriesPick"/>
+        </article>
+      </section>
+    </q-page-container>
   </q-layout>
 </template>
 
@@ -38,6 +60,7 @@ export default {
     const projectSelected = ref(false)
     let QueriesPick = shallowRef('')
     const leftDrawerOpen = ref(true)
+    const miniState = ref(false)
 
     function loadQueriesPick() {
       import('@/components/QueriesPick.vue').then(val => {
@@ -50,7 +73,8 @@ export default {
       projectSelected,
       loadQueriesPick,
       QueriesPick,
-      leftDrawerOpen
+      leftDrawerOpen,
+      miniState
     }
   }
 }
