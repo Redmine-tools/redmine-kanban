@@ -11,6 +11,7 @@ const store = createStore({
          state.user = {...payload.payload}
       },
       addProject (state, payload){
+         console.log(payload)
          state.project = {...payload.payload}
       },
       addQuerie (state, payload) {

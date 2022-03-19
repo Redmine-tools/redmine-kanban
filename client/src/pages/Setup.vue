@@ -48,10 +48,10 @@
       
       <section id="setup-container">
         <article>
-          <ProjectPick @projectPicked="loadQueriesPick"/>
+          <ProjectPick />
         </article>
-        <article v-if="projectSelected">
-          <component :is="QueriesPick"/>
+        <article>
+          <QueriesPick />
         </article>
       </section>
     </q-page-container>
@@ -59,18 +59,19 @@
 </template>
 
 <script>
-import { ref, shallowRef, watch } from 'vue'
+import { ref, watch } from 'vue'
 import ProjectPick from '@/components/ProjectPick'
+import QueriesPick from '@/components/QueriesPick'
 import { useI18n } from 'vue-i18n'
 
 export default {
   name: "Setup",
   components: {
-    ProjectPick
+    ProjectPick,
+    QueriesPick
   },
   setup() {
     const projectSelected = ref(false)
-    let QueriesPick = shallowRef('')
     const leftDrawerOpen = ref(true)
     const miniState = ref(false)
     const { t, locale } = useI18n({ useScope: 'global' })
@@ -82,17 +83,8 @@ export default {
       localStorage.setItem('locale', locale.value)
     })
 
-    function loadQueriesPick() {
-      import('@/components/QueriesPick.vue').then(val => {
-        projectSelected.value = true
-        QueriesPick.value = val.default
-      })
-    }
-
     return {
       projectSelected,
-      loadQueriesPick,
-      QueriesPick,
       leftDrawerOpen,
       miniState,
       t,

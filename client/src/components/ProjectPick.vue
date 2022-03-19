@@ -2,19 +2,14 @@
   <article class="full-screen">
     <form @submit.prevent>
       <p class="section-title">{{ $t("pSelect") }}</p>
-      <div>
-        <Multiselect 
-        required 
+      <q-select
+        outlined
         v-model="selectedProject"
-        label="name" 
-        trackBy="name" 
-        :searchable="true"  
-        :minChars="1" 
         :options="projectsOrdered"
-        placeholder="Type to search"
-        @change="updateProject"
-       />
-      </div>
+        :option-value="'value'"
+        :option-label="'name'"
+        label="Project"
+        @update:model-value="updateProject"/>
     </form>
   </article>
 </template>
@@ -22,14 +17,12 @@
 <script>
 import { ref, onMounted } from 'vue'
 import RedmineService from '@/services/RedmineService.js'
-import Multiselect from '@vueform/multiselect'
 import { useStore } from "vuex"
 
 export default {
   name: "ProjectPick",
   emits: ["projectPicked"],
   components: {
-    Multiselect
   },
   setup(_,{ emit }) {
     let projectsOrdered = ref()
@@ -62,11 +55,7 @@ export default {
     function updateProject() {
       store.commit({
         type: 'addProject',
-        payload: projects.filter(i => i.id === selectedProject.value)[0]
-      })
-      store.commit({
-        type: 'addQuerie',
-        payload: null
+        payload: projects.filter(i => i.id === selectedProject.value.value)[0]
       })
       emit('projectPicked', true)
     }
@@ -82,7 +71,7 @@ export default {
 }
 </script>
 
-<style src="@vueform/multiselect/themes/default.css">
+<style scoped>
 
 .section-title {
   font-style: normal;
