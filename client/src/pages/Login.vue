@@ -207,9 +207,7 @@ input {
   width: 100%;
   height: 48px;
   background: #295365;
-  border-radius: 4px;
   color: #ffffff;
-  cursor: pointer;
 }
 
 .as-link {

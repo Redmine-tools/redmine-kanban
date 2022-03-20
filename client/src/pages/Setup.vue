@@ -46,7 +46,7 @@
         <p class="sub-title">{{ $t("setupHelper") }}</p>
       </header>
       
-      <section id="setup-container">
+      <section id="setup-container" class="setup-container">
         <article>
           <ProjectPick />
         </article>
@@ -54,6 +54,7 @@
           <QueriesPick />
         </article>
       </section>
+      <q-btn class="action">{{ $t("proceed") }}</q-btn>
     </q-page-container>
   </q-layout>
 </template>
@@ -120,4 +121,10 @@ header {
   line-height: 24px;
   color: rgba(0, 0, 0, 0.38);
 }
+
+.action {
+  background: #295365;
+  color: #ffffff;
+}
+
 </style>

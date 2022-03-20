@@ -80,4 +80,9 @@ export default {
   line-height: 24px;
 }
 
+.q-field {
+  max-width: 500px;
+  margin: auto;
+}
+
 </style>

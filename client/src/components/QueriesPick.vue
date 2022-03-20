@@ -9,7 +9,7 @@
       :option-value="'id'"
       :option-label="'name'"
       label="Query"
-      disable/>
+      :disable="queiresOrdered.length === 0"/>
     </form>
   </article>
 </template>
@@ -30,6 +30,7 @@ export default {
     const selectedQuerie = ref()
     const store = useStore()
     const queiresOrdered = ref([])
+    console.log(queiresOrdered.value.length)
     let queries
   
     async function _getProjectQueriesWithOffset(offset=0) {
@@ -41,7 +42,6 @@ export default {
     }
     
     async function getProjectQueries() {
-      console.log('running shit')
       const PAGE_SIZE = 100;
       const { queries: firstQueries, total_count } = await _getProjectQueriesWithOffset()
       queries = [...firstQueries]
@@ -85,6 +85,11 @@ export default {
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
+}
+
+.q-field {
+  max-width: 500px;
+  margin: auto;
 }
 
 </style>
