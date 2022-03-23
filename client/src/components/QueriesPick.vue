@@ -18,19 +18,16 @@
 import { ref, watch } from 'vue'
 import RedmineService from '@/services/RedmineService.js'
 import { useStore } from "vuex"
-import { useRouter } from 'vue-router'
 
 export default {
   name: "ProjectPick",
   components: {
   },
   setup() {
-    const router = useRouter()
     const projectsOrdered = ref()
     const selectedQuerie = ref()
     const store = useStore()
     const queiresOrdered = ref([])
-    console.log(queiresOrdered.value.length)
     let queries
   
     async function _getProjectQueriesWithOffset(offset=0) {
@@ -55,14 +52,6 @@ export default {
       const filteredQueries = queries.filter(i => i?.project_id === store.state.project.id)
       queiresOrdered.value = filteredQueries.map(({ id, name }) => ({ value:id, name:name }))
     }
-  
-    function updateQuery() {
-      store.commit({
-        type: 'addQuerie',
-        payload: queries.filter(i => i.id === selectedQuerie.value)[0]
-      })
-      router.push('/kanban')
-    }
 
     watch(()=> store.state.project, function() {
       getProjectQueries()
@@ -71,8 +60,7 @@ export default {
     return {
       projectsOrdered,
       selectedQuerie,
-      queiresOrdered,
-      updateQuery
+      queiresOrdered
     }
   }
 }

@@ -37,7 +37,7 @@
       outlined
       v-model="selectedLang"
       :options="langOptions"
-      class="vertical-bottom"
+      class="lang-select"
       label="Language" />
     </q-drawer>
     <q-page-container>
@@ -54,7 +54,7 @@
           <QueriesPick />
         </article>
       </section>
-      <q-btn class="action">{{ $t("proceed") }}</q-btn>
+      <q-btn class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
     </q-page-container>
   </q-layout>
 </template>
@@ -64,6 +64,7 @@ import { ref, watch } from 'vue'
 import ProjectPick from '@/components/ProjectPick'
 import QueriesPick from '@/components/QueriesPick'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 
 export default {
   name: "Setup",
@@ -78,11 +79,16 @@ export default {
     const { t, locale } = useI18n({ useScope: 'global' })
     const selectedLang = ref(localStorage.getItem('locale'))
     const langOptions = ref(['en', 'hu'])
+    const router = useRouter()
 
     watch(selectedLang, () => {
       locale.value = selectedLang.value
       localStorage.setItem('locale', locale.value)
     })
+
+    function proceedToKanbanBoard() {
+      router.push('/kanban')
+    }
 
     return {
       projectSelected,
@@ -91,13 +97,14 @@ export default {
       t,
       locale,
       selectedLang,
-      langOptions
+      langOptions,
+      proceedToKanbanBoard
     }
   }
 }
 </script>
 
-<style scoped>
+<style>
 article {
     margin: 12px;
 }
@@ -113,6 +120,10 @@ header {
   line-height: 24px;
 }
 
+.company-logo {
+  padding: 24px;
+}
+
 .sub-title {
   padding-block-start: 24px;
   font-style: normal;
@@ -125,6 +136,16 @@ header {
 .action {
   background: #295365;
   color: #ffffff;
+}
+
+.lang-select {
+  padding: 24px;
+}
+
+.q-drawer__content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 </style>
