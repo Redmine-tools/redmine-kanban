@@ -30,8 +30,8 @@
         <q-btn type="submit" class="action">{{ $t("login") }}</q-btn>
       </div>
     </form>
+    <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">Sikertelen bejelentkezés</div>
   </section>
-  <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">Sikertelen bejelentkezés</div>
 </template>
 
 <script>
@@ -106,6 +106,8 @@ export default {
 
 <style scoped>
 .login-container {
+  margin: auto;
+  margin-top: 120px;
   display: flex;
   flex-direction: column;
   max-width: 600px;

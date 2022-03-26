@@ -1,5 +1,5 @@
 <template>
-  <section class="app-container">
+  <section class="">
     <h1>{{ $t("kanbanBoard") }}</h1>
     <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
     <div class="kanban">
