@@ -3,25 +3,27 @@
     <h1>{{ $t("kanbanBoard") }}</h1>
     <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
     <div class="kanban">
-      <div v-for="status in columnConfig" :key="status.id">
-        <h6 class="status-name">{{ status.name }}</h6>
-        <draggable
-                class="list-group"
-                :list="getLimitedList(issuesByStatus[status.name])"
-                @change="log"
-                @add="add"
-                itemKey="id"
-                group="issues"
-        >
-          <template #item="{ element }">
-            <div class="list-item" v-bind:id="element.id" @click="openTicket(element.id)">
-              <div class="title">#{{ element.id }}</div>
-              <div class="title">{{ element.subject }}</div>
-              <div>Szerző: {{ element.author.name }} </div>
-              <div v-if="element?.assigned_to?.name">Felelős: {{ element.assigned_to.name }} </div>
-            </div>
-          </template>
-        </draggable>
+      <div class="" v-for="status in columnConfig" :key="status.id">
+        <h6 class="status-name">{{ status.name }} <p> {{ issuesByStatus[status.name].length }} </p></h6>
+        <div class="kanban-col">
+          <draggable
+                  class="list-group"
+                  :list="issuesByStatus[status.name]"
+                  @change="log"
+                  @add="add"
+                  itemKey="id"
+                  group="issues"
+          >
+            <template #item="{ element }">
+              <div class="list-item" v-bind:id="element.id" @click="openTicket(element.id)">
+                <div class="title">#{{ element.id }}</div>
+                <div class="title">{{ element.subject }}</div>
+                <div>Szerző: {{ element.author.name }} </div>
+                <div v-if="element?.assigned_to?.name">Felelős: {{ element.assigned_to.name }} </div>
+              </div>
+            </template>
+          </draggable>
+        </div>
       </div>
     </div>
   </section>
@@ -173,41 +175,60 @@
 </script>
 
 <style>
-  .kanban {
-    display: flex;
-  }
+.kanban {
+  display: flex;
+}
 
-  .list-item {
-    background: rgba(0, 0, 0, 0.04);
-    box-shadow: 3px 3px 7px 0px rgb(0 0 0 / 35%);
-    border-radius: 10px;
-    height: 100%;
-    width: 250px;
-    margin: 10px;
-    padding: 10px;
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-  }
+.list-item {
+  background: #FFFFFF;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  height: 100%;
+  width: 250px;
+  margin: 10px;
+  padding: 10px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
 
-  .list-item > div {
-    padding-bottom: 5px;
-  }
+.list-item > div {
+  padding-bottom: 5px;
+}
 
-  .title {
-    font-size: 17px;
-    font-weight: 600;
-  }
+.title {
+  font-size: 17px;
+  font-weight: 600;
+}
 
-  .status-name {
-    margin: 30px;
-  }
+.status-name {
+  margin: 30px;
+}
 
-  .filter-field {
-    padding: 4px;
-    margin: 0 20px 20px;
-  }
+.filter-field {
+  padding: 4px;
+  margin: 0 20px 20px;
+}
+
+.kanban-col {
+  height: 800px;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 2px;
+  padding: 24px 12px 0px 12px;
+  margin-right: 8px;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+html {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
 </style>

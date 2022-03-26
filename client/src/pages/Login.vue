@@ -1,7 +1,7 @@
 <template>
   <section class="login-container">
     <div class="img-container">
-      <img class="company-logo" src="@/assets/logo.svg" alt="company-logo">
+      <img class="login-company-logo" src="@/assets/logo.svg" alt="company-logo">
     </div>
     <h1>{{ $t("header") }}</h1>
     <form @submit.prevent="getUser" class="form-control">
@@ -133,9 +133,9 @@ export default {
   margin-bottom: 12px;
 }
 
-.company-logo {
+.login-company-logo {
   width: 98px;
-  height: 24px;
+  height: auto;
 }
 
 .form-control {

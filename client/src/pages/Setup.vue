@@ -71,10 +71,6 @@ header {
   line-height: 24px;
 }
 
-.company-logo {
-  padding: 24px;
-}
-
 .sub-title {
   padding-block-start: 24px;
   font-style: normal;
