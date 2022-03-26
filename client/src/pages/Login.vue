@@ -109,7 +109,7 @@ export default {
   display: flex;
   flex-direction: column;
   max-width: 600px;
-  padding: 20px 80px 48px 80px;
+  padding: 20px 50px 48px 50px;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.2);
