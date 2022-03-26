@@ -95,6 +95,8 @@
       let issuesForProject = []
       let issuesByStatus = ref()
       let originalIssuesStringifyed
+      const leftDrawerOpen = ref(true)
+      const miniState = ref(false)
 
       function log() {
         //window.console.log(evt)
@@ -206,7 +208,9 @@
         columnConfig,
         getLimitedList,
         searchKeyWord,
-        openTicket
+        openTicket,
+        leftDrawerOpen,
+        miniState
       }
     }
   }
