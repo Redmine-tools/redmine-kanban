@@ -1,74 +1,30 @@
 <template>
-  <q-layout view="hHh lpR fFf" style="background: #FBFBFB">
-    <q-drawer
-      v-model="leftDrawerOpen"
-      side="left"
-      bordered
-      show-if-above
-      :mini="!leftDrawerOpen || miniState"
-      @click.capture="drawerClick"
-      :width="315"
-      :breakpoint="500"
-      class="bg-white-3">
-      <div class="q-mini-drawer-hide absolute" style="top: 60px; right: -17px;">
-        <q-btn
-          dense
-          round
-          elevated
-          color="grey-6"
-          icon="chevron_left"
-          @click="miniState = true"
-        />
+  <section id="kanban-container" class="kanban-container">
+    <h1>{{ $t("kanbanBoard") }}</h1>
+    <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
+    <div class="kanban">
+      <div v-for="status in columnConfig" :key="status.id">
+        <h6 class="status-name">{{ status.name }}</h6>
+        <draggable
+                class="list-group"
+                :list="getLimitedList(issuesByStatus[status.name])"
+                @change="log"
+                @add="add"
+                itemKey="id"
+                group="issues"
+        >
+          <template #item="{ element }">
+            <div class="list-item" v-bind:id="element.id" @click="openTicket(element.id)">
+              <div class="title">#{{ element.id }}</div>
+              <div class="title">{{ element.subject }}</div>
+              <div>Szerző: {{ element.author.name }} </div>
+              <div v-if="element?.assigned_to?.name">Felelős: {{ element.assigned_to.name }} </div>
+            </div>
+          </template>
+        </draggable>
       </div>
-      <div v-if="miniState" class="q-mini-drawer-show absolute" style="top: 60px; right: -17px;">
-        <q-btn
-          dense
-          round
-          elevated
-          color="grey-6"
-          icon="chevron_right"
-          @click="leftDrawerOpen = true; miniState = false"
-        />
-      </div>
-      <aside class="image-container">
-        <img class="company-logo" src="@/assets/logo.svg" alt="company-logo">
-      </aside>
-      <q-select
-      outlined
-      v-model="selectedLang"
-      :options="langOptions"
-      class="lang-select"
-      label="Language" />
-    </q-drawer>
-    <q-page-container>
-      <section id="kanban-container" class="kanban-container">
-        <h1>{{ $t("kanbanBoard") }}</h1>
-        <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
-        <div class="kanban">
-          <div v-for="status in columnConfig" :key="status.id">
-            <h6 class="status-name">{{ status.name }}</h6>
-            <draggable
-                    class="list-group"
-                    :list="getLimitedList(issuesByStatus[status.name])"
-                    @change="log"
-                    @add="add"
-                    itemKey="id"
-                    group="issues"
-            >
-              <template #item="{ element }">
-                <div class="list-item" v-bind:id="element.id" @click="openTicket(element.id)">
-                  <div class="title">#{{ element.id }}</div>
-                  <div class="title">{{ element.subject }}</div>
-                  <div>Szerző: {{ element.author.name }} </div>
-                  <div v-if="element?.assigned_to?.name">Felelős: {{ element.assigned_to.name }} </div>
-                </div>
-              </template>
-            </draggable>
-          </div>
-        </div>
-      </section>
-    </q-page-container>
-  </q-layout>
+    </div>
+  </section>
 </template>
 
 <script>

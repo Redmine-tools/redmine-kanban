@@ -107,7 +107,6 @@ export default {
 <style scoped>
 .login-container {
   margin: auto;
-  margin-top: 120px;
   display: flex;
   flex-direction: column;
   max-width: 600px;
