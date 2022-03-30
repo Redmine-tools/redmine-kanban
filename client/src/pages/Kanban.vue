@@ -174,7 +174,7 @@
   }
 </script>
 
-<style>
+<style scoped>
 .kanban {
   display: flex;
 }

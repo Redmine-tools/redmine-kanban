@@ -1,4 +1,5 @@
 <template>
+  <div class="login-page">
   <section class="login-container">
     <div class="img-container">
       <img class="login-company-logo" src="@/assets/logo.svg" alt="company-logo">
@@ -32,6 +33,7 @@
     </form>
     <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">Sikertelen bejelentkezés</div>
   </section>
+  </div>
 </template>
 
 <script>
@@ -249,5 +251,13 @@ input {
 div.input-container {
   margin-bottom: 1.5rem;
   width: 100%;
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
 }
 </style>
