@@ -7,6 +7,13 @@
   :option-value="'id'"
   :option-label="'name'"
   label="Query"
+  @filter="filterFn"
+  @update:model-value="updateQuery"
+  input-debounce="10"
+  use-input
+  hide-selected
+  fill-input
+  clearable
   :disable="queiresOrdered.length === 0"/>
 </template>
 
@@ -25,6 +32,7 @@ export default {
     const store = useStore()
     const queiresOrdered = ref([])
     let queries
+    let stringOptions
   
     async function _getProjectQueriesWithOffset(offset=0) {
         const response = await RedmineService.getProjectQueries(store.state.user.api_key, offset)
@@ -47,6 +55,24 @@ export default {
       }
       const filteredQueries = queries.filter(i => i?.project_id === store.state.project.id)
       queiresOrdered.value = filteredQueries.map(({ id, name }) => ({ value:id, name:name }))
+      stringOptions = queiresOrdered.value
+    }
+
+    function filterFn (val, update) {
+      update(() => {
+        const needle = val.toLowerCase()
+        queiresOrdered.value = stringOptions.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    function updateQuery() {
+      console.log(queries)
+      console.log(selectedQuerie)
+      console.log(queries.filter(i => i.id === selectedQuerie.value)[0])
+      store.commit({
+        type: 'addQuerie',
+        payload: queries.filter(i => i.id === selectedQuerie.value.value)[0]
+      })
     }
 
     watch(()=> store.state.project, function() {
@@ -56,7 +82,9 @@ export default {
     return {
       projectsOrdered,
       selectedQuerie,
-      queiresOrdered
+      queiresOrdered,
+      filterFn,
+      updateQuery
     }
   }
 }

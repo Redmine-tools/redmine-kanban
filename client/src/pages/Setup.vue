@@ -12,7 +12,7 @@
     </article>
   </section>
   <div class="button-container">
-    <q-btn class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
+    <q-btn :disabled="!store.state.query.id" class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
   </div>
 </template>
 
@@ -22,6 +22,7 @@ import ProjectPick from '@/components/ProjectPick'
 import QueriesPick from '@/components/QueriesPick'
 import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
+import { useStore } from "vuex"
 
 export default {
   name: "Setup",
@@ -37,6 +38,7 @@ export default {
     const selectedLang = ref(localStorage.getItem('locale'))
     const langOptions = ref(['en', 'hu'])
     const router = useRouter()
+    const store = useStore()
 
     watch(selectedLang, () => {
       locale.value = selectedLang.value
@@ -55,7 +57,8 @@ export default {
       locale,
       selectedLang,
       langOptions,
-      proceedToKanbanBoard
+      proceedToKanbanBoard,
+      store
     }
   }
 }

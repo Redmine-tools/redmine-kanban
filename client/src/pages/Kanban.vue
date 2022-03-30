@@ -120,14 +120,6 @@
         await RedmineService.updateIssueStatus(store.state.user.api_key, originalIssue.id, newStatus.id)
       }
 
-      function getLimitedList(issueList){
-        if (issueList && issueList.length > wipLimit.value) {
-          return issueList.slice(0, wipLimit.value)
-        } else {
-          return issueList
-        }
-      }
-
       const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), [])
     
       const searchByKeyWord = (searchKeyWord) => {
@@ -164,7 +156,6 @@
         add,
         issuesByStatus,
         columnConfig,
-        getLimitedList,
         searchKeyWord,
         openTicket,
         leftDrawerOpen,

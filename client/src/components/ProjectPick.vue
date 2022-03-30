@@ -7,6 +7,12 @@
     :option-value="'value'"
     :option-label="'name'"
     label="Project"
+    @filter="filterFn"
+    input-debounce="10"
+    use-input
+    hide-selected
+    fill-input
+    clearable
     @update:model-value="updateProject"/>
 </template>
 
@@ -20,8 +26,9 @@ export default {
   emits: ["projectPicked"],
   components: {
   },
-  setup(_,{ emit }) {
+  setup() {
     let projectsOrdered = ref()
+    let stringOptions
     let selectedProject = ref()
     const store = useStore()
     let projects
@@ -46,6 +53,7 @@ export default {
         }
       }
       projectsOrdered.value = projects.map(({ id, name }) => ({ value:id, name:name }))
+      stringOptions = projectsOrdered.value
     }
 
     function updateProject() {
@@ -53,7 +61,13 @@ export default {
         type: 'addProject',
         payload: projects.filter(i => i.id === selectedProject.value.value)[0]
       })
-      emit('projectPicked', true)
+    }
+
+    function filterFn (val, update) {
+      update(() => {
+        const needle = val.toLowerCase()
+        projectsOrdered.value = stringOptions.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
+      })
     }
 
     onMounted(getProjects) 
@@ -61,7 +75,8 @@ export default {
     return {
       projectsOrdered,
       selectedProject,
-      updateProject
+      updateProject,
+      filterFn
     }
   }
 }
