@@ -1,13 +1,19 @@
 <template>
+  <header>
+    <h1>{{ $t("setupTitle") }}</h1>
+    <p>{{ $t("setupHelper") }}</p>
+  </header>
   <section id="setup-container" class="setup-container">
-    <article>
+    <article class="input-container">
       <ProjectPick />
     </article>
-    <article>
+    <article class="input-container">
       <QueriesPick />
     </article>
   </section>
-  <q-btn class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
+  <div class="button-container">
+    <q-btn class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
+  </div>
 </template>
 
 <script>
@@ -56,14 +62,6 @@ export default {
 </script>
 
 <style scoped>
-article {
-    margin: 12px;
-}
-
-header {
-  padding-block-start: 8rem;
-}
-
 .title {
   font-style: normal;
   font-weight: 700;
@@ -80,6 +78,11 @@ header {
   color: rgba(0, 0, 0, 0.38);
 }
 
+.button-container {
+  text-align: left;
+  padding-inline-start: 100px;
+}
+
 .action {
   background: #295365;
   color: #ffffff;
@@ -93,6 +96,42 @@ header {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+header {
+  padding-block-start: 128px;
+  padding-inline-start: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+header > h1 {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 24px;
+  padding-block-end: 24px;
+}
+
+header > p {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.38);
+  padding-block-end: 48px;
+}
+
+.setup-container {
+
+}
+
+.setup-container > .input-container {
+  display: flex;
+  padding-inline-start: 100px;
+  flex-direction: column;
+  align-items: flex-start;
+  padding-block-end: 48px;
 }
 
 </style>

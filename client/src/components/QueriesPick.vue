@@ -1,17 +1,13 @@
 <template>
-  <article class="full-screen">
-    <form @submit.prevent>
-      <p class="section-title">{{ $t("qSelect") }}</p>
-      <q-select
-      outlined
-      v-model="selectedQuerie"
-      :options="queiresOrdered"
-      :option-value="'id'"
-      :option-label="'name'"
-      label="Query"
-      :disable="queiresOrdered.length === 0"/>
-    </form>
-  </article>
+  <p class="section-title">{{ $t("qSelect") }}</p>
+  <q-select
+  outlined
+  v-model="selectedQuerie"
+  :options="queiresOrdered"
+  :option-value="'id'"
+  :option-label="'name'"
+  label="Query"
+  :disable="queiresOrdered.length === 0"/>
 </template>
 
 <script>
@@ -67,7 +63,6 @@ export default {
 </script>
 
 <style scoped>
-
 .section-title {
   font-style: normal;
   font-weight: 500;
@@ -76,8 +71,6 @@ export default {
 }
 
 .q-field {
-  max-width: 500px;
-  margin: auto;
+  width: 45%;
 }
-
 </style>
