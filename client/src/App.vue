@@ -31,8 +31,11 @@
           @click="leftDrawerOpen = true; miniState = false"
         />
       </div>
-      <aside class="image-container">
+      <aside v-if="!miniState" class="image-container">
         <img class="company-logo" src="@/assets/logo.svg" alt="company-logo">
+      </aside>
+      <aside v-else class="mini-image-container">
+        <img class="company-logo" src="@/assets/logo-mini.svg" alt="company-logo">
       </aside>
       <q-select
       outlined
@@ -109,6 +112,12 @@ body {
 .app-container {
   width: 100%;
   height: 100%;
+}
+
+.mini-image-container > .company-logo {
+  height: 48px;
+  width: 100%;
+  padding: 6px;
 }
 
 .company-logo {

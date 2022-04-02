@@ -66,9 +66,6 @@ export default {
     }
 
     function updateQuery() {
-      console.log(queries)
-      console.log(selectedQuerie)
-      console.log(queries.filter(i => i.id === selectedQuerie.value)[0])
       store.commit({
         type: 'addQuerie',
         payload: queries.filter(i => i.id === selectedQuerie.value.value)[0]
