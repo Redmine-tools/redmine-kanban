@@ -37,12 +37,15 @@
       <aside v-else class="mini-image-container">
         <img class="company-logo" src="@/assets/logo-mini.svg" alt="company-logo">
       </aside>
-      <q-select
-      outlined
-      v-model="selectedLang"
-      :options="langOptions"
-      class="lang-select"
-      label="Language" />
+      <aside class="settings">
+        <div class="lang-select-container">
+          <p class="settings-title"> <q-icon name="settings" /> {{ $t("langSelectTitle") }}</p>
+          <div class="buttons">
+            <q-btn :color="activeLang === 'hu' ? 'black': 'grey-6'" outline rounded @click="setLang('hu')">Magyar</q-btn>
+            <q-btn :color="activeLang === 'en' ? 'black': 'grey-6'" outline rounded @click="setLang('en')">English</q-btn>
+          </div>
+        </div>
+      </aside>
     </q-drawer>
     <q-page-container>
       <router-view/>
@@ -66,10 +69,19 @@ export default {
     const localeFromStorage = localStorage.getItem('locale')
     const leftDrawerOpen = ref(true)
     const miniState = ref(false)
+    const activeLang = ref(locale.value)
+    console.log(activeLang)
+
     if (localeFromStorage) {
       locale.value = localeFromStorage;
     } else if (navigator.language) {
       locale.value = navigator.language.substring(0, 2);
+    }
+
+    function setLang(selectedLang) {
+      locale.value = selectedLang
+      localStorage.setItem('locale', locale.value)
+      activeLang.value = locale.value
     }
 
     return {
@@ -78,7 +90,9 @@ export default {
       locale,
       leftDrawerOpen,
       miniState,
-      store
+      store,
+      setLang,
+      activeLang
     }
   }
 }
@@ -122,5 +136,23 @@ body {
 
 .company-logo {
   padding: 24px;
+}
+
+.settings-title {
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.42);
+  margin-block-end: 24px;
+}
+
+.buttons {
+  display: flex;
+  margin-inline-start: 24px;
+}
+
+.buttons > button {
+  margin-inline-end: 24px;
 }
 </style>

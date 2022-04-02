@@ -17,10 +17,9 @@
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import ProjectPick from '@/components/ProjectPick'
 import QueriesPick from '@/components/QueriesPick'
-import { useI18n } from 'vue-i18n'
 import { useRouter } from 'vue-router'
 import { useStore } from "vuex"
 
@@ -32,18 +31,8 @@ export default {
   },
   setup() {
     const projectSelected = ref(false)
-    const leftDrawerOpen = ref(true)
-    const miniState = ref(false)
-    const { t, locale } = useI18n({ useScope: 'global' })
-    const selectedLang = ref(localStorage.getItem('locale'))
-    const langOptions = ref(['en', 'hu'])
     const router = useRouter()
     const store = useStore()
-
-    watch(selectedLang, () => {
-      locale.value = selectedLang.value
-      localStorage.setItem('locale', locale.value)
-    })
 
     function proceedToKanbanBoard() {
       router.push('/kanban')
@@ -51,12 +40,6 @@ export default {
 
     return {
       projectSelected,
-      leftDrawerOpen,
-      miniState,
-      t,
-      locale,
-      selectedLang,
-      langOptions,
       proceedToKanbanBoard,
       store
     }
