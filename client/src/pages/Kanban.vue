@@ -1,7 +1,9 @@
 <template>
   <section id="kanban-container" class="kanban-container">
-    <h1>{{ $t("kanbanBoard") }}</h1>
-    <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
+    <header>
+      <h1>{{ $t("kanbanBoard") }}</h1>
+      <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
+    </header>
     <div class="kanban">
       <div class="" v-for="status in columnConfig" :key="status.id">
         <h6 class="status-name">{{ status.name }} <p> {{ issuesByStatus[status.name].length }} </p></h6>
@@ -196,7 +198,7 @@
 }
 
 .status-name {
-  margin: 30px;
+  height: 100px;
 }
 
 .filter-field {
@@ -205,7 +207,7 @@
 }
 
 .kanban-col {
-  height: 800px;
+  height: calc(100vh - 280px);
   overflow: auto;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 2px;
@@ -221,5 +223,21 @@
 html {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
+}
+
+.kanban-container {
+  display: grid;
+  grid-template-rows: 200px 1fr;
+  grid-template-areas: 
+  "header"
+  "kanban"
+}
+
+.kanban-container > header {
+  grid-area: header;
+}
+
+.kanban-container > .kanban {
+  grid-area: kanban;
 }
 </style>
