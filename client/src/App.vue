@@ -155,4 +155,18 @@ body {
 .buttons > button {
   margin-inline-end: 24px;
 }
+
+.lang-select-container {
+  text-align: left;
+}
+
+.lang-select-container > .settings-title {
+  margin-inline-start: 24px;
+}
+
+.settings {
+  position: absolute;
+  bottom: 0;
+  margin-block-end: 24px;
+}
 </style>

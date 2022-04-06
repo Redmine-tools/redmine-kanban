@@ -198,7 +198,15 @@
 }
 
 .status-name {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   height: 100px;
+}
+
+.status-name > p {
+  margin: 0px;
+  padding-inline-start: 6px;
 }
 
 .filter-field {

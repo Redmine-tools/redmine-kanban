@@ -67,6 +67,9 @@ export default {
 .button-container {
   text-align: left;
   padding-inline-start: 100px;
+  position: absolute;
+  bottom: 0;
+  margin-block-end: 96px;
 }
 
 .action {
