@@ -52,11 +52,8 @@
     setup() {
       const store = useStore()
       const searchKeyWord = ref('')
-
       const issueIdRegex = /\d+/
-      
       const columnConfig = ref([])
-      
       let issuesForProject = []
       let issuesByStatus = ref()
       let originalIssuesStringifyed
@@ -81,13 +78,14 @@
           configIssue = await RedmineService.getKanbanConfigTracker(store.state.user.api_key).then(async (res) =>
             (await RedmineService.getKanbanConfig(store.state.user.api_key, store.state.project.id, res.data.trackers.find(tracker => tracker.name === 'Kanban').id)).data.issues[0]
           )
-          
+          console.log(configIssue)
           let config = JSON.parse(configIssue.description).config
           columnNames = config.columns
         } catch (error) {
           console.log("error in config")
         }
         columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
+        console.log(columnConfig.value)
       }
 
       async function _getIssuesWithOffset(offset=0) {
