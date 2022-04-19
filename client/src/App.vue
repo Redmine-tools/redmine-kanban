@@ -73,7 +73,6 @@ export default {
     const leftDrawerOpen = ref(true)
     const miniState = ref(false)
     const activeLang = ref(locale.value)
-    console.log(activeLang)
 
     if (localeFromStorage) {
       locale.value = localeFromStorage;

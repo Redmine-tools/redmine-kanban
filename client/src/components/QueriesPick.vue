@@ -14,11 +14,11 @@
   hide-selected
   fill-input
   clearable
-  :disable="queiresOrdered.length === 0"/>
+  :disable="store.state.query.id || queiresOrdered.length === 0"/>
 </template>
 
 <script>
-import { ref, watch } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import RedmineService from '@/services/RedmineService.js'
 import { useStore } from "vuex"
 
@@ -43,6 +43,7 @@ export default {
     }
     
     async function getProjectQueries() {
+      selectedQuerie.value = null
       const PAGE_SIZE = 100;
       const { queries: firstQueries, total_count } = await _getProjectQueriesWithOffset()
       queries = [...firstQueries]
@@ -76,12 +77,20 @@ export default {
       getProjectQueries()
     });
 
+    onMounted(() => {
+      console.log(store.state.query.id)
+      if (store.state.query.id) {
+        selectedQuerie.value = store.state.query.name
+      }
+    }) 
+
     return {
       projectsOrdered,
       selectedQuerie,
       queiresOrdered,
       filterFn,
-      updateQuery
+      updateQuery,
+      store
     }
   }
 }

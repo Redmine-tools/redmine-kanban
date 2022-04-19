@@ -42,6 +42,9 @@ export default {
     }
     
     async function getProjects() {
+      if (store.state.project.id) {
+        selectedProject.value = store.state.project.name
+      }
       const PAGE_SIZE = 100
       const { projects: firstProjects, total_count } = await _getProjectsWithOffset()
       projects = [...firstProjects]
