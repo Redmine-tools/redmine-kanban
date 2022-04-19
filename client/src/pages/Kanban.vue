@@ -1,8 +1,14 @@
 <template>
   <section id="kanban-container" class="kanban-container">
     <header>
-      <h1>{{ $t("kanbanBoard") }}</h1>
-      <input class="filter-field" type="text" placeholder="filter" v-model="searchKeyWord" name="" id="">
+      <q-input outlined v-model="searchKeyWord" label="filter">
+        <template v-slot:prepend>
+          <q-icon name="search" />
+        </template>
+      </q-input>
+      <p class="path">{{ store.state.project.name }} / {{ store.state.query.name }}</p>
+      <h1>{{ store.state.query.name }}</h1>
+      
     </header>
     <div class="kanban">
       <div class="" v-for="status in columnConfig" :key="status.id">
@@ -161,7 +167,8 @@
         searchKeyWord,
         openTicket,
         leftDrawerOpen,
-        miniState
+        miniState,
+        store
       }
     }
   }
@@ -243,6 +250,33 @@ html {
 
 .kanban-container > header {
   grid-area: header;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+  margin-inline-start: 48px;
+}
+
+.kanban-container > header > h1 {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 24px;
+  padding-block-start: 16px;
+}
+
+.kanban-container > header > .path {
+  margin: 0px;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.50);
+  padding-block-start: 24px;
+}
+
+.kanban-container > header > .q-field {
+  padding-block-start: 24px;
+  width: 320px;
 }
 
 .kanban-container > .kanban {
