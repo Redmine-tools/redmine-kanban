@@ -1,7 +1,7 @@
 <template>
   <section id="kanban-container" class="kanban-container">
     <header>
-      <q-input outlined v-model="searchKeyWord" label="filter">
+      <q-input debounce="600" outlined v-model="searchKeyWord" label="filter">
         <template v-slot:prepend>
           <q-icon name="search" />
         </template>
@@ -43,7 +43,6 @@
   import RedmineService from '@/services/RedmineService.js'
   import { useStore } from "vuex"
   import lodash from "lodash"
-  import useDebouncedRef from '@/composables/useDebouncedRef'
 
   export default {
     name: "Kanban",
@@ -51,13 +50,13 @@
       draggable
     },
     setup() {
-      const issueIdRegex = /\d+/
       const store = useStore()
+      const searchKeyWord = ref('')
+
+      const issueIdRegex = /\d+/
+      
       const columnConfig = ref([])
-      const wipLimit = ref()
-      const fallbackColumnConfig = ["Új", "Folyamatban", "Megoldva"]
-      const fallbackWipLimit = 20
-      const searchKeyWord = useDebouncedRef('', 800)
+      
       let issuesForProject = []
       let issuesByStatus = ref()
       let originalIssuesStringifyed
@@ -77,7 +76,6 @@
         let redmineStatuses
         let configIssue
         let columnNames
-        let wipLimitFromConfig
         try {
           redmineStatuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses
           configIssue = await RedmineService.getKanbanConfigTracker(store.state.user.api_key).then(async (res) =>
@@ -85,14 +83,11 @@
           )
           
           let config = JSON.parse(configIssue.description).config
-          columnNames = config.columns || fallbackColumnConfig
-          wipLimitFromConfig = config.WIP || fallbackWipLimit
+          columnNames = config.columns
         } catch (error) {
-          columnNames = fallbackColumnConfig
-          wipLimitFromConfig = fallbackWipLimit
+          console.log("error in config")
         }
         columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
-        wipLimit.value = wipLimitFromConfig
       }
 
       async function _getIssuesWithOffset(offset=0) {
@@ -183,9 +178,9 @@
   background: #FFFFFF;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  height: 100%;
-  width: 250px;
-  margin: 10px;
+  height: 142px;;
+  width: 210px;
+  margin-block-start: 12px;
   padding: 10px;
   display: flex;
   justify-content: flex-start;
@@ -205,6 +200,7 @@
 }
 
 .status-name {
+  padding-inline-start: 12px;
   display: flex;
   align-items: center;
   justify-content: flex-start;
@@ -222,12 +218,14 @@
 }
 
 .kanban-col {
-  height: calc(100vh - 300px);
+  height: calc(100vh - 270px);
   overflow: auto;
   background: rgba(0, 0, 0, 0.05);
-  border-radius: 2px;
-  padding: 24px 12px 0px 12px;
-  margin-right: 8px;
+  border-radius: 4px;
+  margin-right: 12px;
+  width: 240px;
+  display: flex;
+  justify-content: center;
 }
 
 ::-webkit-scrollbar {
@@ -281,5 +279,9 @@ html {
 
 .kanban-container > .kanban {
   grid-area: kanban;
+}
+
+.kanban-container > .kanban > div:first-of-type {
+  margin-inline-start: 48px;
 }
 </style>

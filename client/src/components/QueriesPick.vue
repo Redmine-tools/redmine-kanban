@@ -78,7 +78,6 @@ export default {
     });
 
     onMounted(() => {
-      console.log(store.state.query.id)
       if (store.state.query.id) {
         selectedQuerie.value = store.state.query.name
       }
