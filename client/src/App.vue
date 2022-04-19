@@ -38,12 +38,15 @@
         <img class="company-logo" src="@/assets/logo-mini.svg" alt="company-logo">
       </aside>
       <aside class="settings">
-        <div class="lang-select-container">
+        <div v-if="!miniState" class="lang-select-container">
           <p class="settings-title"> <q-icon name="settings" /> {{ $t("langSelectTitle") }}</p>
           <div class="buttons">
             <q-btn :color="activeLang === 'hu' ? 'black': 'grey-6'" outline rounded @click="setLang('hu')">Magyar</q-btn>
             <q-btn :color="activeLang === 'en' ? 'black': 'grey-6'" outline rounded @click="setLang('en')">English</q-btn>
           </div>
+        </div>
+        <div v-else class="mini-lang-select-container">
+          <q-icon name="settings" />
         </div>
       </aside>
     </q-drawer>
@@ -158,6 +161,14 @@ body {
 
 .lang-select-container {
   text-align: left;
+}
+
+.mini-lang-select-container {
+  margin-inline-start: 17px;
+}
+
+.mini-lang-select-container> i {
+  font-size: 24px
 }
 
 .lang-select-container > .settings-title {
