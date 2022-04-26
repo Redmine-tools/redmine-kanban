@@ -216,7 +216,7 @@
 }
 
 .kanban-col {
-  height: calc(100vh - 270px);
+  height: calc(100vh - 300px);
   overflow: auto;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
