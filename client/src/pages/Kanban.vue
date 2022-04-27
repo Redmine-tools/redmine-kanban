@@ -11,16 +11,16 @@
       
     </header>
     <div class="kanban">
-      <div class="" v-for="status in columnConfig" :key="status.id">
+      <div class="" v-for="status in columnConfig" :id="status.id" :key="status.id">
         <h6 class="status-name">{{ status.name }} <p> {{ issuesByStatus[status.name].length }} </p></h6>
         <div class="kanban-col">
           <draggable
                   class="list-group"
                   :list="issuesByStatus[status.name]"
-                  @change="log"
                   @add="add"
                   itemKey="id"
                   group="issues"
+                  v-bind:id="status.name"
           >
             <template #item="{ element }">
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element.id)">
@@ -52,17 +52,12 @@
     setup() {
       const store = useStore()
       const searchKeyWord = ref('')
-      const issueIdRegex = /\d+/
       const columnConfig = ref([])
       let issuesForProject = []
       let issuesByStatus = ref()
       let originalIssuesStringifyed
       const leftDrawerOpen = ref(true)
       const miniState = ref(false)
-
-      function log() {
-        //window.console.log(evt)
-      }
 
       async function openTicket(id) {
         const response = await RedmineService.getRedmineUrl()
@@ -84,6 +79,7 @@
           console.log("error in config")
         }
         columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
+        console.log('col conf', columnConfig)
       }
 
       async function _getIssuesWithOffset(offset=0) {
@@ -110,13 +106,12 @@
       }
 
       async function add(event){
-        const movedTo = event.to.parentNode.firstElementChild.textContent
-        const movedId = parseInt(event.item.innerText.match(issueIdRegex)[0])
+        console.log('event', event)
+        const movedTo = event.to.id
+        const movedId = parseInt(event.item.id)
         const newStatus = columnConfig.value.find(i => i.name === movedTo)
-        const originalIssue = issuesForProject.value.find(i => i.id === movedId)
-        originalIssue.status = newStatus
         issuesByStatus.value = lodash.groupBy(issuesForProject.value, 'status.name')
-        await RedmineService.updateIssueStatus(store.state.user.api_key, originalIssue.id, newStatus.id)
+        await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id)
       }
 
       const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), [])
@@ -151,7 +146,6 @@
       })
 
       return {
-        log,
         add,
         issuesByStatus,
         columnConfig,
