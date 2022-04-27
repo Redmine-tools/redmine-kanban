@@ -78,14 +78,12 @@
           configIssue = await RedmineService.getKanbanConfigTracker(store.state.user.api_key).then(async (res) =>
             (await RedmineService.getKanbanConfig(store.state.user.api_key, store.state.project.id, res.data.trackers.find(tracker => tracker.name === 'Kanban').id)).data.issues[0]
           )
-          console.log(configIssue)
           let config = JSON.parse(configIssue.description).config
           columnNames = config.columns
         } catch (error) {
           console.log("error in config")
         }
         columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
-        console.log(columnConfig.value)
       }
 
       async function _getIssuesWithOffset(offset=0) {
@@ -104,7 +102,7 @@
           const iterations = Math.ceil(total_count / PAGE_SIZE)
           for(let i = 1; i < iterations; i++) {
             const { issues: currentIssues } = await _getIssuesWithOffset(i * PAGE_SIZE)
-            issuesForProject.value = [...issues, ...currentIssues]
+            issuesForProject.value = [...issuesForProject.value, ...currentIssues]
           }
         }
         originalIssuesStringifyed = JSON.stringify(issuesForProject.value).split('},{')
