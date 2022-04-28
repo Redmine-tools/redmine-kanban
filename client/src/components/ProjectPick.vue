@@ -1,38 +1,34 @@
 <template>
-  <article class="full-screen">
-    <form @submit.prevent="addProject">
-      <h1>{{ $t("pSelect") }}</h1>
-      <div>
-        <Multiselect 
-        required 
-        v-model="selectedProject" 
-        label="name" 
-        trackBy="name" 
-        :searchable="true"  
-        :minChars="1" 
-        :options="projectsOrdered"
-        placeholder="Type to search"
-       />
-      </div>
-      <button class="action">{{ $t("select") }}</button>
-    </form>
-  </article>
+  <p class="section-title">{{ $t("pSelect") }}</p>
+  <q-select
+    outlined
+    v-model="selectedProject"
+    :options="projectsOrdered"
+    :option-value="'value'"
+    :option-label="'name'"
+    label="Project"
+    @filter="filterFn"
+    input-debounce="10"
+    use-input
+    hide-selected
+    fill-input
+    clearable
+    @update:model-value="updateProject"/>
 </template>
 
 <script>
 import { ref, onMounted } from 'vue'
 import RedmineService from '@/services/RedmineService.js'
-import Multiselect from '@vueform/multiselect'
 import { useStore } from "vuex"
 
 export default {
   name: "ProjectPick",
   emits: ["projectPicked"],
   components: {
-    Multiselect
   },
-  setup(_,{ emit }) {
+  setup() {
     let projectsOrdered = ref()
+    let stringOptions
     let selectedProject = ref()
     const store = useStore()
     let projects
@@ -46,6 +42,9 @@ export default {
     }
     
     async function getProjects() {
+      if (store.state.project.id) {
+        selectedProject.value = store.state.project.name
+      }
       const PAGE_SIZE = 100
       const { projects: firstProjects, total_count } = await _getProjectsWithOffset()
       projects = [...firstProjects]
@@ -57,18 +56,21 @@ export default {
         }
       }
       projectsOrdered.value = projects.map(({ id, name }) => ({ value:id, name:name }))
+      stringOptions = projectsOrdered.value
     }
 
-    function addProject() {
+    function updateProject() {
       store.commit({
         type: 'addProject',
-        payload: projects.filter(i => i.id === selectedProject.value)[0]
+        payload: projects.filter(i => i.id === selectedProject.value.value)[0]
       })
-      store.commit({
-        type: 'addQuerie',
-        payload: null
+    }
+
+    function filterFn (val, update) {
+      update(() => {
+        const needle = val.toLowerCase()
+        projectsOrdered.value = stringOptions.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
       })
-      emit('projectPicked', true)
     }
 
     onMounted(getProjects) 
@@ -76,12 +78,22 @@ export default {
     return {
       projectsOrdered,
       selectedProject,
-      addProject
+      updateProject,
+      filterFn
     }
   }
 }
 </script>
 
-<style src="@vueform/multiselect/themes/default.css">
+<style scoped>
+.section-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
 
+.q-field {
+  width: 45%;
+}
 </style>

@@ -22,6 +22,8 @@ routes.post('/api/login', jsonParser, async function(req, res) {
         if (!error && response.statusCode == 200) {
             logger.info("User successfully logged in")
             res.send(response.body)
+        } else {
+            res.status(401).send('error')
         }
     })
 })

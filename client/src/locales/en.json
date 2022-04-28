@@ -15,5 +15,9 @@
     "project": "Project",
     "query": "Query",
     "kanbanBoard": "Kanban board",
-    "apiKeyOption": "or with API key"
+    "apiKeyOption": "or with API key",
+    "setupTitle": "Kanban board configuration",
+    "setupHelper": "You can configure your kanban board with the following input fields",
+    "proceed": "Proceed",
+    "langSelectTitle": "Language"
 }

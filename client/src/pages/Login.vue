@@ -1,7 +1,8 @@
 <template>
+  <div class="login-page">
   <section class="login-container">
     <div class="img-container">
-      <img class="company-logo" src="@/assets/logo.png" alt="company-logo">
+      <img class="login-company-logo" src="@/assets/logo.svg" alt="company-logo">
     </div>
     <h1>{{ $t("header") }}</h1>
     <form @submit.prevent="getUser" class="form-control">
@@ -27,11 +28,12 @@
             />
           </template>
         </q-input>
-        <button class="action">{{ $t("login") }}</button>
+        <q-btn type="submit" class="action">{{ $t("login") }}</q-btn>
       </div>
     </form>
+    <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">Sikertelen bejelentkezés</div>
   </section>
-  <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">Sikertelen bejelentkezés</div>
+  </div>
 </template>
 
 <script>
@@ -129,10 +131,11 @@ export default {
 
 <style scoped>
 .login-container {
+  margin: auto;
   display: flex;
   flex-direction: column;
   max-width: 600px;
-  padding: 20px 80px 48px 80px;
+  padding: 20px 50px 48px 50px;
   background: #ffffff;
   border-radius: 10px;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.2);
@@ -155,9 +158,9 @@ export default {
   margin-bottom: 12px;
 }
 
-.company-logo {
+.login-company-logo {
   width: 98px;
-  height: 24px;
+  height: auto;
 }
 
 .form-control {
@@ -230,9 +233,7 @@ input {
   width: 100%;
   height: 48px;
   background: #295365;
-  border-radius: 4px;
   color: #ffffff;
-  cursor: pointer;
 }
 
 .as-link {
@@ -273,5 +274,13 @@ input {
 div.input-container {
   margin-bottom: 1.5rem;
   width: 100%;
+}
+
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
 }
 </style>
