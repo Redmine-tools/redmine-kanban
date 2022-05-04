@@ -1,5 +1,8 @@
 <template>
   <q-layout view="hHh lpR fFf" style="background: #FBFBFB">
+    <q-page-sticky v-if="store.state.user.firstname" position="top-right" :offset="[18, 18]">
+      <q-btn @click="logout" unelevated rounded color="light-blue-8" >{{ $t("logout") }}</q-btn>
+    </q-page-sticky>
     <q-drawer
       v-if="store.state.user.api_key"
       v-model="leftDrawerOpen"
@@ -60,6 +63,7 @@
 import { computed, ref } from 'vue'
 import { useStore } from "vuex"
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'App',
@@ -67,6 +71,7 @@ export default {
   },
   setup() {
     const store = useStore()
+    const router = useRouter()
     const user = computed(() => store.state.user)
     const { t, locale } = useI18n({ useScope: 'global' })
     const localeFromStorage = localStorage.getItem('locale')
@@ -86,6 +91,13 @@ export default {
       activeLang.value = locale.value
     }
 
+    function logout() {
+      store.commit({
+        type: 'resetState'
+      })
+      router.push('/')
+    }
+
     return {
       user,
       t,
@@ -94,7 +106,8 @@ export default {
       miniState,
       store,
       setLang,
-      activeLang
+      activeLang,
+      logout
     }
   }
 }

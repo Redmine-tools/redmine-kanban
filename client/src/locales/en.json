@@ -19,5 +19,6 @@
     "setupTitle": "Kanban board configuration",
     "setupHelper": "You can configure your kanban board with the following input fields",
     "proceed": "Proceed",
-    "langSelectTitle": "Language"
+    "langSelectTitle": "Language",
+    "logout": "Logout"
 }

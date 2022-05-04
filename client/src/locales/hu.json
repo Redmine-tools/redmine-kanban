@@ -19,5 +19,6 @@
     "setupTitle": "Kanban board konfiguráció",
     "setupHelper": "A következő a lenyílómenük/opciók segítéségel tudod kiválasztani a kanban boardod-ra vonatkozó beállításokat.",
     "proceed": "Tovább",
-    "langSelectTitle": "Nyelvválasztó"
+    "langSelectTitle": "Nyelvválasztó",
+    "logout": "Kijelentkezés"
 }
