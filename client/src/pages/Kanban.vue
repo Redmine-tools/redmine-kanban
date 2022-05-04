@@ -79,7 +79,6 @@
           console.log("error in config")
         }
         columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
-        console.log('col conf', columnConfig)
       }
 
       async function _getIssuesWithOffset(offset=0) {
@@ -106,15 +105,11 @@
       }
 
       async function add(event){
-        console.log('event', event)
-        console.log('og issues', issuesForProject.value)
         const movedTo = event.to.id
         const movedId = parseInt(event.item.id)
         const newStatus = columnConfig.value.find(i => i.name === movedTo)
-        console.log('new status', newStatus)
-        issuesForProject.value = issuesForProject.value.map(issue => (issue.id === movedId) ? issue.status = newStatus : issue)
+        issuesForProject.value = issuesForProject.value.map(issue => (issue.id === movedId) ? {...issue, status: newStatus} : issue)
         issuesByStatus.value = lodash.groupBy(issuesForProject.value, 'status.name')
-        console.log('after party', issuesByStatus.value)
         await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id)
       }
 
