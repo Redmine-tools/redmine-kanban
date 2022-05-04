@@ -44,8 +44,8 @@
         <div v-if="!miniState" class="lang-select-container">
           <p class="settings-title"> <q-icon name="settings" /> {{ $t("langSelectTitle") }}</p>
           <div class="buttons">
-            <q-btn :color="activeLang === 'hu' ? 'black': 'grey-6'" outline rounded @click="setLang('hu')">Magyar</q-btn>
-            <q-btn :color="activeLang === 'en' ? 'black': 'grey-6'" outline rounded @click="setLang('en')">English</q-btn>
+            <q-btn :color="locale === 'hu' ? 'black': 'grey-6'" outline rounded @click="setLang('hu')">Magyar</q-btn>
+            <q-btn :color="locale === 'en' ? 'black': 'grey-6'" outline rounded @click="setLang('en')">English</q-btn>
           </div>
         </div>
         <div v-else class="mini-lang-select-container">
@@ -77,18 +77,14 @@ export default {
     const localeFromStorage = localStorage.getItem('locale')
     const leftDrawerOpen = ref(true)
     const miniState = ref(false)
-    const activeLang = ref(locale.value)
 
     if (localeFromStorage) {
       locale.value = localeFromStorage;
-    } else if (navigator.language) {
-      locale.value = navigator.language.substring(0, 2);
     }
 
     function setLang(selectedLang) {
       locale.value = selectedLang
       localStorage.setItem('locale', locale.value)
-      activeLang.value = locale.value
     }
 
     function logout() {
@@ -106,7 +102,6 @@ export default {
       miniState,
       store,
       setLang,
-      activeLang,
       logout
     }
   }
