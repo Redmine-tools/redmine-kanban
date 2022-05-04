@@ -10,6 +10,11 @@
       <h1>{{ store.state.query.name }}</h1>
       
     </header>
+    <div class="loading-container">
+      <q-inner-loading :showing="loading">
+        <q-spinner-gears size="100px" color="dark" />
+      </q-inner-loading>
+    </div>
     <div class="kanban">
       <div class="" v-for="status in columnConfig" :id="status.id" :key="status.id">
         <h6 class="status-name">{{ status.name }} <p> {{ issuesByStatus[status.name].length }} </p></h6>
@@ -58,6 +63,7 @@
       let originalIssuesStringifyed
       const leftDrawerOpen = ref(true)
       const miniState = ref(false)
+      const loading = ref(false)
 
       async function openTicket(id) {
         const response = await RedmineService.getRedmineUrl()
@@ -102,6 +108,7 @@
         }
         originalIssuesStringifyed = JSON.stringify(issuesForProject.value).split('},{')
         issuesByStatus.value = lodash.groupBy(issuesForProject.value, 'status.name')
+        loading.value = false
       }
 
       async function add(event){
@@ -140,6 +147,7 @@
       })
 
       onMounted(() => {
+        loading.value = true
         setupColumnConfig()
         getIssuesForProject()
       })
@@ -152,7 +160,8 @@
         openTicket,
         leftDrawerOpen,
         miniState,
-        store
+        store,
+        loading
       }
     }
   }
@@ -272,5 +281,11 @@ html {
 
 .kanban-container > .kanban > div:first-of-type {
   margin-inline-start: 48px;
+}
+
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>
