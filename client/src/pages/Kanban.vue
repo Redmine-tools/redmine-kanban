@@ -28,7 +28,7 @@
                   v-bind:id="status.name"
           >
             <template #item="{ element }">
-              <div class="list-item" v-bind:id="element.id" @click="openTicket(element.id)">
+              <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
                 <div class="title">#{{ element.id }}</div>
                 <div class="title">{{ element.subject }}</div>
                 <div>Szerző: {{ element.author.name }} </div>
@@ -39,6 +39,26 @@
         </div>
       </div>
     </div>
+    <q-dialog v-model="openIssueDialoge" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <h4>{{ clickedIssue.id }}</h4>
+        </q-card-section>
+        <q-card-section class="row items-center">
+          <h5>subject: {{ clickedIssue.subject }}</h5>
+          <div>created on: {{ clickedIssue.created_on }}</div>
+          <div>updated on: {{ clickedIssue.updated_on }}</div>
+          <div>priority: {{ clickedIssue.priority.name }}</div>
+          <div>project: {{ clickedIssue.project.name }}</div>
+          <div>status: {{ clickedIssue.status.name }}</div>
+        </q-card-section>
+        <!-- Notice v-close-popup -->
+        <q-card-actions align="right">
+          <q-btn @click="open()" label="Open ticket in redmine" color="primary" v-close-popup />
+          <q-btn label="Close popup" color="red" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </section>
 </template>
 
@@ -64,10 +84,19 @@
       const leftDrawerOpen = ref(true)
       const miniState = ref(false)
       const loading = ref(false)
+      const clickedIssue = ref()
+      const openIssueDialoge = ref(false)
 
-      async function openTicket(id) {
+      async function openTicket(element) {
+        openIssueDialoge.value = true
+        clickedIssue.value = element
+        console.log(clickedIssue.value)
+
+      }
+
+      async function open() {
         const response = await RedmineService.getRedmineUrl()
-        window.open(response.data + 'issues/' + id, '_blank');
+        window.open(response.data + 'issues/' + clickedIssue.value.id, '_blank');
       }
     
       async function setupColumnConfig() {
@@ -109,6 +138,7 @@
         originalIssuesStringifyed = JSON.stringify(issuesForProject.value).split('},{')
         issuesByStatus.value = lodash.groupBy(issuesForProject.value, 'status.name')
         loading.value = false
+        console.log(issuesByStatus.value)
       }
 
       async function add(event){
@@ -161,7 +191,10 @@
         leftDrawerOpen,
         miniState,
         store,
-        loading
+        loading,
+        openIssueDialoge,
+        clickedIssue,
+        open
       }
     }
   }
@@ -170,6 +203,7 @@
 <style scoped>
 .kanban {
   display: flex;
+  overflow-y: scroll;
 }
 
 .list-item {
@@ -180,9 +214,8 @@
   width: 210px;
   margin-block-start: 12px;
   padding: 10px;
-  display: flex;
   justify-content: flex-start;
-  align-items: center;
+  align-items: flex-start;
   cursor: pointer;
   display: flex;
   flex-direction: column;
