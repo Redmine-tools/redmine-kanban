@@ -37,9 +37,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.name === 'Login' && store.state.user.api_key) {
-    return { name: from.name }
-  }
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!store.state.user.api_key) {
       next({ name: 'Login' })

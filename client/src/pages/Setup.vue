@@ -20,7 +20,7 @@
 import { ref } from 'vue'
 import ProjectPick from '@/components/ProjectPick'
 import QueriesPick from '@/components/QueriesPick'
-import { useRouter } from 'vue-router'
+import { useRouter, onBeforeRouteLeave } from 'vue-router'
 import { useStore } from "vuex"
 
 export default {
@@ -37,6 +37,18 @@ export default {
     function proceedToKanbanBoard() {
       router.push('/kanban')
     }
+
+    onBeforeRouteLeave(() => {
+      const answer = window.confirm(
+        'Do you really want to log out?'
+      )
+      if (!answer) {
+        return false
+      }
+      store.commit({
+        type: 'resetState'
+      })
+    })
 
     return {
       projectSelected,

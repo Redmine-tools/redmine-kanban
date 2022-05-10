@@ -31,7 +31,7 @@
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
                 <div class="title">#{{ element.id }}</div>
                 <div class="title">{{ element.subject }}</div>
-                <div>Szerző: {{ element.author.name }} </div>
+                <div class="author">Szerző: {{ element.author.name }} </div>
                 <div v-if="element?.assigned_to?.name">Felelős: {{ element.assigned_to.name }} </div>
               </div>
             </template>
@@ -231,6 +231,7 @@
 }
 
 .status-name {
+  color: rgba(0, 0, 0, 0.50);
   padding-inline-start: 12px;
   display: flex;
   align-items: center;
@@ -241,6 +242,7 @@
 .status-name > p {
   margin: 0px;
   padding-inline-start: 6px;
+  color: rgba(0, 0, 0, 0.35);
 }
 
 .filter-field {
@@ -320,5 +322,9 @@ html {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.author {
+  color: rgba(0, 0, 0, 0.50);
 }
 </style>
