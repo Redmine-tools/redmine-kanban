@@ -38,16 +38,19 @@ export default {
       router.push('/kanban')
     }
 
-    onBeforeRouteLeave(() => {
-      const answer = window.confirm(
-        'Do you really want to log out?'
-      )
-      if (!answer) {
-        return false
+    onBeforeRouteLeave((to) => {
+      if(to.name === 'Login') {
+        const answer = window.confirm(
+          'Do you really want to log out?'
+        )
+        if (!answer) {
+          return false
+        } else {
+          store.commit({
+            type: 'resetState'
+          })
+        }
       }
-      store.commit({
-        type: 'resetState'
-      })
     })
 
     return {

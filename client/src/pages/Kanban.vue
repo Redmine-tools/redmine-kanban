@@ -259,6 +259,7 @@
   width: 240px;
   display: flex;
   justify-content: center;
+  border-top: 5px solid #FDB600;
 }
 
 ::-webkit-scrollbar {
