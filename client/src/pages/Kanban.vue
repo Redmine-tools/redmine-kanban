@@ -90,8 +90,6 @@
       async function openTicket(element) {
         openIssueDialoge.value = true
         clickedIssue.value = element
-        console.log(clickedIssue.value)
-
       }
 
       async function open() {
@@ -110,10 +108,13 @@
           )
           let config = JSON.parse(configIssue.description).config
           columnNames = config.columns
+          console.log(columnNames)
         } catch (error) {
           console.log("error in config")
         }
+        console.log(redmineStatuses)
         columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
+        console.log('col config', columnConfig.value)
       }
 
       async function _getIssuesWithOffset(offset=0) {
@@ -138,7 +139,6 @@
         originalIssuesStringifyed = JSON.stringify(issuesForProject.value).split('},{')
         issuesByStatus.value = lodash.groupBy(issuesForProject.value, 'status.name')
         loading.value = false
-        console.log(issuesByStatus.value)
       }
 
       async function add(event){
