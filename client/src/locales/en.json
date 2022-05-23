@@ -20,5 +20,10 @@
     "setupHelper": "You can configure your kanban board with the following input fields",
     "proceed": "Proceed",
     "langSelectTitle": "Language",
-    "logout": "Logout"
+    "logout": "Logout",
+    "status": "status",
+    "subject": "subject",
+    "createdOn": "created on",
+    "updatedOn": "updated on",
+    "priority": "priority"
 }

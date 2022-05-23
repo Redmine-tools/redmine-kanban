@@ -41,21 +41,23 @@
     </div>
     <q-dialog v-model="openIssueDialoge" persistent>
       <q-card>
-        <q-card-section class="row items-center">
-          <h4>{{ clickedIssue.id }}</h4>
+          <header class="card-header">
+            <h4 class="text-h5">{{ clickedIssue.subject }}</h4>
+            <q-space />
+            <q-btn icon="close" flat round dense v-close-popup /> 
+          </header>
+
+        <q-card-section class="row card-data">
+          <div><span class="gray-text">{{ $t("subject") }}:</span> {{ clickedIssue.subject }}</div>
+          <div><span class="gray-text">{{ $t("createdOn") }}:</span> <time>{{ clickedIssue.created_on }}</time></div>
+          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> {{ clickedIssue.updated_on }}</div>
+          <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
+          <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
+          <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
         </q-card-section>
-        <q-card-section class="row items-center">
-          <h5>subject: {{ clickedIssue.subject }}</h5>
-          <div>created on: {{ clickedIssue.created_on }}</div>
-          <div>updated on: {{ clickedIssue.updated_on }}</div>
-          <div>priority: {{ clickedIssue.priority.name }}</div>
-          <div>project: {{ clickedIssue.project.name }}</div>
-          <div>status: {{ clickedIssue.status.name }}</div>
-        </q-card-section>
-        <!-- Notice v-close-popup -->
-        <q-card-actions align="right">
-          <q-btn @click="open()" label="Open ticket in redmine" color="primary" v-close-popup />
-          <q-btn label="Close popup" color="red" v-close-popup />
+        <q-card-actions align="left">
+          <q-btn @click="open()" label="Open ticket in redmine" class="action" v-close-popup />
+          <q-btn label="Close popup" class="cancel" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -327,5 +329,62 @@ html {
 
 .author {
   color: rgba(0, 0, 0, 0.50);
+}
+
+.card-header {
+  border-bottom: 5px solid #FDB600;
+}
+
+.action {
+  background: #295365;
+  color: #ffffff;
+}
+
+.cancel {
+  background: rgba(0, 0, 0, 0.1);;
+  color: #000;
+}
+
+.q-card {
+  padding-block-start: 24px;
+  padding-block-end: 24px;
+  padding-inline-start: 24px;
+  padding-inline-end: 24px;
+}
+
+.card-header {
+  display: flex;
+}
+
+.card-header > h4 {
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 24px;
+  line-height: 24px;
+}
+
+.card-data {
+  margin: 0;
+  padding: 0;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-data > div {
+  padding-block-start: 24px;
+}
+
+.card-data > div:last-of-type {
+  padding-block-end: 24px;
+}
+
+ .gray-text {
+  color: rgba(0, 0, 0, 0.65);
 }
 </style>
