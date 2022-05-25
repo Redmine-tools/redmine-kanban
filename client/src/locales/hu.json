@@ -25,5 +25,6 @@
     "subject": "Téma",
     "createdOn": "Létrehozva",
     "updatedOn": "Frissítve",
-    "priority": "Prioritás"
+    "priority": "Prioritás",
+    "loginFail": "Sikertelen bejelentkezés"
 }

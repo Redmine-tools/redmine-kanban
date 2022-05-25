@@ -61,7 +61,7 @@
 <script>
   import draggable from 'vuedraggable'
   import lodash from "lodash"
-  import { ref, onMounted, watch } from 'vue'
+  import { ref, onMounted, watch, computed } from 'vue'
   import RedmineService from '@/services/RedmineService.js'
   import { useStore } from "vuex"
 
@@ -79,7 +79,13 @@
       const searchKeyWord = ref('')
       const clickedIssue = ref()
       const openIssueDialoge = ref(false)
-      let originalIssuesStringifyed = JSON.stringify(props.issues.value).split('},{')
+      let originalIssuesStringifyed = computed(() => {
+        if (props.issues.value.length > 0) {
+          return JSON.stringify(props.issues.value).split('},{')
+        } else {
+          return []
+        }
+      })
       const store = useStore()
       const columnConfig = ref([])
       const issuesByStatus = ref([])

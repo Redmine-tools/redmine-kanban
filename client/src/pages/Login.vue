@@ -31,7 +31,7 @@
         <q-btn type="submit" class="action">{{ $t("login") }}</q-btn>
       </div>
     </form>
-    <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">Sikertelen bejelentkezés</div>
+    <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">{{ $t("loginFail") }}</div>
   </section>
   </div>
 </template>

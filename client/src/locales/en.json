@@ -25,5 +25,6 @@
     "subject": "subject",
     "createdOn": "created on",
     "updatedOn": "updated on",
-    "priority": "priority"
+    "priority": "priority",
+    "loginFail": "Error during login"
 }
