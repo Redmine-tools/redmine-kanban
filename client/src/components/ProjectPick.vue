@@ -6,7 +6,7 @@
     :options="projectsOrdered"
     :option-value="'value'"
     :option-label="'name'"
-    label="Project"
+    :label="$t('project')"
     @filter="filterFn"
     input-debounce="10"
     use-input

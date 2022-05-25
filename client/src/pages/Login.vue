@@ -7,8 +7,8 @@
     <h1>{{ $t("header") }}</h1>
     <form @submit.prevent="getUser" class="form-control">
       <div class="input-container">
-        <q-input outlined label="Username" v-model="username" id="username" name="username" type="text"/>
-        <q-input outlined label="Password" v-model="password" id="password" name="password" :type="isPwd ? 'password' : 'text'" autocomplete="on">
+        <q-input outlined :label="$t('username')" v-model="username" id="username" name="username" type="text"/>
+        <q-input outlined :label="$t('password')" v-model="password" id="password" name="password" :type="isPwd ? 'password' : 'text'" autocomplete="on">
           <template v-slot:append>
             <q-icon
               :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -19,7 +19,7 @@
         </q-input>
         <p class="separator">{{ $t("apiKeyOption") }}</p>
         <p class="info">{{ $t("apiKeyHelp") }} <button class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button></p>
-        <q-input outlined label="api key" v-model="apiKey" id="api-token" name="api-token" :type="isApiKey ? 'password' : 'text'">
+        <q-input outlined :label="$t('apiKey')" v-model="apiKey" id="api-token" name="api-token" :type="isApiKey ? 'password' : 'text'">
           <template v-slot:append>
             <q-icon
               :name="isApiKey ? 'visibility_off' : 'visibility'"

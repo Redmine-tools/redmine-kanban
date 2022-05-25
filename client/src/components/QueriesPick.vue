@@ -6,7 +6,7 @@
   :options="queiresOrdered"
   :option-value="'id'"
   :option-label="'name'"
-  label="Query"
+  :label="$t('query')"
   @filter="filterFn"
   @update:model-value="updateQuery"
   input-debounce="10"

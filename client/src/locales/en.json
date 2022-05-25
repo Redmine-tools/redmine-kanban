@@ -26,5 +26,10 @@
     "createdOn": "created on",
     "updatedOn": "updated on",
     "priority": "priority",
-    "loginFail": "Error during login"
+    "loginFail": "Error during login",
+    "apiKey": "api key",
+    "username": "Username",
+    "password": "Password",
+    "project": "Project",
+    "query": "Query"
 }

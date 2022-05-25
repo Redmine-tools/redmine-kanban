@@ -26,5 +26,10 @@
     "createdOn": "Létrehozva",
     "updatedOn": "Frissítve",
     "priority": "Prioritás",
-    "loginFail": "Sikertelen bejelentkezés"
+    "loginFail": "Sikertelen bejelentkezés",
+    "apiKey": "api kulcs",
+    "username": "Felhasználónév",
+    "password": "Jelszó",
+    "project": "Projekt",
+    "query": "Lekérdezés"
 }

@@ -47,6 +47,7 @@
             <q-btn :color="locale === 'hu' ? 'black': 'grey-6'" outline rounded @click="setLang('hu')">Magyar</q-btn>
             <q-btn :color="locale === 'en' ? 'black': 'grey-6'" outline rounded @click="setLang('en')">English</q-btn>
           </div>
+          <p class="version">v {{ version }}</p>
         </div>
         <div v-else class="mini-lang-select-container">
           <q-icon name="settings" />
@@ -77,6 +78,7 @@ export default {
     const localeFromStorage = localStorage.getItem('locale')
     const leftDrawerOpen = ref(true)
     const miniState = ref(false)
+    const version = ref(process.env.VUE_APP_VERSION)
 
     if (localeFromStorage) {
       locale.value = localeFromStorage;
@@ -102,7 +104,8 @@ export default {
       miniState,
       store,
       setLang,
-      logout
+      logout,
+      version
     }
   }
 }
@@ -155,6 +158,14 @@ body {
   letter-spacing: 0.15px;
   color: rgba(0, 0, 0, 0.42);
   margin-block-end: 24px;
+}
+
+.version {
+  display: flex;
+  margin: 0;
+  margin-block-start: 16px;
+  margin-inline-start: 24px;
+  color: rgba(0, 0, 0, 0.42);
 }
 
 .buttons {

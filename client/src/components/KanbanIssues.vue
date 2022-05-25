@@ -130,8 +130,7 @@
       const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), [])
     
       const searchByKeyWord = (searchKeyWord) => {
-
-        const foundIndexes = indexOfAll(originalIssuesStringifyed, searchKeyWord)
+        const foundIndexes = indexOfAll(originalIssuesStringifyed.value, searchKeyWord)
         let foundItems = []
         foundIndexes.forEach(i => foundItems.push(props.issues.value[i]))
         return foundItems
