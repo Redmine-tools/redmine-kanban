@@ -8,7 +8,6 @@
       </q-input>
       <p class="path">{{ store.state.project.name }} / {{ store.state.query.name }}</p>
       <h1>{{ store.state.query.name }}</h1>
-      
     </header>
     <div class="kanban">
       <div class="" v-for="status in columnConfig" :id="status.id" :key="status.id">
@@ -73,19 +72,17 @@
     },
     props: {
       issues: {
-
+        required: true
       }
     },
     setup(props) {
       const searchKeyWord = ref('')
       const clickedIssue = ref()
       const openIssueDialoge = ref(false)
-      let originalIssuesStringifyed = JSON.stringify(props.issues).split('},{')
+      let originalIssuesStringifyed = JSON.stringify(props.issues.value).split('},{')
       const store = useStore()
       const columnConfig = ref([])
       const issuesByStatus = ref([])
-
-      console.log(props.issues.value)
 
       async function openTicket(element) {
         openIssueDialoge.value = true
@@ -121,13 +118,13 @@
         const movedTo = event.to.id
         const movedId = parseInt(event.item.id)
         const newStatus = columnConfig.value.find(i => i.name === movedTo)
-        //props.issues.value = props.issues.value.map(issue => (issue.id === movedId) ? {...issue, status: newStatus} : issue)
         await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id)
       }
 
       const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), [])
     
       const searchByKeyWord = (searchKeyWord) => {
+
         const foundIndexes = indexOfAll(originalIssuesStringifyed, searchKeyWord)
         let foundItems = []
         foundIndexes.forEach(i => foundItems.push(props.issues.value[i]))

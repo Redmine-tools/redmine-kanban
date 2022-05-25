@@ -21,7 +21,6 @@
     setup() {
       const store = useStore()
       let issuesForProject = []
-      //let issuesByStatus = ref()
       
       const loading = ref(false)
     
@@ -44,8 +43,6 @@
             issuesForProject.value = [...issuesForProject.value, ...currentIssues]
           }
         }
-        // originalIssuesStringifyed = JSON.stringify(issuesForProject.value).split('},{')
-        // issuesByStatus.value = lodash.groupBy(issuesForProject.value, 'status.name')
         loading.value = false
       }
 
