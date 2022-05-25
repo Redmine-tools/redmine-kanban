@@ -17,8 +17,8 @@ const routes = [
   },
   {
     path: '/kanban',
-    name: 'Kanban',
-    component: () => import(/* webpackChunkName: "Kanban" */ '@/pages/Kanban'),
+    name: 'KanbanView',
+    component: () => import(/* webpackChunkName: "Kanban" */ '@/pages/KanbanView'),
     meta: {
       requiresAuth: true
     }
