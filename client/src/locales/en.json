@@ -31,5 +31,7 @@
     "username": "Username",
     "password": "Password",
     "project": "Project",
-    "query": "Query"
+    "query": "Query",
+    "closePopup": "Close popup",
+    "openInRedmine": "Open in Redmine"
 }

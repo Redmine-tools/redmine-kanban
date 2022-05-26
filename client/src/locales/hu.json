@@ -31,5 +31,7 @@
     "username": "Felhasználónév",
     "password": "Jelszó",
     "project": "Projekt",
-    "query": "Lekérdezés"
+    "query": "Lekérdezés",
+    "closePopup": "Ablak bezárása",
+    "openInRedmine": "Jegy megnyitása Redmine-ban"
 }

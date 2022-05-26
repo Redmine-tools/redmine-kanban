@@ -50,8 +50,8 @@
           <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
         </q-card-section>
         <q-card-actions align="left">
-          <q-btn @click="open()" label="Open ticket in redmine" class="action" v-close-popup />
-          <q-btn label="Close popup" class="cancel" v-close-popup />
+          <q-btn @click="open()" :label="$t('openInRedmine')" class="action" v-close-popup />
+          <q-btn :label="$t('closePopup')" class="cancel" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -297,7 +297,7 @@ html {
 }
 
 .card-header {
-  border-bottom: 5px solid #FDB600;
+  border-bottom: 2px solid #FDB600;
 }
 
 .action {
