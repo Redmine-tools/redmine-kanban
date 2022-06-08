@@ -11,7 +11,7 @@
     </header>
     <div class="kanban">
       <div class="" v-for="status in columnConfig" :id="status.id" :key="status.id">
-        <h6 class="status-name">{{ status.name }} <p> {{ issuesByStatus[status.name].length }} </p></h6>
+        <h6 class="status-name">{{ status.name }} <p> {{ (Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name].length : 0 }} </p></h6>
         <div class="kanban-col">
           <draggable
                   class="list-group"
@@ -25,10 +25,10 @@
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
                 <div class="title">#{{ element.id }}</div>
                 <div class="title">{{ element.subject }}</div>
-                <div class="author">Szerző: {{ element.author.name }} </div>
-                <div v-if="element?.assigned_to?.name">Felelős: {{ element.assigned_to.name }} </div>
+                <div class="author">$t("author"): {{ element.author.name }} </div>
+                <div v-if="element?.assigned_to?.name">$t("assignedTo"): {{ element.assigned_to.name }} </div>
               </div>
-            </template>
+            </template> 
           </draggable>
         </div>
       </div>
@@ -111,13 +111,10 @@
           )
           let config = JSON.parse(configIssue.description).config
           columnNames = config.columns
-          console.log(columnNames)
         } catch (error) {
           console.log("error in config")
         }
-        console.log(redmineStatuses)
         columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
-        console.log('col config', columnConfig.value)
       }
 
       async function add(event){

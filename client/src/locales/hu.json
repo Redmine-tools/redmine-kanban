@@ -33,5 +33,7 @@
     "project": "Projekt",
     "query": "Lekérdezés",
     "closePopup": "Ablak bezárása",
-    "openInRedmine": "Jegy megnyitása Redmine-ban"
+    "openInRedmine": "Jegy megnyitása Redmine-ban",
+    "author": "Szerző",
+    "assignedTo": "Felelős"
 }
