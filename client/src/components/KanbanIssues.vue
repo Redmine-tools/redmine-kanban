@@ -25,8 +25,8 @@
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
                 <div class="title">#{{ element.id }}</div>
                 <div class="title">{{ element.subject }}</div>
-                <div class="author">$t("author"): {{ element.author.name }} </div>
-                <div v-if="element?.assigned_to?.name">$t("assignedTo"): {{ element.assigned_to.name }} </div>
+                <div class="author">{{ $t("author") }}: {{ element.author.name }} </div>
+                <div v-if="element?.assigned_to?.name">{{ $t("assignedTo") }}: {{ element.assigned_to.name }} </div>
               </div>
             </template> 
           </draggable>
