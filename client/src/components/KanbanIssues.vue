@@ -15,7 +15,7 @@
         <div class="kanban-col">
           <draggable
                   class="list-group"
-                  :list="issuesByStatus[status.name]"
+                  :list="(Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name] : createNewStatusGroup(status.name)"
                   @add="add"
                   itemKey="id"
                   group="issues"
@@ -150,6 +150,11 @@
         }
       })
 
+      function createNewStatusGroup(status) {
+        issuesByStatus.value[status] = []
+        return []
+      }
+
       onMounted(() => {
         setupColumnConfig()
         issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name')
@@ -164,7 +169,8 @@
         store,
         openIssueDialoge,
         clickedIssue,
-        open
+        open,
+        createNewStatusGroup
       }
     }
   }

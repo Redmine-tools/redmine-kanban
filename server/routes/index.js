@@ -10,7 +10,7 @@ let cache = apicache.middleware
 
 const onlyStatus200 = (req, res) => res.statusCode === 200
 
-routes.get('/api/redmine_url', cache('5 minutes', onlyStatus200), async function(req, res) {
+routes.get('/api/redmine_url', async function(req, res) {
     logger.info("Serving base URL")
     res.send(process.env.BASE_URL)
 })
@@ -28,7 +28,7 @@ routes.post('/api/login', jsonParser, async function(req, res) {
     })
 })
 
-routes.use('/api', cache('5 minutes', onlyStatus200), async function(req, res) {
+routes.use('/api', async function(req, res) {
     let startTime = new Date()
     logger.info("Incoming " + req.method + " request")
     logger.debug("request URL: " + req.url)
