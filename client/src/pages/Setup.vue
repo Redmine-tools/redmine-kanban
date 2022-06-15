@@ -1,19 +1,21 @@
 <template>
-  <header>
-    <h1>{{ $t("setupTitle") }}</h1>
-    <p>{{ $t("setupHelper") }}</p>
-  </header>
-  <section id="setup-container" class="setup-container">
-    <article class="input-container">
-      <ProjectPick />
-    </article>
-    <article class="input-container">
-      <QueriesPick />
-    </article>
+  <section class="setup-page">
+    <header>
+      <h1>{{ $t("setupTitle") }}</h1>
+      <p>{{ $t("setupHelper") }}</p>
+    </header>
+    <section id="setup-container" class="setup-container">
+      <article class="input-container">
+        <ProjectPick />
+      </article>
+      <article class="input-container">
+        <QueriesPick />
+      </article>
+    </section>
+    <div class="button-container">
+      <q-btn :disabled="!store.state.query.id" class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
+    </div>
   </section>
-  <div class="button-container">
-    <q-btn :disabled="!store.state.query.id" class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
-  </div>
 </template>
 
 <script>
@@ -82,9 +84,6 @@ export default {
 .button-container {
   text-align: left;
   padding-inline-start: 100px;
-  position: absolute;
-  bottom: 0;
-  margin-block-end: 96px;
 }
 
 .action {
@@ -136,6 +135,12 @@ header > p {
   flex-direction: column;
   align-items: flex-start;
   padding-block-end: 48px;
+}
+
+.setup-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 </style>
