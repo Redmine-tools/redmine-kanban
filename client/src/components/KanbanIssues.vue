@@ -24,7 +24,7 @@
             <template #item="{ element }">
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
                 <div class="title">#{{ element.id }}</div>
-                <div class="title">{{ element.subject }}</div>
+                <div class="title subject">{{ element.subject }}</div>
                 <div class="author">{{ $t("author") }}: {{ element.author.name }} </div>
                 <div v-if="element?.assigned_to?.name">{{ $t("assignedTo") }}: {{ element.assigned_to.name }} </div>
               </div>
@@ -202,8 +202,17 @@
 }
 
 .title {
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 600;
+}
+
+.subject {
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status-name {
@@ -212,7 +221,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 100px;
+  height: 60px;
 }
 
 .status-name > p {
@@ -267,7 +276,7 @@ html {
 
 .kanban-container > header > h1 {
   font-weight: 700;
-  font-size: 36px;
+  font-size: 28px;
   line-height: 24px;
   padding-block-start: 16px;
 }
@@ -283,7 +292,6 @@ html {
 }
 
 .kanban-container > header > .q-field {
-  padding-block-start: 24px;
   width: 320px;
 }
 
