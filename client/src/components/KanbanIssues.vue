@@ -43,8 +43,8 @@
 
         <q-card-section class="row card-data">
           <div><span class="gray-text">{{ $t("subject") }}:</span> {{ clickedIssue.subject }}</div>
-          <div><span class="gray-text">{{ $t("createdOn") }}:</span> <time>{{ clickedIssue.created_on }}</time></div>
-          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> {{ clickedIssue.updated_on }}</div>
+          <div><span class="gray-text">{{ $t("createdOn") }}:</span> <time datetime="2008-02-14 20:00">{{ clickedIssue.created_on }}</time></div>
+          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> <time datetime="2008-02-14 20:00">{{ clickedIssue.updated_on }}</time></div>
           <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
           <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
           <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
@@ -244,7 +244,6 @@
   width: 240px;
   display: flex;
   justify-content: center;
-  border-top: 5px solid #FDB600;
 }
 
 ::-webkit-scrollbar {
@@ -362,5 +361,21 @@ html {
 
  .gray-text {
   color: rgba(0, 0, 0, 0.65);
+}
+
+.kanban div:nth-child(1n) .kanban-col {
+   border-top: 5px solid #FDB600;  
+}
+
+.kanban div:nth-child(2n) .kanban-col {
+   border-top: 5px solid rgba(35, 140, 185, 0.38);  
+}
+
+.kanban div:nth-child(3n) .kanban-col {
+   border-top: 5px solid #E2B1FF;  
+}
+
+.kanban div:nth-child(4n) .kanban-col {
+   border-top: 5px solid #295365;  
 }
 </style>
