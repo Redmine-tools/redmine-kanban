@@ -25,8 +25,7 @@
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
                 <div class="title">#{{ element.id }}</div>
                 <div class="title subject">{{ element.subject }}</div>
-                <div class="author">{{ $t("author") }}: {{ element.author.name }} </div>
-                <div v-if="element?.assigned_to?.name">{{ $t("assignedTo") }}: {{ element.assigned_to.name }} </div>
+                <div class="author-circle" v-if="element?.assigned_to?.name">{{ $t("assignedTo") }}: {{ element.assigned_to.name }} </div>
               </div>
             </template> 
           </draggable>
@@ -48,6 +47,7 @@
           <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
           <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
           <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
+          <div v-if="clickedIssue.assigned_to?.name"><span class="gray-text">{{ $t("assignedTo") }}:</span> {{ clickedIssue.assigned_to.name }} </div>
         </q-card-section>
         <q-card-actions align="left">
           <q-btn @click="open()" :label="$t('openInRedmine')" class="action" v-close-popup />
@@ -93,6 +93,7 @@
       async function openTicket(element) {
         openIssueDialoge.value = true
         clickedIssue.value = element
+        console.log(clickedIssue.value)
       }
 
       async function open() {
