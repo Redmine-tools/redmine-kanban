@@ -23,12 +23,14 @@
           >
             <template #item="{ element }">
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
-                <div class="title">#{{ element.id }}</div>
-                <div class="title subject">{{ element.subject }}</div>
-                <div class="author-circle" v-if="element?.assigned_to?.name">
-                  <span class="author-tooltiptext">{{ $t("assignedTo") }}: {{ element.assigned_to.name }}</span>
-                  {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
+                <div class="title-container">
+                  <div class="title">#{{ element.id }}</div>
+                  <div class="author-circle" v-if="element?.assigned_to?.name">
+                    <span class="author-tooltiptext">{{ $t("assignedTo") }}: {{ element.assigned_to.name }}</span>
+                    {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
+                  </div>
                 </div>
+                <div class="title subject">{{ element.subject }}</div>
               </div>
             </template> 
           </draggable>
@@ -238,7 +240,7 @@
 }
 
 .kanban-col {
-  height: calc(100vh - 300px);
+
   overflow: auto;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
@@ -430,6 +432,17 @@ html {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 28px;
+  height: 26px;
+}
+
+.title-container {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.q-card__actions {
+  padding-left: 0;
 }
 </style>

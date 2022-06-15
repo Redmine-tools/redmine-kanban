@@ -37,7 +37,6 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
   if (to.name === 'Login' && store.state.user.api_key) {
     next({ name: 'Setup' })
   }
