@@ -25,7 +25,10 @@
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
                 <div class="title">#{{ element.id }}</div>
                 <div class="title subject">{{ element.subject }}</div>
-                <div class="author-circle" v-if="element?.assigned_to?.name">{{ $t("assignedTo") }}: {{ element.assigned_to.name }} </div>
+                <div class="author-circle" v-if="element?.assigned_to?.name">
+                  <span class="author-tooltiptext">{{ $t("assignedTo") }}: {{ element.assigned_to.name }}</span>
+                  {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
+                </div>
               </div>
             </template> 
           </draggable>
@@ -187,7 +190,6 @@
   background: #FFFFFF;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  height: 122px;;
   width: 210px;
   margin-block-start: 12px;
   padding: 10px;
@@ -378,5 +380,48 @@ html {
 
 .kanban div:nth-child(4n) .kanban-col {
    border-top: 5px solid #295365;  
+}
+
+.author-circle {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 50%;
+  font-size: 10px;
+  text-align: center;
+  font-weight: 600;
+  color: #fff;
+}
+
+.author-circle:nth-child(1n) {
+  background: #FDB600;
+}
+
+.author-circle:nth-child(2n) {
+  background: rgba(35, 140, 185, 0.38);
+}
+
+.author-circle:nth-child(3n) {
+  background: #E2B1FF;
+}
+
+.author-circle:nth-child(4n) {
+  background: #295365;
+}
+
+.author-circle:hover .author-tooltiptext {
+  visibility: visible;
+}
+
+.author-circle .author-tooltiptext {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 10;
+  margin-top: 28px;
 }
 </style>
