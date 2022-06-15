@@ -186,7 +186,7 @@
   background: #FFFFFF;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  height: 142px;;
+  height: 122px;;
   width: 210px;
   margin-block-start: 12px;
   padding: 10px;
