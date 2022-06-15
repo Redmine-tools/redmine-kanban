@@ -18,7 +18,7 @@
           </template>
         </q-input>
         <p class="separator">{{ $t("apiKeyOption") }}</p>
-        <p class="info">{{ $t("apiKeyHelp") }} <button class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button></p>
+        <p class="info">{{ $t("apiKeyHelp") }} <button type="button" class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button></p>
         <q-input outlined :label="$t('apiKey')" v-model="apiKey" id="api-token" name="api-token" :type="isApiKey ? 'password' : 'text'">
           <template v-slot:append>
             <q-icon

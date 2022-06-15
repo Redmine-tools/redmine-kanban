@@ -22,7 +22,7 @@
 import { ref } from 'vue'
 import ProjectPick from '@/components/ProjectPick'
 import QueriesPick from '@/components/QueriesPick'
-import { useRouter, onBeforeRouteLeave } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useStore } from "vuex"
 
 export default {
@@ -40,6 +40,7 @@ export default {
       router.push('/kanban')
     }
 
+    /*
     onBeforeRouteLeave((to) => {
       if(to.name === 'Login') {
         const answer = window.confirm(
@@ -54,6 +55,7 @@ export default {
         }
       }
     })
+    */
 
     return {
       projectSelected,

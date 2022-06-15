@@ -35,5 +35,6 @@
     "closePopup": "Ablak bezárása",
     "openInRedmine": "Jegy megnyitása Redmine-ban",
     "author": "Szerző",
-    "assignedTo": "Felelős"
+    "assignedTo": "Felelős",
+    "filter": "keresés (béta)"
 }

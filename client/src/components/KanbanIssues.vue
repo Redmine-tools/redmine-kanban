@@ -1,7 +1,7 @@
 <template>
   <section id="kanban-container" class="kanban-container">
     <header>
-      <q-input debounce="600" outlined v-model="searchKeyWord" label="filter">
+      <q-input debounce="600" outlined v-model="searchKeyWord" :label="$t('filter')">
         <template v-slot:prepend>
           <q-icon name="search" />
         </template>
@@ -96,7 +96,6 @@
       async function openTicket(element) {
         openIssueDialoge.value = true
         clickedIssue.value = element
-        console.log(clickedIssue.value)
       }
 
       async function open() {
@@ -253,7 +252,6 @@
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 html {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -355,11 +353,11 @@ html {
 }
 
 .card-data > div {
-  padding-block-start: 24px;
+  padding-block-start: 12px;
 }
 
 .card-data > div:last-of-type {
-  padding-block-end: 24px;
+  padding-block-end: 12px;
 }
 
  .gray-text {
@@ -393,19 +391,19 @@ html {
   color: #fff;
 }
 
-.author-circle:nth-child(1n) {
+.author-circle:nth-of-type(1n) {
   background: #FDB600;
 }
 
-.author-circle:nth-child(2n) {
+.author-circle:nth-of-type(2n) {
   background: rgba(35, 140, 185, 0.38);
 }
 
-.author-circle:nth-child(3n) {
+.author-circle:nth-of-type(3n) {
   background: #E2B1FF;
 }
 
-.author-circle:nth-child(4n) {
+.author-circle:nth-of-type(4n) {
   background: #295365;
 }
 
@@ -423,5 +421,15 @@ html {
   position: absolute;
   z-index: 10;
   margin-top: 28px;
+}
+
+.text-h5 {
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 28px;
 }
 </style>
