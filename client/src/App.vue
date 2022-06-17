@@ -136,6 +136,10 @@ body {
   background: #F8F9FF;
 }
 
+.q-layout {
+  overflow-x: hidden;
+}
+
 .app-container {
   width: 100%;
   height: 100%;

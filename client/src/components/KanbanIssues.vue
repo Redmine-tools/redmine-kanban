@@ -240,7 +240,7 @@
 }
 
 .kanban-col {
-
+  height: calc(100vh - 270px);
   overflow: auto;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
@@ -261,10 +261,10 @@ html {
 
 .kanban-container {
   display: grid;
-  grid-template-rows: 200px 1fr;
+  grid-template-rows: 200px auto;
   grid-template-areas: 
   "header"
-  "kanban"
+  "kanban";
 }
 
 .kanban-container > header {
