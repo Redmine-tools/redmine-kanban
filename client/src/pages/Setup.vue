@@ -1,26 +1,28 @@
 <template>
-  <header>
-    <h1>{{ $t("setupTitle") }}</h1>
-    <p>{{ $t("setupHelper") }}</p>
-  </header>
-  <section id="setup-container" class="setup-container">
-    <article class="input-container">
-      <ProjectPick />
-    </article>
-    <article class="input-container">
-      <QueriesPick />
-    </article>
+  <section class="setup-page">
+    <header>
+      <h1>{{ $t("setupTitle") }}</h1>
+      <p>{{ $t("setupHelper") }}</p>
+    </header>
+    <section id="setup-container" class="setup-container">
+      <article class="input-container">
+        <ProjectPick />
+      </article>
+      <article class="input-container">
+        <QueriesPick />
+      </article>
+    </section>
+    <div class="button-container">
+      <q-btn :disabled="!store.state.query.id" class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
+    </div>
   </section>
-  <div class="button-container">
-    <q-btn :disabled="!store.state.query.id" class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
-  </div>
 </template>
 
 <script>
 import { ref } from 'vue'
 import ProjectPick from '@/components/ProjectPick'
 import QueriesPick from '@/components/QueriesPick'
-import { useRouter, onBeforeRouteLeave } from 'vue-router'
+import { useRouter } from 'vue-router'
 import { useStore } from "vuex"
 
 export default {
@@ -38,6 +40,7 @@ export default {
       router.push('/kanban')
     }
 
+    /*
     onBeforeRouteLeave((to) => {
       if(to.name === 'Login') {
         const answer = window.confirm(
@@ -52,6 +55,7 @@ export default {
         }
       }
     })
+    */
 
     return {
       projectSelected,
@@ -82,9 +86,6 @@ export default {
 .button-container {
   text-align: left;
   padding-inline-start: 100px;
-  position: absolute;
-  bottom: 0;
-  margin-block-end: 96px;
 }
 
 .action {
@@ -136,6 +137,12 @@ header > p {
   flex-direction: column;
   align-items: flex-start;
   padding-block-end: 48px;
+}
+
+.setup-page {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 </style>

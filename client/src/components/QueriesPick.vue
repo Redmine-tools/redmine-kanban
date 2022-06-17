@@ -13,8 +13,7 @@
   use-input
   hide-selected
   fill-input
-  clearable
-  :disable="store.state.query.id || queiresOrdered.length === 0"/>
+  :disable="queiresOrdered.length === 0"/>
 </template>
 
 <script>
@@ -78,9 +77,6 @@ export default {
     });
 
     onMounted(() => {
-      if (store.state.query.id) {
-        selectedQuerie.value = store.state.query.name
-      }
     }) 
 
     return {

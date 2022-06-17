@@ -1,7 +1,7 @@
 <template>
   <section id="kanban-container" class="kanban-container">
     <header>
-      <q-input debounce="600" outlined v-model="searchKeyWord" label="filter">
+      <q-input debounce="600" outlined v-model="searchKeyWord" :label="$t('filter')">
         <template v-slot:prepend>
           <q-icon name="search" />
         </template>
@@ -23,10 +23,14 @@
           >
             <template #item="{ element }">
               <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
-                <div class="title">#{{ element.id }}</div>
-                <div class="title">{{ element.subject }}</div>
-                <div class="author">{{ $t("author") }}: {{ element.author.name }} </div>
-                <div v-if="element?.assigned_to?.name">{{ $t("assignedTo") }}: {{ element.assigned_to.name }} </div>
+                <div class="title-container">
+                  <div class="title">#{{ element.id }}</div>
+                  <div class="author-circle" v-if="element?.assigned_to?.name">
+                    <span class="author-tooltiptext">{{ $t("assignedTo") }}: {{ element.assigned_to.name }}</span>
+                    {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
+                  </div>
+                </div>
+                <div class="title subject">{{ element.subject }}</div>
               </div>
             </template> 
           </draggable>
@@ -43,11 +47,12 @@
 
         <q-card-section class="row card-data">
           <div><span class="gray-text">{{ $t("subject") }}:</span> {{ clickedIssue.subject }}</div>
-          <div><span class="gray-text">{{ $t("createdOn") }}:</span> <time>{{ clickedIssue.created_on }}</time></div>
-          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> {{ clickedIssue.updated_on }}</div>
+          <div><span class="gray-text">{{ $t("createdOn") }}:</span> <time datetime="2008-02-14 20:00">{{ clickedIssue.created_on }}</time></div>
+          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> <time datetime="2008-02-14 20:00">{{ clickedIssue.updated_on }}</time></div>
           <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
           <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
           <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
+          <div v-if="clickedIssue.assigned_to?.name"><span class="gray-text">{{ $t("assignedTo") }}:</span> {{ clickedIssue.assigned_to.name }} </div>
         </q-card-section>
         <q-card-actions align="left">
           <q-btn @click="open()" :label="$t('openInRedmine')" class="action" v-close-popup />
@@ -186,7 +191,6 @@
   background: #FFFFFF;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
-  height: 142px;;
   width: 210px;
   margin-block-start: 12px;
   padding: 10px;
@@ -202,8 +206,17 @@
 }
 
 .title {
-  font-size: 17px;
+  font-size: 14px;
   font-weight: 600;
+}
+
+.subject {
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .status-name {
@@ -212,7 +225,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 100px;
+  height: 60px;
 }
 
 .status-name > p {
@@ -227,7 +240,7 @@
 }
 
 .kanban-col {
-  height: calc(100vh - 300px);
+  height: calc(100vh - 270px);
   overflow: auto;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
@@ -235,14 +248,12 @@
   width: 240px;
   display: flex;
   justify-content: center;
-  border-top: 5px solid #FDB600;
 }
 
 ::-webkit-scrollbar {
   display: none;
 }
 
-/* Hide scrollbar for IE, Edge and Firefox */
 html {
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;  /* Firefox */
@@ -250,10 +261,10 @@ html {
 
 .kanban-container {
   display: grid;
-  grid-template-rows: 200px 1fr;
+  grid-template-rows: 200px auto;
   grid-template-areas: 
   "header"
-  "kanban"
+  "kanban";
 }
 
 .kanban-container > header {
@@ -267,7 +278,7 @@ html {
 
 .kanban-container > header > h1 {
   font-weight: 700;
-  font-size: 36px;
+  font-size: 28px;
   line-height: 24px;
   padding-block-start: 16px;
 }
@@ -283,7 +294,6 @@ html {
 }
 
 .kanban-container > header > .q-field {
-  padding-block-start: 24px;
   width: 320px;
 }
 
@@ -345,14 +355,94 @@ html {
 }
 
 .card-data > div {
-  padding-block-start: 24px;
+  padding-block-start: 12px;
 }
 
 .card-data > div:last-of-type {
-  padding-block-end: 24px;
+  padding-block-end: 12px;
 }
 
  .gray-text {
   color: rgba(0, 0, 0, 0.65);
+}
+
+.kanban div:nth-child(1n) .kanban-col {
+   border-top: 5px solid #FDB600;  
+}
+
+.kanban div:nth-child(2n) .kanban-col {
+   border-top: 5px solid rgba(35, 140, 185, 0.38);  
+}
+
+.kanban div:nth-child(3n) .kanban-col {
+   border-top: 5px solid #E2B1FF;  
+}
+
+.kanban div:nth-child(4n) .kanban-col {
+   border-top: 5px solid #295365;  
+}
+
+.author-circle {
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  border-radius: 50%;
+  font-size: 10px;
+  text-align: center;
+  font-weight: 600;
+  color: #fff;
+}
+
+.author-circle:nth-of-type(1n) {
+  background: #FDB600;
+}
+
+.author-circle:nth-of-type(2n) {
+  background: rgba(35, 140, 185, 0.38);
+}
+
+.author-circle:nth-of-type(3n) {
+  background: #E2B1FF;
+}
+
+.author-circle:nth-of-type(4n) {
+  background: #295365;
+}
+
+.author-circle:hover .author-tooltiptext {
+  visibility: visible;
+}
+
+.author-circle .author-tooltiptext {
+  visibility: hidden;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  border-radius: 6px;
+  position: absolute;
+  z-index: 10;
+  margin-top: 28px;
+}
+
+.text-h5 {
+  text-align: left;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  height: 26px;
+}
+
+.title-container {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.q-card__actions {
+  padding-left: 0;
 }
 </style>

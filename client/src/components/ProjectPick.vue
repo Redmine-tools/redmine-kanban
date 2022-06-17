@@ -11,8 +11,7 @@
     input-debounce="10"
     use-input
     hide-selected
-    fill-input
-    clearable
+    fill-input 
     @update:model-value="updateProject"/>
 </template>
 
@@ -42,9 +41,6 @@ export default {
     }
     
     async function getProjects() {
-      if (store.state.project.id) {
-        selectedProject.value = store.state.project.name
-      }
       const PAGE_SIZE = 100
       const { projects: firstProjects, total_count } = await _getProjectsWithOffset()
       projects = [...firstProjects]

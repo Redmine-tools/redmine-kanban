@@ -35,5 +35,6 @@
     "closePopup": "Close popup",
     "openInRedmine": "Open in Redmine",
     "author": "Author",
-    "assignedTo": "Assigned to"
+    "assignedTo": "Assigned to",
+    "filter": "filter (beta)"
 }
