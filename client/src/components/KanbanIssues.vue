@@ -240,8 +240,8 @@
 }
 
 .kanban-col {
-  height: calc(100vh - 270px);
-  overflow: auto;
+  height: 100%;
+  overflow: scroll;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
   margin-right: 12px;
@@ -299,6 +299,7 @@ html {
 
 .kanban-container > .kanban {
   grid-area: kanban;
+  height: calc(100vh - 270px);
 }
 
 .kanban-container > .kanban > div:first-of-type {
