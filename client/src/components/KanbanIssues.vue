@@ -225,7 +225,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 60px;
 }
 
 .status-name > p {
@@ -240,7 +239,7 @@
 }
 
 .kanban-col {
-  height: 100%;
+  height: 92%;
   overflow: scroll;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
@@ -261,7 +260,7 @@ html {
 
 .kanban-container {
   display: grid;
-  grid-template-rows: 200px calc(100vh - 210px);
+  grid-template-rows: 200px calc(100vh - 200px);
   grid-template-areas: 
   "header"
   "kanban";
@@ -299,7 +298,7 @@ html {
 
 .kanban-container > .kanban {
   grid-area: kanban;
-  overflow-y: hidden;
+
 }
 
 .kanban-container > .kanban > div:first-of-type {
@@ -392,6 +391,8 @@ html {
   text-align: center;
   font-weight: 600;
   color: #fff;
+  position: relative;
+  display: inline-block;
 }
 
 .author-circle:nth-of-type(1n) {
@@ -423,7 +424,9 @@ html {
   border-radius: 6px;
   position: absolute;
   z-index: 10;
-  margin-top: 28px;
+  top: -5px;
+  right: 105%;
+  white-space: nowrap;
 }
 
 .text-h5 {
