@@ -261,7 +261,7 @@ html {
 
 .kanban-container {
   display: grid;
-  grid-template-rows: 200px auto;
+  grid-template-rows: 200px calc(100vh - 210px);
   grid-template-areas: 
   "header"
   "kanban";
@@ -299,7 +299,7 @@ html {
 
 .kanban-container > .kanban {
   grid-area: kanban;
-  height: calc(100vh - 270px);
+  overflow-y: hidden;
 }
 
 .kanban-container > .kanban > div:first-of-type {
