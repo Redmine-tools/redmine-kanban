@@ -36,5 +36,6 @@
     "openInRedmine": "Jegy megnyitása Redmine-ban",
     "author": "Szerző",
     "assignedTo": "Felelős",
-    "filter": "keresés (béta)"
+    "filter": "keresés (béta)",
+    "notFound": "A keresett oldal nem található!"
 }
