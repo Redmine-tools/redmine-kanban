@@ -47,8 +47,8 @@
 
         <q-card-section class="row card-data">
           <div><span class="gray-text">{{ $t("subject") }}:</span> {{ clickedIssue.subject }}</div>
-          <div><span class="gray-text">{{ $t("createdOn") }}:</span> <time datetime="2008-02-14 20:00">{{ clickedIssue.created_on }}</time></div>
-          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> <time datetime="2008-02-14 20:00">{{ clickedIssue.updated_on }}</time></div>
+          <div><span class="gray-text">{{ $t("createdOn") }}:</span> {{ new Date(clickedIssue.created_on).toLocaleString() }}</div>
+          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> {{ new Date(clickedIssue.updated_on).toLocaleString() }}</div>
           <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
           <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
           <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
@@ -328,6 +328,11 @@ html {
   padding-block-end: 24px;
   padding-inline-start: 24px;
   padding-inline-end: 24px;
+  width: 437px;
+  height: 351px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-header {
@@ -339,8 +344,8 @@ html {
   padding: 0;
   font-style: normal;
   font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
+  font-size: 18px;
+  line-height: 32px;
 }
 
 .card-data {
