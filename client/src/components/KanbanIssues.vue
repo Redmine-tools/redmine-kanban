@@ -6,7 +6,7 @@
           <q-icon name="search" />
         </template>
       </q-input>
-      <p class="path">{{ store.state.project.name }} / {{ store.state.query.name }}</p>
+      <p class="path"> <router-link to="/setup">{{ $t("setupTitle") }}</router-link> / {{ store.state.project.name }} / {{ store.state.query.name }}</p>
       <h1>{{ store.state.query.name }}</h1>
     </header>
     <div class="kanban">
@@ -290,6 +290,16 @@ html {
   letter-spacing: 0.15px;
   color: rgba(0, 0, 0, 0.50);
   padding-block-start: 24px;
+}
+
+.kanban-container > header > .path > a {
+  color: rgba(0, 0, 0, 0.50);
+  text-decoration: none;
+}
+
+.kanban-container > header > .path > a:hover {
+  color: rgba(0, 0, 0, 0.50);
+  text-decoration: underline;
 }
 
 .kanban-container > header > .q-field {
