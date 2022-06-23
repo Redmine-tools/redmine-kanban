@@ -1,42 +1,37 @@
 <template>
-  <article class="full-screen">
-    <form @submit.prevent="addQuerie">
-      <h1>{{ $t("qSelect") }}</h1>
-      <div>
-        <Multiselect 
-        required 
-        v-model="selectedQuerie" 
-        label="name" 
-        trackBy="name" 
-        :searchable="true"  
-        :minChars="1" 
-        :options="queiresOrdered"
-        placeholder="Type to search"/>
-      </div>
-      <button class="action">{{ $t("select") }}</button>
-    </form>
-  </article>
+  <p class="section-title">{{ $t("qSelect") }}</p>
+  <q-select
+  outlined
+  v-model="selectedQuerie"
+  :options="queiresOrdered"
+  :option-value="'id'"
+  :option-label="'name'"
+  :label="$t('query')"
+  @filter="filterFn"
+  @update:model-value="updateQuery"
+  input-debounce="10"
+  use-input
+  hide-selected
+  fill-input
+  :disable="queiresOrdered.length === 0"/>
 </template>
 
 <script>
-import { ref, onMounted } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import RedmineService from '@/services/RedmineService.js'
-import Multiselect from '@vueform/multiselect'
 import { useStore } from "vuex"
-import { useRouter } from 'vue-router'
 
 export default {
   name: "ProjectPick",
   components: {
-    Multiselect
   },
   setup() {
-    const router = useRouter()
-    let projectsOrdered = ref()
-    let selectedQuerie = ref()
+    const projectsOrdered = ref()
+    const selectedQuerie = ref()
     const store = useStore()
-    let queiresOrdered = ref()
+    const queiresOrdered = ref([])
     let queries
+    let stringOptions
   
     async function _getProjectQueriesWithOffset(offset=0) {
         const response = await RedmineService.getProjectQueries(store.state.user.api_key, offset)
@@ -47,6 +42,7 @@ export default {
     }
     
     async function getProjectQueries() {
+      selectedQuerie.value = null
       const PAGE_SIZE = 100;
       const { queries: firstQueries, total_count } = await _getProjectQueriesWithOffset()
       queries = [...firstQueries]
@@ -57,31 +53,53 @@ export default {
           queries = [...queries, ...currentQueries]
         }
       }
-
       const filteredQueries = queries.filter(i => i?.project_id === store.state.project.id)
       queiresOrdered.value = filteredQueries.map(({ id, name }) => ({ value:id, name:name }))
-    }
-  
-    function addQuerie() {
-      store.commit({
-        type: 'addQuerie',
-        payload: queries.filter(i => i.id === selectedQuerie.value)[0]
-      })
-      router.push('/kanban')
+      stringOptions = queiresOrdered.value
     }
 
-    onMounted(getProjectQueries) 
+    function filterFn (val, update) {
+      update(() => {
+        const needle = val.toLowerCase()
+        queiresOrdered.value = stringOptions.filter(v => v.name.toLowerCase().indexOf(needle) > -1)
+      })
+    }
+
+    function updateQuery() {
+      store.commit({
+        type: 'addQuerie',
+        payload: queries.filter(i => i.id === selectedQuerie.value.value)[0]
+      })
+    }
+
+    watch(()=> store.state.project, function() {
+      getProjectQueries()
+    });
+
+    onMounted(() => {
+    }) 
 
     return {
       projectsOrdered,
       selectedQuerie,
       queiresOrdered,
-      addQuerie
+      filterFn,
+      updateQuery,
+      store
     }
   }
 }
 </script>
 
-<style src="@vueform/multiselect/themes/default.css">
+<style scoped>
+.section-title {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+}
 
+.q-field {
+  width: 45%;
+}
 </style>

@@ -1,7 +1,6 @@
 <template>
   <section class="app-container">
-    <h1>A keresett oldal nem található!</h1>
-    <img width="400" height="400" src="../../public/not-found.svg" alt="">
+    <h6>{{ $t("notFound") }}</h6>
   </section>
 </template>
 
