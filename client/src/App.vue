@@ -138,6 +138,7 @@ body {
 
 .q-layout {
   overflow-x: hidden;
+  overflow: hidden;
 }
 
 .app-container {

@@ -36,5 +36,6 @@
     "openInRedmine": "Open in Redmine",
     "author": "Author",
     "assignedTo": "Assigned to",
-    "filter": "filter (beta)"
+    "filter": "filter (beta)",
+    "notFound": "We cannot find the page you are looking for!"
 }

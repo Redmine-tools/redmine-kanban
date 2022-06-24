@@ -6,7 +6,7 @@
           <q-icon name="search" />
         </template>
       </q-input>
-      <p class="path">{{ store.state.project.name }} / {{ store.state.query.name }}</p>
+      <p class="path"> <router-link to="/setup">{{ $t("setupTitle") }}</router-link> / {{ store.state.project.name }} / {{ store.state.query.name }}</p>
       <h1>{{ store.state.query.name }}</h1>
     </header>
     <div class="kanban">
@@ -47,8 +47,8 @@
 
         <q-card-section class="row card-data">
           <div><span class="gray-text">{{ $t("subject") }}:</span> {{ clickedIssue.subject }}</div>
-          <div><span class="gray-text">{{ $t("createdOn") }}:</span> <time datetime="2008-02-14 20:00">{{ clickedIssue.created_on }}</time></div>
-          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> <time datetime="2008-02-14 20:00">{{ clickedIssue.updated_on }}</time></div>
+          <div><span class="gray-text">{{ $t("createdOn") }}:</span> {{ new Date(clickedIssue.created_on).toLocaleString() }}</div>
+          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> {{ new Date(clickedIssue.updated_on).toLocaleString() }}</div>
           <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
           <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
           <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
@@ -225,7 +225,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  height: 60px;
 }
 
 .status-name > p {
@@ -240,8 +239,8 @@
 }
 
 .kanban-col {
-  height: calc(100vh - 270px);
-  overflow: auto;
+  height: 92%;
+  overflow: scroll;
   background: rgba(0, 0, 0, 0.05);
   border-radius: 4px;
   margin-right: 12px;
@@ -261,7 +260,7 @@ html {
 
 .kanban-container {
   display: grid;
-  grid-template-rows: 200px auto;
+  grid-template-rows: 200px calc(100vh - 200px);
   grid-template-areas: 
   "header"
   "kanban";
@@ -293,12 +292,23 @@ html {
   padding-block-start: 24px;
 }
 
+.kanban-container > header > .path > a {
+  color: rgba(0, 0, 0, 0.50);
+  text-decoration: none;
+}
+
+.kanban-container > header > .path > a:hover {
+  color: rgba(0, 0, 0, 0.50);
+  text-decoration: underline;
+}
+
 .kanban-container > header > .q-field {
   width: 320px;
 }
 
 .kanban-container > .kanban {
   grid-area: kanban;
+
 }
 
 .kanban-container > .kanban > div:first-of-type {
@@ -328,6 +338,11 @@ html {
   padding-block-end: 24px;
   padding-inline-start: 24px;
   padding-inline-end: 24px;
+  width: 437px;
+  height: 351px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .card-header {
@@ -339,8 +354,8 @@ html {
   padding: 0;
   font-style: normal;
   font-weight: 500;
-  font-size: 24px;
-  line-height: 24px;
+  font-size: 18px;
+  line-height: 32px;
 }
 
 .card-data {
@@ -391,6 +406,8 @@ html {
   text-align: center;
   font-weight: 600;
   color: #fff;
+  position: relative;
+  display: inline-block;
 }
 
 .author-circle:nth-of-type(1n) {
@@ -422,7 +439,9 @@ html {
   border-radius: 6px;
   position: absolute;
   z-index: 10;
-  margin-top: 28px;
+  top: -5px;
+  right: 105%;
+  white-space: nowrap;
 }
 
 .text-h5 {
