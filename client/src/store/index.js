@@ -13,7 +13,8 @@ const store = createStore({
   state: {
     user: {},
     project: {},
-    query: {}
+    query: {},
+    projectQueries: {}
   },
   mutations: {
     addUser(state, payload) {
@@ -24,6 +25,9 @@ const store = createStore({
     },
     addQuerie(state, payload) {
       state.query = { ...payload.payload };
+    },
+    addProjectQueries(state, payload) {
+      state.projectQueries = { ...payload.payload };
     },
     resetState(state) {
       const s = initialState()

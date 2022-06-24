@@ -11,7 +11,8 @@
     input-debounce="10"
     use-input
     hide-selected
-    fill-input 
+    fill-input
+    behavior="menu"
     @update:model-value="updateProject"/>
 </template>
 

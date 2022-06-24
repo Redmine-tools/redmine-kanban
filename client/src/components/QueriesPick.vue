@@ -13,6 +13,7 @@
   use-input
   hide-selected
   fill-input
+  behavior="menu"
   :disable="queiresOrdered.length === 0"/>
 </template>
 
@@ -55,6 +56,13 @@ export default {
       }
       const filteredQueries = queries.filter(i => i?.project_id === store.state.project.id)
       queiresOrdered.value = filteredQueries.map(({ id, name }) => ({ value:id, name:name }))
+      store.commit({
+        type: 'addProjectQueries',
+        payload: {
+          projectId: store.state.project.id,
+          queries: queiresOrdered.value
+        }
+      })
       stringOptions = queiresOrdered.value
     }
 

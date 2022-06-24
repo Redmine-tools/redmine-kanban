@@ -40,6 +40,9 @@
       <aside v-else class="mini-image-container">
         <img class="company-logo" src="@/assets/logo-mini.svg" alt="company-logo">
       </aside>
+      <aside>
+        <ProjectQueriesPick />
+      </aside>
       <aside class="settings">
         <div v-if="!miniState" class="lang-select-container">
           <p class="settings-title"> <q-icon name="settings" /> {{ $t("langSelectTitle") }}</p>
@@ -65,10 +68,12 @@ import { computed, ref } from 'vue'
 import { useStore } from "vuex"
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router'
+import ProjectQueriesPick from '@/components/ProjectQueriesPick.vue'
 
 export default {
   name: 'App',
   components: {
+    ProjectQueriesPick,
   },
   setup() {
     const store = useStore()
