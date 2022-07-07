@@ -119,7 +119,9 @@
         } catch (error) {
           console.log("error in config")
         }
-        columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
+
+        // Return existing statuses by config order
+        columnConfig.value = columnNames.map(status_name => redmineStatuses.find(status => status.name === status_name)).filter(Boolean)
       }
 
       async function add(event){
