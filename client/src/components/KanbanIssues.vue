@@ -106,8 +106,10 @@
       const store = useStore()
       const columnConfig = ref([])
       const issuesByStatus = ref([])
+      let originalIssuesByStatus;
+
       const assignees = computed(() => {
-        return props?.issues?.value.filter(i => i.assigned_to).map(i => i.assigned_to.name)
+          return props.issues.value ? props?.issues?.value.filter(i => i.assigned_to).map(i => i.assigned_to.name) : []
       })
       const selectedAssignees = ref([])
 
@@ -158,6 +160,12 @@
         return foundItems
       }
 
+      watch(selectedAssignees, () => {
+        if (Object.keys(selectedAssignees.value).length === 0) {
+          issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus))
+        }
+      })
+
       watch(searchKeyWord, () => {
         if (searchKeyWord.value != '') {
           const issuesToHighlight = searchByKeyWord(searchKeyWord.value.toString())
@@ -183,6 +191,8 @@
       onMounted(() => {
         setupColumnConfig()
         issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name')
+        originalIssuesByStatus = JSON.parse(JSON.stringify(issuesByStatus.value))
+        console.log(originalIssuesByStatus)
       })
 
       return {
