@@ -1,11 +1,22 @@
 <template>
   <section id="kanban-container" class="kanban-container">
     <header>
-      <q-input debounce="600" outlined v-model="searchKeyWord" :label="$t('filter')">
-        <template v-slot:prepend>
-          <q-icon name="search" />
-        </template>
-      </q-input>
+      <aside class="partial-header">
+        <q-input debounce="600" outlined v-model="searchKeyWord" :label="$t('filter')">
+          <template v-slot:prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+        <q-select
+          filled
+          v-model="selectedAssignees"
+          multiple
+          :options="assignees"
+          use-chips
+          stack-label
+          label="Assignee"
+        />
+      </aside>
       <p class="path"> <router-link to="/setup">{{ $t("setupTitle") }}</router-link> / {{ store.state.project.name }} / {{ store.state.query.name }}</p>
       <h1>{{ store.state.query.name }}</h1>
     </header>
@@ -91,9 +102,16 @@
           return []
         }
       })
+
       const store = useStore()
       const columnConfig = ref([])
       const issuesByStatus = ref([])
+      const assignees = computed(() => {
+        return props?.issues?.value.filter(i => i.assigned_to).map(i => i.assigned_to.name)
+      })
+      const selectedAssignees = ref([])
+
+      
 
       async function openTicket(element) {
         openIssueDialoge.value = true
@@ -177,7 +195,9 @@
         openIssueDialoge,
         clickedIssue,
         open,
-        createNewStatusGroup
+        createNewStatusGroup,
+        assignees,
+        selectedAssignees
       }
     }
   }
@@ -187,6 +207,19 @@
 .kanban {
   display: flex;
   overflow-y: scroll;
+}
+
+.partial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+}
+
+@media screen and (max-width: 1024px) {
+  .partial-header {
+    flex-direction: column;
+  }
 }
 
 .list-item {
@@ -252,12 +285,11 @@
 }
 
 ::-webkit-scrollbar {
-  display: none;
+
 }
 
 html {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+/* Firefox */
 }
 
 .kanban-container {
@@ -345,6 +377,12 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.q-select {
+  padding-inline-start: 24px;
+  width: 280px;
+
 }
 
 .card-header {
