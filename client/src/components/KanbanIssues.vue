@@ -163,6 +163,10 @@
       watch(selectedAssignees, () => {
         if (Object.keys(selectedAssignees.value).length === 0) {
           issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus))
+        } else {
+          for (let group in issuesByStatus.value) {
+            issuesByStatus.value[group] = issuesByStatus.value[group].filter(issue => selectedAssignees.value.includes(issue?.assigned_to?.name))
+          }
         }
       })
 
