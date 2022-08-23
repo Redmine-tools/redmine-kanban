@@ -109,11 +109,11 @@
       let originalIssuesByStatus;
 
       const assignees = computed(() => {
-          return props.issues.value ? props?.issues?.value.filter(i => i.assigned_to).map(i => i.assigned_to.name) : []
+        const names = props.issues.value ? props?.issues?.value.filter(i => i.assigned_to).map(i => i.assigned_to.name) : []
+        return Array.from(new Set(names));
       })
       const selectedAssignees = ref([])
-
-      
+   
 
       async function openTicket(element) {
         openIssueDialoge.value = true
@@ -164,6 +164,7 @@
         if (Object.keys(selectedAssignees.value).length === 0) {
           issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus))
         } else {
+          issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus))
           for (let group in issuesByStatus.value) {
             issuesByStatus.value[group] = issuesByStatus.value[group].filter(issue => selectedAssignees.value.includes(issue?.assigned_to?.name))
           }
