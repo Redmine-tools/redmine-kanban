@@ -7,8 +7,22 @@
     <h1>{{ $t("header") }}</h1>
     <form @submit.prevent="getUser" class="form-control">
       <div class="input-container">
-        <q-input outlined :label="$t('username')" v-model="username" id="username" name="username" type="text"/>
-        <q-input outlined :label="$t('password')" v-model="password" id="password" name="password" :type="isPwd ? 'password' : 'text'" autocomplete="on">
+        <q-input
+          outlined
+          :label="$t('username')"
+          v-model="username"
+          id="username"
+          name="username"
+          type="text"
+        />
+        <q-input
+          outlined
+          :label="$t('password')"
+          v-model="password"
+          id="password"
+          name="password"
+          :type="isPwd ? 'password' : 'text'" autocomplete="on"
+        >
           <template v-slot:append>
             <q-icon
               :name="isPwd ? 'visibility_off' : 'visibility'"
@@ -18,8 +32,18 @@
           </template>
         </q-input>
         <p class="separator">{{ $t("apiKeyOption") }}</p>
-        <p class="info">{{ $t("apiKeyHelp") }} <button type="button" class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button></p>
-        <q-input outlined :label="$t('apiKey')" v-model="apiKey" id="api-token" name="api-token" :type="isApiKey ? 'password' : 'text'">
+        <p class="info">
+          {{ $t("apiKeyHelp") }}
+          <button type="button" class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button>
+        </p>
+        <q-input
+          outlined
+          :label="$t('apiKey')"
+          v-model="apiKey"
+          id="api-token"
+          name="api-token"
+          :type="isApiKey ? 'password' : 'text'"
+          >
           <template v-slot:append>
             <q-icon
               :name="isApiKey ? 'visibility_off' : 'visibility'"
@@ -31,64 +55,69 @@
         <q-btn type="submit" class="action">{{ $t("login") }}</q-btn>
       </div>
     </form>
-    <div v-bind:class="{ active: isActive }" class="toast" id="errorToast">{{ $t("loginFail") }}</div>
+    <div
+      v-bind:class="{ active: isActive }"
+      class="toast" id="errorToast"
+      >
+      {{ $t("loginFail") }}
+    </div>
   </section>
   </div>
 </template>
 
 <script>
-import { ref } from 'vue'
-import RedmineService from '@/services/RedmineService.js'
-import store from '@/store'
-import { useRouter } from 'vue-router'
+import { ref } from 'vue';
+import RedmineService from '@/services/RedmineService';
+import store from '@/store';
+import { useRouter } from 'vue-router';
 
 export default {
-  name: "Login",
+  name: 'Login',
   setup() {
-    const router = useRouter()
-    const apiKey = ref('')
-    const username = ref('')
-    const password = ref('')
-    let user = ref('')
-    let isActive = ref(false)
-    let isPwd = ref(true)
-    let isApiKey = ref(true)
+    const router = useRouter();
+    const apiKey = ref('');
+    const username = ref('');
+    const password = ref('');
+    const user = ref('');
+    const isActive = ref(false);
+    const isPwd = ref(true);
+    const isApiKey = ref(true);
 
     async function getUser() {
       try {
-        if(username.value && password.value) {
-          let response = await RedmineService.getUserByPassword({
-            "username": username.value, 
-            "password": password.value 
-          })
-          user.value = response.data
+        if (username.value && password.value) {
+          const response = await RedmineService.getUserByPassword({
+            username: username.value,
+            password: password.value,
+          });
+          user.value = response.data;
           store.commit({
             type: 'addUser',
-            payload: response.data.user
-          })
-          router.push('/setup')
+            payload: response.data.user,
+          });
+          router.push('/setup');
         } else {
-          const response = (await RedmineService.getUser(apiKey.value))
-          user.value = response.data
+          const response = (await RedmineService.getUser(apiKey.value));
+          user.value = response.data;
           store.commit({
             type: 'addUser',
-            payload: response.data.user
-          })
-          router.push('/setup')
+            payload: response.data.user,
+          });
+          router.push('/setup');
         }
       } catch (error) {
-          isActive.value = true
-          setTimeout(() => isActive.value = false, 2000)
-          apiKey.value = ""
-          username.value = ""
-          password.value = ""
+        isActive.value = true;
+        setTimeout(() => isActive.value = false, 2000);
+        apiKey.value = '';
+        username.value = '';
+        password.value = '';
       }
     }
 
     async function getAPILink() {
-      const response = await RedmineService.getRedmineUrl()
-      const apiKeyUrl = response.data + "/my/account"
-      window.open(apiKeyUrl)
+      const response = await RedmineService.getRedmineUrl();
+      const apiKeyUrl = `${response.data}/my/account`;
+      window.open(apiKeyUrl);
     }
 
     return {
@@ -100,10 +129,10 @@ export default {
       getAPILink,
       apiKey,
       isPwd,
-      isApiKey
-    }
-  }
-}
+      isApiKey,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -115,7 +144,10 @@ export default {
   padding: 20px 50px 48px 50px;
   background: #ffffff;
   border-radius: 10px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 4px 4px rgba(0, 0, 0, 0.25), 0px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0px 4px 4px rgba(0, 0, 0, 0.25),
+    0px 4px 4px rgba(0, 0, 0, 0.25),
+    0px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 @media screen and (max-width: 960px) {

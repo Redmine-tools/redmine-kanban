@@ -6,11 +6,11 @@
 
 <script>
 export default {
-  name: "TimeEntriesForUser",
+  name: 'TimeEntriesForUser',
   setup() {
 
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

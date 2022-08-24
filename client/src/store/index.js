@@ -1,19 +1,19 @@
-import { createStore } from "vuex"
-import createPersistedState from "vuex-persistedstate"
+import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 function initialState() {
   return {
     user: { },
     project: { },
-    query: { }
-  }
+    query: { },
+  };
 }
 
 const store = createStore({
   state: {
     user: {},
     project: {},
-    query: {}
+    query: {},
   },
   mutations: {
     addUser(state, payload) {
@@ -26,17 +26,17 @@ const store = createStore({
       state.query = { ...payload.payload };
     },
     resetState(state) {
-      const s = initialState()
-      Object.keys(s).forEach(key => {
-        state[key] = s[key]
-      })
-    }
+      const s = initialState();
+      Object.keys(s).forEach((key) => {
+        state[key] = s[key];
+      });
+    },
   },
   plugins: [
     createPersistedState({
-      storage: window.localStorage
-    })
-  ]
+      storage: window.localStorage,
+    }),
+  ],
 });
 
-export default store
+export default store;

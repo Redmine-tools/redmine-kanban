@@ -61,39 +61,39 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue'
-import { useStore } from "vuex"
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
 export default {
   name: 'App',
   components: {
   },
   setup() {
-    const store = useStore()
-    const router = useRouter()
-    const user = computed(() => store.state.user)
-    const { t, locale } = useI18n({ useScope: 'global' })
-    const localeFromStorage = localStorage.getItem('locale')
-    const leftDrawerOpen = ref(true)
-    const miniState = ref(false)
-    const version = ref(process.env.VUE_APP_VERSION)
+    const store = useStore();
+    const router = useRouter();
+    const user = computed(() => store.state.user);
+    const { t, locale } = useI18n({ useScope: 'global' });
+    const localeFromStorage = localStorage.getItem('locale');
+    const leftDrawerOpen = ref(true);
+    const miniState = ref(false);
+    const version = ref(process.env.VUE_APP_VERSION);
 
     if (localeFromStorage) {
       locale.value = localeFromStorage;
     }
 
     function setLang(selectedLang) {
-      locale.value = selectedLang
-      localStorage.setItem('locale', locale.value)
+      locale.value = selectedLang;
+      localStorage.setItem('locale', locale.value);
     }
 
     function logout() {
       store.commit({
-        type: 'resetState'
-      })
-      router.push('/')
+        type: 'resetState',
+      });
+      router.push('/');
     }
 
     return {
@@ -105,10 +105,10 @@ export default {
       store,
       setLang,
       logout,
-      version
-    }
-  }
-}
+      version,
+    };
+  },
+};
 </script>
 
 <style>

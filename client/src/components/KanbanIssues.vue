@@ -44,7 +44,7 @@
                 </div>
                 <div class="title subject">{{ element.subject }}</div>
               </div>
-            </template> 
+            </template>
           </draggable>
         </div>
       </div>
@@ -54,7 +54,7 @@
           <header class="card-header">
             <h4 class="text-h5">{{ clickedIssue.subject }}</h4>
             <q-space />
-            <q-btn icon="close" flat round dense v-close-popup /> 
+            <q-btn icon="close" flat round dense v-close-popup />
           </header>
 
         <q-card-section class="row card-data">
@@ -76,149 +76,147 @@
 </template>
 
 <script>
-  import draggable from 'vuedraggable'
-  import lodash from "lodash"
-  import { ref, onMounted, watch, computed } from 'vue'
-  import RedmineService from '@/services/RedmineService.js'
-  import { useStore } from "vuex"
-  import TimeEntriesForUser from '@/components/TimeEntriesForUser'
+import draggable from 'vuedraggable';
+import lodash from 'lodash';
+import {
+  ref, onMounted, watch, computed,
+} from 'vue';
+import RedmineService from '@/services/RedmineService.js';
+import { useStore } from 'vuex';
+import TimeEntriesForUser from '@/components/TimeEntriesForUser';
 
-  export default {
-    name: 'KanbanIssues',
-    components: {
-      draggable,
-      TimeEntriesForUser
+export default {
+  name: 'KanbanIssues',
+  components: {
+    draggable,
+    TimeEntriesForUser,
+  },
+  props: {
+    issues: {
+      required: true,
     },
-    props: {
-      issues: {
-        required: true
+  },
+  setup(props) {
+    const searchKeyWord = ref('');
+    const clickedIssue = ref();
+    const openIssueDialoge = ref(false);
+    const originalIssuesStringifyed = computed(() => {
+      if (props.issues.value.length > 0) {
+        return JSON.stringify(props.issues.value).split('},{');
       }
-    },
-    setup(props) {
-      const searchKeyWord = ref('')
-      const clickedIssue = ref()
-      const openIssueDialoge = ref(false)
-      let originalIssuesStringifyed = computed(() => {
-        if (props.issues.value.length > 0) {
-          return JSON.stringify(props.issues.value).split('},{')
-        } else {
-          return []
-        }
-      })
+      return [];
+    });
 
-      const store = useStore()
-      const columnConfig = ref([])
-      const issuesByStatus = ref([])
-      let originalIssuesByStatus;
+    const store = useStore();
+    const columnConfig = ref([]);
+    const issuesByStatus = ref([]);
+    let originalIssuesByStatus;
 
-      const assignees = computed(() => {
-        const names = props.issues.value ? props?.issues?.value.filter(i => i.assigned_to).map(i => i.assigned_to.name) : []
-        return Array.from(new Set(names));
-      })
-      const selectedAssignees = ref([])
-   
+    const assignees = computed(() => {
+      const names = props.issues.value ? props?.issues?.value.filter((i) => i.assigned_to).map((i) => i.assigned_to.name) : [];
+      return Array.from(new Set(names));
+    });
+    const selectedAssignees = ref([]);
 
-      async function openTicket(element) {
-        openIssueDialoge.value = true
-        clickedIssue.value = element
-      }
-
-      async function open() {
-        const response = await RedmineService.getRedmineUrl()
-        window.open(response.data + 'issues/' + clickedIssue.value.id, '_blank');
-      }
-
-      async function setupColumnConfig() {
-        let redmineStatuses
-        let configIssue
-        let columnNames
-        try {
-          redmineStatuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses
-          configIssue = await RedmineService.getKanbanConfigTracker(store.state.user.api_key).then(async (res) =>
-            (await RedmineService.getKanbanConfig(store.state.user.api_key, store.state.project.id, res.data.trackers.find(tracker => tracker.name === 'Kanban').id)).data.issues[0]
-          )
-          let config = JSON.parse(configIssue.description).config
-          columnNames = config.columns
-        } catch (error) {
-          console.log("error in config")
-        }
-
-        // Return existing statuses by config order
-        columnConfig.value = columnNames.map(status_name => redmineStatuses.find(status => status.name === status_name)).filter(Boolean)
-      }
-
-      async function add(event){
-        const movedTo = event.to.id
-        const movedId = parseInt(event.item.id)
-        const newStatus = columnConfig.value.find(i => i.name === movedTo)
-        await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id)
-      }
-
-      const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), [])
-    
-      const searchByKeyWord = (searchKeyWord) => {
-        const foundIndexes = indexOfAll(originalIssuesStringifyed.value, searchKeyWord)
-        let foundItems = []
-        foundIndexes.forEach(i => foundItems.push(props.issues.value[i]))
-        return foundItems
-      }
-
-      watch(selectedAssignees, () => {
-        if (Object.keys(selectedAssignees.value).length === 0) {
-          issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus))
-        } else {
-          issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus))
-          for (let group in issuesByStatus.value) {
-            issuesByStatus.value[group] = issuesByStatus.value[group].filter(issue => selectedAssignees.value.includes(issue?.assigned_to?.name))
-          }
-        }
-      })
-
-      watch(searchKeyWord, () => {
-        if (searchKeyWord.value != '') {
-          const issuesToHighlight = searchByKeyWord(searchKeyWord.value.toString())
-          const matches = document.querySelectorAll(".list-item")
-          matches.forEach(i => {
-            if(!(issuesToHighlight.some(j => j.id == i.id))) {
-              i.style.display = 'none'
-            }
-          })
-        } else {
-          const matches = document.querySelectorAll(".list-item")
-          matches.forEach(i => {
-              i.style.display = 'flex'
-          })
-        }
-      })
-
-      function createNewStatusGroup(status) {
-        issuesByStatus.value[status] = []
-        return []
-      }
-
-      onMounted(() => {
-        setupColumnConfig()
-        issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name')
-        originalIssuesByStatus = JSON.parse(JSON.stringify(issuesByStatus.value))
-        console.log(originalIssuesByStatus)
-      })
-
-      return {
-        add,
-        issuesByStatus,
-        columnConfig,
-        searchKeyWord,
-        openTicket,
-        store,
-        openIssueDialoge,
-        clickedIssue,
-        open,
-        createNewStatusGroup,
-        assignees,
-        selectedAssignees
-      }
+    async function openTicket(element) {
+      openIssueDialoge.value = true;
+      clickedIssue.value = element;
     }
-  }
+
+    async function open() {
+      const response = await RedmineService.getRedmineUrl();
+      window.open(`${response.data}issues/${clickedIssue.value.id}`, '_blank');
+    }
+
+    async function setupColumnConfig() {
+      let redmineStatuses;
+      let configIssue;
+      let columnNames;
+      try {
+        redmineStatuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses;
+        configIssue = await RedmineService.getKanbanConfigTracker(store.state.user.api_key).then(async (res) => (await RedmineService.getKanbanConfig(store.state.user.api_key, store.state.project.id, res.data.trackers.find((tracker) => tracker.name === 'Kanban').id)).data.issues[0]);
+        const { config } = JSON.parse(configIssue.description);
+        columnNames = config.columns;
+      } catch (error) {
+        console.log('error in config');
+      }
+
+      // Return existing statuses by config order
+      columnConfig.value = columnNames.map((status_name) => redmineStatuses.find((status) => status.name === status_name)).filter(Boolean);
+    }
+
+    async function add(event) {
+      const movedTo = event.to.id;
+      const movedId = parseInt(event.item.id);
+      const newStatus = columnConfig.value.find((i) => i.name === movedTo);
+      await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id);
+    }
+
+    const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), []);
+
+    const searchByKeyWord = (searchKeyWord) => {
+      const foundIndexes = indexOfAll(originalIssuesStringifyed.value, searchKeyWord);
+      const foundItems = [];
+      foundIndexes.forEach((i) => foundItems.push(props.issues.value[i]));
+      return foundItems;
+    };
+
+    watch(selectedAssignees, () => {
+      if (Object.keys(selectedAssignees.value).length === 0) {
+        issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
+      } else {
+        issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
+        for (const group in issuesByStatus.value) {
+          issuesByStatus.value[group] = issuesByStatus.value[group].filter((issue) => selectedAssignees.value.includes(issue?.assigned_to?.name));
+        }
+      }
+    });
+
+    watch(searchKeyWord, () => {
+      if (searchKeyWord.value != '') {
+        const issuesToHighlight = searchByKeyWord(searchKeyWord.value.toString());
+        const matches = document.querySelectorAll('.list-item');
+        matches.forEach((i) => {
+          if (!(issuesToHighlight.some((j) => j.id == i.id))) {
+            i.style.display = 'none';
+          }
+        });
+      } else {
+        const matches = document.querySelectorAll('.list-item');
+        matches.forEach((i) => {
+          i.style.display = 'flex';
+        });
+      }
+    });
+
+    function createNewStatusGroup(status) {
+      issuesByStatus.value[status] = [];
+      return [];
+    }
+
+    onMounted(() => {
+      setupColumnConfig();
+      issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name');
+      originalIssuesByStatus = JSON.parse(JSON.stringify(issuesByStatus.value));
+      console.log(originalIssuesByStatus);
+    });
+
+    return {
+      add,
+      issuesByStatus,
+      columnConfig,
+      searchKeyWord,
+      openTicket,
+      store,
+      openIssueDialoge,
+      clickedIssue,
+      open,
+      createNewStatusGroup,
+      assignees,
+      selectedAssignees,
+    };
+  },
+};
 </script>
 
 <style scoped>
@@ -313,7 +311,7 @@ html {
 .kanban-container {
   display: grid;
   grid-template-rows: 200px calc(100vh - 200px);
-  grid-template-areas: 
+  grid-template-areas:
   "header"
   "kanban";
 }
@@ -445,19 +443,19 @@ html {
 }
 
 .kanban div:nth-child(1n) .kanban-col {
-   border-top: 5px solid #FDB600;  
+   border-top: 5px solid #FDB600;
 }
 
 .kanban div:nth-child(2n) .kanban-col {
-   border-top: 5px solid rgba(35, 140, 185, 0.38);  
+   border-top: 5px solid rgba(35, 140, 185, 0.38);
 }
 
 .kanban div:nth-child(3n) .kanban-col {
-   border-top: 5px solid #E2B1FF;  
+   border-top: 5px solid #E2B1FF;
 }
 
 .kanban div:nth-child(4n) .kanban-col {
-   border-top: 5px solid #295365;  
+   border-top: 5px solid #295365;
 }
 
 .author-circle {
