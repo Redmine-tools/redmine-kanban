@@ -12,5 +12,5 @@ module.exports = {
     'quasar',
   ],
 
-  lintOnSave: false
+  lintOnSave: false,
 };

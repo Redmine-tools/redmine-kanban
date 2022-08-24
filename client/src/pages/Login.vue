@@ -137,7 +137,7 @@ export default {
     }
 
     function setActiveToFalse() {
-      isActive.value = false
+      isActive.value = false;
     }
 
     async function getAPILink() {
