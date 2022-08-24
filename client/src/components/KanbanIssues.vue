@@ -360,6 +360,11 @@ html {
 
 }
 
+.q-field, .q-select {
+  height: 57px;
+  overflow: auto;
+}
+
 .kanban-container > .kanban > div:first-of-type {
   margin-inline-start: 48px;
 }
