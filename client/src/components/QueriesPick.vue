@@ -1,19 +1,22 @@
 <template>
-  <p class="section-title">{{ $t("qSelect") }}</p>
+  <p class="section-title">
+    {{ $t("qSelect") }}
+  </p>
   <q-select
-  outlined
-  v-model="selectedQuerie"
-  :options="queiresOrdered"
-  :option-value="'id'"
-  :option-label="'name'"
-  :label="$t('query')"
-  @filter="filterFn"
-  @update:model-value="updateQuery"
-  input-debounce="10"
-  use-input
-  hide-selected
-  fill-input
-  :disable="queiresOrdered.length === 0"/>
+    v-model="selectedQuerie"
+    outlined
+    :options="queiresOrdered"
+    :option-value="'id'"
+    :option-label="'name'"
+    :label="$t('query')"
+    input-debounce="10"
+    use-input
+    hide-selected
+    fill-input
+    :disable="queiresOrdered.length === 0"
+    @filter="filterFn"
+    @update:model-value="updateQuery"
+  />
 </template>
 
 <script>

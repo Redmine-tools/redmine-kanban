@@ -4,7 +4,10 @@
       <h1>{{ $t("setupTitle") }}</h1>
       <p>{{ $t("setupHelper") }}</p>
     </header>
-    <section id="setup-container" class="setup-container">
+    <section
+      id="setup-container"
+      class="setup-container"
+    >
       <article class="input-container">
         <ProjectPick />
       </article>
@@ -16,7 +19,9 @@
       <q-btn
         :disabled="!store.state.query.id"
         class="action"
-        @click="proceedToKanbanBoard">{{ $t("proceed") }}
+        @click="proceedToKanbanBoard"
+      >
+        {{ $t("proceed") }}
       </q-btn>
     </div>
   </section>

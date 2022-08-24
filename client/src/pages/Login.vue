@@ -1,67 +1,89 @@
 <template>
   <div class="login-page">
-  <section class="login-container">
-    <div class="img-container">
-      <img class="login-company-logo" src="@/assets/logo.svg" alt="company-logo">
-    </div>
-    <h1>{{ $t("header") }}</h1>
-    <form @submit.prevent="getUser" class="form-control">
-      <div class="input-container">
-        <q-input
-          outlined
-          :label="$t('username')"
-          v-model="username"
-          id="username"
-          name="username"
-          type="text"
-        />
-        <q-input
-          outlined
-          :label="$t('password')"
-          v-model="password"
-          id="password"
-          name="password"
-          :type="isPwd ? 'password' : 'text'" autocomplete="on"
+    <section class="login-container">
+      <div class="img-container">
+        <img
+          class="login-company-logo"
+          src="@/assets/logo.svg"
+          alt="company-logo"
         >
-          <template v-slot:append>
-            <q-icon
-              :name="isPwd ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPwd = !isPwd"
-            />
-          </template>
-        </q-input>
-        <p class="separator">{{ $t("apiKeyOption") }}</p>
-        <p class="info">
-          {{ $t("apiKeyHelp") }}
-          <button type="button" class="as-link" @click="getAPILink">{{ $t("apiKey") }}</button>
-        </p>
-        <q-input
-          outlined
-          :label="$t('apiKey')"
-          v-model="apiKey"
-          id="api-token"
-          name="api-token"
-          :type="isApiKey ? 'password' : 'text'"
-          >
-          <template v-slot:append>
-            <q-icon
-              :name="isApiKey ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isApiKey = !isApiKey"
-            />
-          </template>
-        </q-input>
-        <q-btn type="submit" class="action">{{ $t("login") }}</q-btn>
       </div>
-    </form>
-    <div
-      v-bind:class="{ active: isActive }"
-      class="toast" id="errorToast"
+      <h1>{{ $t("header") }}</h1>
+      <form
+        class="form-control"
+        @submit.prevent="getUser"
       >
-      {{ $t("loginFail") }}
-    </div>
-  </section>
+        <div class="input-container">
+          <q-input
+            id="username"
+            v-model="username"
+            outlined
+            :label="$t('username')"
+            name="username"
+            type="text"
+          />
+          <q-input
+            id="password"
+            v-model="password"
+            outlined
+            :label="$t('password')"
+            name="password"
+            :type="isPwd ? 'password' : 'text'"
+            autocomplete="on"
+          >
+            <template #append>
+              <q-icon
+                :name="isPwd ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isPwd = !isPwd"
+              />
+            </template>
+          </q-input>
+          <p class="separator">
+            {{ $t("apiKeyOption") }}
+          </p>
+          <p class="info">
+            {{ $t("apiKeyHelp") }}
+            <button
+              type="button"
+              class="as-link"
+              @click="getAPILink"
+            >
+              {{ $t("apiKey") }}
+            </button>
+          </p>
+          <q-input
+            id="api-token"
+            v-model="apiKey"
+            outlined
+            :label="$t('apiKey')"
+            name="api-token"
+            :type="isApiKey ? 'password' : 'text'"
+          >
+            <template #append>
+              <q-icon
+                :name="isApiKey ? 'visibility_off' : 'visibility'"
+                class="cursor-pointer"
+                @click="isApiKey = !isApiKey"
+              />
+            </template>
+          </q-input>
+          <q-btn
+            type="submit"
+            class="action"
+          >
+            {{ $t("login") }}
+          </q-btn>
+        </div>
+      </form>
+      <div
+        id="errorToast"
+        :class="{ active: isActive }"
+        class="toast"
+      >
+        {{ $t("loginFail") }}
+      </div>
+    </section>
   </div>
 </template>
 
@@ -107,11 +129,15 @@ export default {
         }
       } catch (error) {
         isActive.value = true;
-        setTimeout(() => isActive.value = false, 2000);
+        setTimeout(setActiveToFalse, 2000);
         apiKey.value = '';
         username.value = '';
         password.value = '';
       }
+    }
+
+    function setActiveToFalse() {
+      isActive.value = false
     }
 
     async function getAPILink() {

@@ -1,7 +1,21 @@
 <template>
-  <q-layout view="hHh lpR fFf" style="background: #FBFBFB">
-    <q-page-sticky v-if="store.state.user.firstname" position="top-right" :offset="[18, 18]">
-      <q-btn @click="logout" unelevated rounded color="light-blue-8" >{{ $t("logout") }}</q-btn>
+  <q-layout
+    view="hHh lpR fFf"
+    style="background: #FBFBFB"
+  >
+    <q-page-sticky
+      v-if="store.state.user.firstname"
+      position="top-right"
+      :offset="[18, 18]"
+    >
+      <q-btn
+        unelevated
+        rounded
+        color="light-blue-8"
+        @click="logout"
+      >
+        {{ $t("logout") }}
+      </q-btn>
     </q-page-sticky>
     <q-drawer
       v-if="store.state.user.api_key"
@@ -10,11 +24,15 @@
       bordered
       show-if-above
       :mini="!leftDrawerOpen || miniState"
-      @click.capture="drawerClick"
       :width="315"
       :breakpoint="500"
-      class="bg-white-3">
-      <div class="q-mini-drawer-hide absolute" style="top: 60px; right: -17px;">
+      class="bg-white-3"
+      @click.capture="drawerClick"
+    >
+      <div
+        class="q-mini-drawer-hide absolute"
+        style="top: 60px; right: -17px;"
+      >
         <q-btn
           dense
           round
@@ -24,7 +42,11 @@
           @click="miniState = true"
         />
       </div>
-      <div v-if="miniState" class="q-mini-drawer-show absolute" style="top: 60px; right: -17px;">
+      <div
+        v-if="miniState"
+        class="q-mini-drawer-show absolute"
+        style="top: 60px; right: -17px;"
+      >
         <q-btn
           dense
           round
@@ -34,28 +56,66 @@
           @click="leftDrawerOpen = true; miniState = false"
         />
       </div>
-      <aside v-if="!miniState" class="image-container">
-        <img class="company-logo" src="@/assets/logo.svg" alt="company-logo">
+      <aside
+        v-if="!miniState"
+        class="image-container"
+      >
+        <img
+          class="company-logo"
+          src="@/assets/logo.svg"
+          alt="company-logo"
+        >
       </aside>
-      <aside v-else class="mini-image-container">
-        <img class="company-logo" src="@/assets/logo-mini.svg" alt="company-logo">
+      <aside
+        v-else
+        class="mini-image-container"
+      >
+        <img
+          class="company-logo"
+          src="@/assets/logo-mini.svg"
+          alt="company-logo"
+        >
       </aside>
       <aside class="settings">
-        <div v-if="!miniState" class="lang-select-container">
-          <p class="settings-title"> <q-icon name="settings" /> {{ $t("langSelectTitle") }}</p>
+        <div
+          v-if="!miniState"
+          class="lang-select-container"
+        >
+          <p class="settings-title">
+            <q-icon name="settings" /> {{ $t("langSelectTitle") }}
+          </p>
           <div class="buttons">
-            <q-btn :color="locale === 'hu' ? 'black': 'grey-6'" outline rounded @click="setLang('hu')">Magyar</q-btn>
-            <q-btn :color="locale === 'en' ? 'black': 'grey-6'" outline rounded @click="setLang('en')">English</q-btn>
+            <q-btn
+              :color="locale === 'hu' ? 'black': 'grey-6'"
+              outline
+              rounded
+              @click="setLang('hu')"
+            >
+              Magyar
+            </q-btn>
+            <q-btn
+              :color="locale === 'en' ? 'black': 'grey-6'"
+              outline
+              rounded
+              @click="setLang('en')"
+            >
+              English
+            </q-btn>
           </div>
-          <p class="version">v {{ version }}</p>
+          <p class="version">
+            v {{ version }}
+          </p>
         </div>
-        <div v-else class="mini-lang-select-container">
+        <div
+          v-else
+          class="mini-lang-select-container"
+        >
           <q-icon name="settings" />
         </div>
       </aside>
     </q-drawer>
     <q-page-container>
-      <router-view/>
+      <router-view />
     </q-page-container>
   </q-layout>
 </template>

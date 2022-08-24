@@ -1,15 +1,23 @@
 <template>
-  <section id="kanban-container" class="kanban-container">
+  <section
+    id="kanban-container"
+    class="kanban-container"
+  >
     <header>
       <aside class="partial-header">
-        <q-input debounce="600" outlined v-model="searchKeyWord" :label="$t('filter')">
-          <template v-slot:prepend>
+        <q-input
+          v-model="searchKeyWord"
+          debounce="600"
+          outlined
+          :label="$t('filter')"
+        >
+          <template #prepend>
             <q-icon name="search" />
           </template>
         </q-input>
         <q-select
-          filled
           v-model="selectedAssignees"
+          filled
           multiple
           :options="assignees"
           use-chips
@@ -17,45 +25,78 @@
           label="Assignee"
         />
       </aside>
-      <p class="path"> <router-link to="/setup">{{ $t("setupTitle") }}</router-link> / {{ store.state.project.name }} / {{ store.state.query.name }}</p>
+      <p class="path">
+        <router-link to="/setup">
+          {{ $t("setupTitle") }}
+        </router-link> / {{ store.state.project.name }} / {{ store.state.query.name }}
+      </p>
       <h1>{{ store.state.query.name }}</h1>
     </header>
-    <TimeEntriesForUser/>
+    <TimeEntriesForUser />
     <section class="kanban">
-      <div class="" v-for="status in columnConfig" :id="status.id" :key="status.id">
-        <h6 class="status-name">{{ status.name }} <p> {{ (Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name].length : 0 }} </p></h6>
+      <div
+        v-for="status in columnConfig"
+        :id="status.id"
+        :key="status.id"
+        class=""
+      >
+        <h6 class="status-name">
+          {{ status.name }} <p> {{ (Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name].length : 0 }} </p>
+        </h6>
         <div class="kanban-col">
           <draggable
-                  class="list-group"
-                  :list="(Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name] : createNewStatusGroup(status.name)"
-                  @add="add"
-                  itemKey="id"
-                  group="issues"
-                  v-bind:id="status.name"
+            :id="status.name"
+            class="list-group"
+            :list="(Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name] : createNewStatusGroup(status.name)"
+            item-key="id"
+            group="issues"
+            @add="add"
           >
             <template #item="{ element }">
-              <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
+              <div
+                :id="element.id"
+                class="list-item"
+                @click="openTicket(element)"
+              >
                 <div class="title-container">
-                  <div class="title">#{{ element.id }}</div>
-                  <div class="author-circle" v-if="element?.assigned_to?.name">
+                  <div class="title">
+                    #{{ element.id }}
+                  </div>
+                  <div
+                    v-if="element?.assigned_to?.name"
+                    class="author-circle"
+                  >
                     <span class="author-tooltiptext">{{ $t("assignedTo") }}: {{ element.assigned_to.name }}</span>
                     {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
                   </div>
                 </div>
-                <div class="title subject">{{ element.subject }}</div>
+                <div class="title subject">
+                  {{ element.subject }}
+                </div>
               </div>
             </template>
           </draggable>
         </div>
       </div>
     </section>
-    <q-dialog v-model="openIssueDialoge" persistent>
+    <q-dialog
+      v-model="openIssueDialoge"
+      persistent
+    >
       <q-card>
-          <header class="card-header">
-            <h4 class="text-h5">{{ clickedIssue.subject }}</h4>
-            <q-space />
-            <q-btn icon="close" flat round dense v-close-popup />
-          </header>
+        <header class="card-header">
+          <h4 class="text-h5">
+            {{ clickedIssue.subject }}
+          </h4>
+          <q-space />
+          <q-btn
+            v-close-popup
+            icon="close"
+            flat
+            round
+            dense
+          />
+        </header>
 
         <q-card-section class="row card-data">
           <div><span class="gray-text">{{ $t("subject") }}:</span> {{ clickedIssue.subject }}</div>
@@ -64,11 +105,22 @@
           <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
           <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
           <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
-          <div v-if="clickedIssue.assigned_to?.name"><span class="gray-text">{{ $t("assignedTo") }}:</span> {{ clickedIssue.assigned_to.name }} </div>
+          <div v-if="clickedIssue.assigned_to?.name">
+            <span class="gray-text">{{ $t("assignedTo") }}:</span> {{ clickedIssue.assigned_to.name }}
+          </div>
         </q-card-section>
         <q-card-actions align="left">
-          <q-btn @click="open()" :label="$t('openInRedmine')" class="action" v-close-popup />
-          <q-btn :label="$t('closePopup')" class="cancel" v-close-popup />
+          <q-btn
+            v-close-popup
+            :label="$t('openInRedmine')"
+            class="action"
+            @click="open()"
+          />
+          <q-btn
+            v-close-popup
+            :label="$t('closePopup')"
+            class="cancel"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>

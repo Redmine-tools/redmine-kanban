@@ -1,10 +1,19 @@
 <template>
-  <div v-if="loading" class="loading-container">
+  <div
+    v-if="loading"
+    class="loading-container"
+  >
     <q-inner-loading :showing="loading">
-      <q-spinner-gears size="100px" color="dark" />
+      <q-spinner-gears
+        size="100px"
+        color="dark"
+      />
     </q-inner-loading>
   </div>
-  <KanbanIssues v-else :issues="issuesForProject" />
+  <KanbanIssues
+    v-else
+    :issues="issuesForProject"
+  />
 </template>
 
 <script>

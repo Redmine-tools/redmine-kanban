@@ -1,18 +1,21 @@
 <template>
-  <p class="section-title">{{ $t("pSelect") }}</p>
+  <p class="section-title">
+    {{ $t("pSelect") }}
+  </p>
   <q-select
-    outlined
     v-model="selectedProject"
+    outlined
     :options="projectsOrdered"
     :option-value="'value'"
     :option-label="'name'"
     :label="$t('project')"
-    @filter="filterFn"
     input-debounce="10"
     use-input
     hide-selected
     fill-input
-    @update:model-value="updateProject"/>
+    @filter="filterFn"
+    @update:model-value="updateProject"
+  />
 </template>
 
 <script>
@@ -22,9 +25,9 @@ import { useStore } from 'vuex';
 
 export default {
   name: 'ProjectPick',
-  emits: ['projectPicked'],
   components: {
   },
+  emits: ['projectPicked'],
   setup() {
     const projectsOrdered = ref();
     let stringOptions;

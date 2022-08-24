@@ -7,7 +7,10 @@ module.exports = {
       rtlSupport: false,
     },
   },
+
   transpileDependencies: [
     'quasar',
   ],
+
+  lintOnSave: false
 };
