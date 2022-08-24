@@ -41,13 +41,18 @@
         class=""
       >
         <h6 class="status-name">
-          {{ status.name }} <p> {{ (Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name].length : 0 }} </p>
+          {{ status.name }}
+          <p>
+            {{ (Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name].length : 0 }}
+          </p>
         </h6>
         <div class="kanban-col">
           <draggable
             :id="status.name"
             class="list-group"
-            :list="(Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name] : createNewStatusGroup(status.name)"
+            :list="(Object.keys(issuesByStatus).indexOf(status.name) > -1) ?
+              issuesByStatus[status.name] :
+              createNewStatusGroup(status.name)"
             item-key="id"
             group="issues"
             @add="add"
@@ -66,7 +71,9 @@
                     v-if="element?.assigned_to?.name"
                     class="author-circle"
                   >
-                    <span class="author-tooltiptext">{{ $t("assignedTo") }}: {{ element.assigned_to.name }}</span>
+                    <span class="author-tooltiptext">
+                      {{ $t("assignedTo") }}: {{ element.assigned_to.name }}
+                    </span>
                     {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
                   </div>
                 </div>
@@ -99,14 +106,33 @@
         </header>
 
         <q-card-section class="row card-data">
-          <div><span class="gray-text">{{ $t("subject") }}:</span> {{ clickedIssue.subject }}</div>
-          <div><span class="gray-text">{{ $t("createdOn") }}:</span> {{ new Date(clickedIssue.created_on).toLocaleString() }}</div>
-          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> {{ new Date(clickedIssue.updated_on).toLocaleString() }}</div>
-          <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
-          <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
-          <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
+          <div>
+            <span class="gray-text">{{ $t("subject") }}:</span>
+            {{ clickedIssue.subject }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("createdOn") }}:</span>
+            {{ new Date(clickedIssue.created_on).toLocaleString() }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("updatedOn") }}:</span>
+            {{ new Date(clickedIssue.updated_on).toLocaleString() }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("priority") }}:</span>
+            {{ clickedIssue.priority.name }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("project") }}:</span>
+            {{ clickedIssue.project.name }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("status") }}:</span>
+            {{ clickedIssue.status.name }}
+          </div>
           <div v-if="clickedIssue.assigned_to?.name">
-            <span class="gray-text">{{ $t("assignedTo") }}:</span> {{ clickedIssue.assigned_to.name }}
+            <span class="gray-text">{{ $t("assignedTo") }}:</span>
+            {{ clickedIssue.assigned_to.name }}
           </div>
         </q-card-section>
         <q-card-actions align="left">
@@ -133,9 +159,9 @@ import lodash from 'lodash';
 import {
   ref, onMounted, watch, computed,
 } from 'vue';
-import RedmineService from '@/services/RedmineService.js';
+import RedmineService from '@/services/RedmineService';
 import { useStore } from 'vuex';
-import TimeEntriesForUser from '@/components/TimeEntriesForUser';
+import TimeEntriesForUser from '@/components/TimeEntriesForUser.vue';
 
 export default {
   name: 'KanbanIssues',
@@ -165,7 +191,9 @@ export default {
     let originalIssuesByStatus;
 
     const assignees = computed(() => {
-      const names = props.issues.value ? props?.issues?.value.filter((i) => i.assigned_to).map((i) => i.assigned_to.name) : [];
+      const names = props.issues.value
+        ? props?.issues?.value.filter((i) => i.assigned_to).map((i) => i.assigned_to.name)
+        : [];
       return Array.from(new Set(names));
     });
     const selectedAssignees = ref([]);
@@ -193,13 +221,12 @@ export default {
         console.log('error in config');
       }
 
-      // Return existing statuses by config order
       columnConfig.value = columnNames.map((status_name) => redmineStatuses.find((status) => status.name === status_name)).filter(Boolean);
     }
 
     async function add(event) {
       const movedTo = event.to.id;
-      const movedId = parseInt(event.item.id);
+      const movedId = parseInt(event.item.id, 10);
       const newStatus = columnConfig.value.find((i) => i.name === movedTo);
       await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id);
     }

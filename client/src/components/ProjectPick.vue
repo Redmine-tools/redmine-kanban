@@ -20,7 +20,7 @@
 
 <script>
 import { ref, onMounted } from 'vue';
-import RedmineService from '@/services/RedmineService.js';
+import RedmineService from '@/services/RedmineService';
 import { useStore } from 'vuex';
 
 export default {

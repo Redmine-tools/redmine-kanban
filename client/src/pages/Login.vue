@@ -105,6 +105,10 @@ export default {
     const isPwd = ref(true);
     const isApiKey = ref(true);
 
+    function setActiveToFalse() {
+      isActive.value = false;
+    }
+
     async function getUser() {
       try {
         if (username.value && password.value) {
@@ -134,10 +138,6 @@ export default {
         username.value = '';
         password.value = '';
       }
-    }
-
-    function setActiveToFalse() {
-      isActive.value = false;
     }
 
     async function getAPILink() {
