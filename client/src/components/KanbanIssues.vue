@@ -20,7 +20,8 @@
       <p class="path"> <router-link to="/setup">{{ $t("setupTitle") }}</router-link> / {{ store.state.project.name }} / {{ store.state.query.name }}</p>
       <h1>{{ store.state.query.name }}</h1>
     </header>
-    <div class="kanban">
+    <TimeEntriesForUser/>
+    <section class="kanban">
       <div class="" v-for="status in columnConfig" :id="status.id" :key="status.id">
         <h6 class="status-name">{{ status.name }} <p> {{ (Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name].length : 0 }} </p></h6>
         <div class="kanban-col">
@@ -47,7 +48,7 @@
           </draggable>
         </div>
       </div>
-    </div>
+    </section>
     <q-dialog v-model="openIssueDialoge" persistent>
       <q-card>
           <header class="card-header">
@@ -80,11 +81,13 @@
   import { ref, onMounted, watch, computed } from 'vue'
   import RedmineService from '@/services/RedmineService.js'
   import { useStore } from "vuex"
+  import TimeEntriesForUser from '@/components/TimeEntriesForUser'
 
   export default {
     name: 'KanbanIssues',
     components: {
-      draggable
+      draggable,
+      TimeEntriesForUser
     },
     props: {
       issues: {
