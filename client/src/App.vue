@@ -76,6 +76,7 @@
           alt="company-logo"
         >
       </aside>
+      <Navigation />
       <aside class="settings">
         <div
           v-if="!miniState"
@@ -125,10 +126,12 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import Navigation from '@/components/Navigation'
 
 export default {
   name: 'App',
   components: {
+    Navigation,
   },
   setup() {
     const store = useStore();
