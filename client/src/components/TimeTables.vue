@@ -1,6 +1,28 @@
 <template>
   <section class="tasks-page">
     <p>{{ assignee }}</p>
+    <p>{{ timeEntriesForUser }}</p>
+    <table class="demTable">
+		<thead>
+			<tr>
+				<th>Project</th>
+				<th>Task</th>
+				<th>Note</th>
+				<th>Hours</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr
+        v-for="entry in timeEntriesForUser"
+        :id="entry.id"
+        :key="entry.id">
+				<td>{{ entry.project.name }}</td>
+				<td>{{ entry.issue.id }}</td>
+				<td>{{ entry.comments }}</td>
+				<td>{{ entry.hours }}</td>
+			</tr>
+		</tbody>
+	</table>
   </section>
 </template>
 
@@ -8,6 +30,8 @@
 import { useStore } from 'vuex';
 import {
   computed,
+  onMounted,
+  ref,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
 
@@ -21,11 +45,16 @@ export default {
     const assignee = computed(() => {
       return store.state.assignee;
     });
+    const timeEntriesForUser = ref([]);
 
-    RedmineService.getTimeEntriesByUser(store.state.user.api_key, store.state.project.id, store.state.user.id).then(res => console.log(res))
+    onMounted( async () => {
+      timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(store.state.user.api_key, store.state.project.id, store.state.user.id)).data.time_entries
+      console.log(timeEntriesForUser.value)
+    });
 
     return {
-      assignee
+      assignee,
+      timeEntriesForUser
     };
   },
 };
