@@ -17,7 +17,6 @@ export default {
   setup() {
     const router = useRouter();
     const activeRoute = computed(() => router.currentRoute._value.path);
-    console.log(activeRoute.value.includes('kanban'))
 
     return {
       activeRoute

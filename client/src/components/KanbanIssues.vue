@@ -237,10 +237,19 @@ export default {
       return foundItems;
     };
 
+    function updateAssigneeInStore(assignee) {
+      store.commit({
+        type: 'updateAssignee',
+        payload: assignee,
+      });
+    }
+
     watch(selectedAssignees, () => {
       if (Object.keys(selectedAssignees.value).length === 0) {
+        updateAssigneeInStore(selectedAssignees.value);
         issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
       } else {
+        updateAssigneeInStore(selectedAssignees.value);
         issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
         for (const group in issuesByStatus.value) {
           issuesByStatus.value[group] = issuesByStatus.value[group].filter((issue) => selectedAssignees.value.includes(issue?.assigned_to?.name));
@@ -274,7 +283,6 @@ export default {
       setupColumnConfig();
       issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name');
       originalIssuesByStatus = JSON.parse(JSON.stringify(issuesByStatus.value));
-      console.log(originalIssuesByStatus);
     });
 
     return {
