@@ -2,93 +2,108 @@ import Api from '@/services/Api';
 
 export default {
   getRedmineUrl() {
-    return Api().get('redmine_url');
+    return Api().get("redmine_url");
   },
   getUser(apiKey) {
-    return Api().get('users/current.json', {
+    return Api().get("users/current.json", {
       headers: {
-        'X-Redmine-API-Key': apiKey,
-      },
+        "X-Redmine-API-Key": apiKey
+      }
     });
   },
   getProjects(apiKey, offset) {
-    return Api().get('projects.json', {
+    return Api().get("projects.json", {
       headers: {
-        'X-Redmine-API-Key': apiKey,
+        "X-Redmine-API-Key": apiKey
       },
       params: {
         limit: 100,
-        offset,
-      },
+        offset
+      }
     });
   },
   getProjectQueries(apiKey, offset) {
-    return Api().get('queries.json', {
+    return Api().get("queries.json", {
       headers: {
-        'X-Redmine-API-Key': apiKey,
+        "X-Redmine-API-Key": apiKey
       },
       params: {
         limit: 100,
-        offset,
-      },
+        offset
+      }
     });
   },
   getIssuesForProject(apiKey, queryId, projectId, offset) {
-    return Api().get('issues.json', {
+    return Api().get("issues.json", {
       headers: {
-        'X-Redmine-API-Key': apiKey,
+        "X-Redmine-API-Key": apiKey
       },
       params: {
         project_id: projectId,
         query_id: queryId,
         limit: 100,
-        offset,
-      },
+        offset
+      }
     });
   },
   getKanbanConfigTracker(apiKey) {
-    return Api().get('trackers.json', {
+    return Api().get("trackers.json", {
       headers: {
-        'X-Redmine-API-Key': apiKey,
-      },
+        "X-Redmine-API-Key": apiKey
+      }
     });
   },
   getKanbanConfig(apiKey, projectId, trackerID) {
-    return Api().get('issues.json', {
+    return Api().get("issues.json", {
       headers: {
-        'X-Redmine-API-Key': apiKey,
+        "X-Redmine-API-Key": apiKey
       },
       params: {
         project_id: projectId,
         tracker_id: trackerID,
-        limit: 100,
-      },
+        limit: 100
+      }
     });
   },
   getRedmineStatuses(apiKey, offset) {
-    return Api().get('issue_statuses.json', {
+    return Api().get("issue_statuses.json", {
       headers: {
-        'X-Redmine-API-Key': apiKey,
+        "X-Redmine-API-Key": apiKey
       },
       params: {
         limit: 100,
-        offset,
-      },
+        offset
+      }
     });
   },
   updateIssueStatus(apiKey, issueId, statusId) {
-    return Api().put(`issues/${issueId}.json`, {
-      issue: {
-        status_id: statusId,
+    return Api().put(
+      `issues/${issueId}.json`,
+      {
+        issue: {
+          status_id: statusId
+        }
       },
-    },
-    {
-      headers: {
-        'X-Redmine-API-Key': apiKey,
-      },
-    });
+      {
+        headers: {
+          "X-Redmine-API-Key": apiKey
+        }
+      }
+    );
   },
   getUserByPassword(user) {
-    return Api().post('login', user);
+    return Api().post("login", user);
   },
+  getTimeEntriesByUser(apiKey, projectId, userId) {
+    return Api().get("time_entries.json", {
+      headers: {
+        "X-Redmine-API-Key": apiKey
+      },
+      params: {
+        user_id: "me",
+        project_id: projectId,
+        limit: 100
+      }
+    });
+  }
 };

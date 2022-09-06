@@ -1,17 +1,17 @@
 <template>
   <section class="tasks-page">
-    <h2>tasks</h2>
+    <h3>Tasks</h3>
     <TimeTables></TimeTables>
   </section>
 </template>
 
 <script>
-import TimeTable from '@/components/TimeTable.vue';
+import TimeTables from '@/components/TimeTables.vue';
 
 export default {
   name: 'Tasks',
   components: {
-    TimeTable
+    TimeTables
   },
   setup() {
 

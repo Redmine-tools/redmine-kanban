@@ -1,7 +1,6 @@
 <template>
   <section class="tasks-page">
-    <h2>tasks</h2>
-    <TimeTable></TimeTable>
+    <p>{{ assignee }}</p>
   </section>
 </template>
 
@@ -10,12 +9,12 @@ import { useStore } from 'vuex';
 import {
   computed,
 } from 'vue';
-import TimeTable from '@/components/TimeTable.vue';
+import RedmineService from '@/services/RedmineService';
 
 export default {
-  name: 'Tasks',
+  name: 'TimeTables',
   components: {
-    TimeTable
+
   },
   setup() {
     const store = useStore();
@@ -23,7 +22,7 @@ export default {
       return store.state.assignee;
     });
 
-    console.log(assignee.value)
+    RedmineService.getTimeEntriesByUser(store.state.user.api_key, store.state.project.id, store.state.user.id).then(res => console.log(res))
 
     return {
       assignee
