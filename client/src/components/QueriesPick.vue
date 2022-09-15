@@ -75,7 +75,7 @@ export default {
       });
     }
 
-    watch(() => store.state.project, () => {
+    watch(() => store.state.project.id, () => {
       getProjectQueries();
     });
 
