@@ -32,7 +32,6 @@
       </p>
       <h1>{{ store.state.query.name }}</h1>
     </header>
-    <TimeEntriesForUser />
     <section class="kanban">
       <div
         v-for="status in columnConfig"
@@ -161,13 +160,11 @@ import {
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
 import { useStore } from 'vuex';
-import TimeEntriesForUser from '@/components/TimeEntriesForUser.vue';
 
 export default {
   name: 'KanbanIssues',
   components: {
     draggable,
-    TimeEntriesForUser,
   },
   props: {
     issues: {
