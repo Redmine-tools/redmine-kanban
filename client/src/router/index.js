@@ -3,39 +3,39 @@ import store from '@/store';
 
 const routes = [
   {
-    path: "/",
-    name: "Login",
-    component: () => import(/* webpackChunkName: "Login" */ "@/pages/Login.vue")
+    path: '/',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "Login" */ '@/pages/Login.vue'),
   },
   {
-    path: "/setup",
-    name: "Setup",
-    component: () => import(/* webpackChunkName: "ProjectPick" */ "@/pages/Setup.vue"),
+    path: '/setup',
+    name: 'Setup',
+    component: () => import(/* webpackChunkName: "ProjectPick" */ '@/pages/Setup.vue'),
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
-    path: "/kanban",
-    name: "KanbanView",
-    component: () => import(/* webpackChunkName: "Kanban" */ "@/pages/KanbanView.vue"),
+    path: '/kanban',
+    name: 'KanbanView',
+    component: () => import(/* webpackChunkName: "Kanban" */ '@/pages/KanbanView.vue'),
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
-    path: "/tasks",
-    name: "Tasks",
-    component: () => import(/* webpackChunkName: "Tasks" */ "@/pages/Tasks.vue"),
+    path: '/tasks',
+    name: 'Tasks',
+    component: () => import(/* webpackChunkName: "Tasks" */ '@/pages/Tasks.vue'),
     meta: {
-      requiresAuth: true
-    }
+      requiresAuth: true,
+    },
   },
   {
-    path: "/:pathMatch(.*)*",
-    name: "NotFound",
-    component: () => import(/* webpackChunkName: "NotFound" */ "@/pages/NotFound.vue")
-  }
+    path: '/:pathMatch(.*)*',
+    name: 'NotFound',
+    component: () => import(/* webpackChunkName: "NotFound" */ '@/pages/NotFound.vue'),
+  },
 ];
 
 const router = createRouter({

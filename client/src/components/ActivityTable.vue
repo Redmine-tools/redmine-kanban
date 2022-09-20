@@ -1,5 +1,6 @@
 <template>
   <section class="tasks-page">
+<<<<<<< HEAD
     <h4>Activity table</h4>
     <table class="demTable">
 		<tbody>
@@ -12,6 +13,10 @@
 			</tr>
 		</tbody>
 	</table>
+=======
+    <h4>hey</h4>
+    {{ result }}
+>>>>>>> init new table
   </section>
 </template>
 
@@ -23,13 +28,22 @@ import {
   ref,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
+<<<<<<< HEAD
 export default {
   name: 'ActivityTable',
   components: {
+=======
+
+export default {
+  name: 'ActivityTable',
+  components: {
+
+>>>>>>> init new table
   },
   setup() {
     const store = useStore();
     const result = ref([]);
+<<<<<<< HEAD
     onMounted(async () => {
       const yesterday = new Date((new Date()).valueOf() - 1000*60*60*24);
       
@@ -49,6 +63,13 @@ export default {
 
     console.log(result.value);
 
+=======
+
+    onMounted(async () => {
+      console.log(store.state.issues)
+    });
+
+>>>>>>> init new table
     return {
       result,
     };
@@ -57,4 +78,8 @@ export default {
 </script>
 
 <style scoped>
+<<<<<<< HEAD
+=======
+
+>>>>>>> init new table
 </style>

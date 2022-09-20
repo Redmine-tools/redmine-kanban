@@ -19,7 +19,7 @@ export default {
     const activeRoute = computed(() => router.currentRoute._value.path);
 
     return {
-      activeRoute
+      activeRoute,
     };
   },
 };
