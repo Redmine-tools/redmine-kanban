@@ -32,10 +32,7 @@ export default {
     let stringOptions;
     const selectedProject = ref();
     const store = useStore();
-<<<<<<< HEAD
-=======
     const selectedProject = ref(store.state?.project?.id ? { value: store.state.project.id, name: store.state.project.name } : {});
->>>>>>> init new table
     let projects;
 
     async function getProjectsWithOffset(offset = 0) {

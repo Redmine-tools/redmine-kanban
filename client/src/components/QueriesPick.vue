@@ -32,10 +32,7 @@ export default {
     const projectsOrdered = ref();
     const selectedQuerie = ref();
     const store = useStore();
-<<<<<<< HEAD
-=======
     const selectedQuerie = ref(store.state?.query?.id ? { value: store.state.query.id, name: store.state.query.name } : {});
->>>>>>> init new table
     const queiresOrdered = ref([]);
     let queries;
     let stringOptions;
@@ -80,14 +77,11 @@ export default {
     }
 
     watch(() => store.state.project.id, () => {
-<<<<<<< HEAD
-=======
       selectedQuerie.value = {};
       store.commit({
         type: 'addQuerie',
         payload: {},
       });
->>>>>>> init new table
       getProjectQueries();
     });
 

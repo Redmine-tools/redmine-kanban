@@ -15,10 +15,6 @@
 import TimeTables from '@/components/TimeTables.vue';
 import ActivityTable from '@/components/ActivityTable.vue';
 import { ref } from 'vue';
-<<<<<<< HEAD
-=======
-
->>>>>>> init new table
 export default {
   name: 'Tables',
   components: {
@@ -27,10 +23,6 @@ export default {
   },
   setup() {
     const range = ref('day');
-<<<<<<< HEAD
-=======
-
->>>>>>> init new table
     return {
       range,
     };
@@ -39,8 +31,4 @@ export default {
 </script>
 
 <style scoped>
-<<<<<<< HEAD
-=======
-
->>>>>>> init new table
 </style>

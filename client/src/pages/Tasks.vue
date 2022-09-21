@@ -10,10 +10,6 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import Tables from '@/components/Tables.vue';
-<<<<<<< HEAD
-=======
-
->>>>>>> init new table
 export default {
   name: 'Tasks',
   components: {
@@ -22,10 +18,6 @@ export default {
   setup() {
     const store = useStore();
     const assignee = computed(() => store.state.assignee);
-<<<<<<< HEAD
-=======
-
->>>>>>> init new table
     return {
       assignee,
     };
