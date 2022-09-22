@@ -30,7 +30,6 @@ export default {
   },
   setup() {
     const projectsOrdered = ref();
-    const selectedQuerie = ref();
     const store = useStore();
     const selectedQuerie = ref(store.state?.query?.id ? { value: store.state.query.id, name: store.state.query.name } : {});
     const queiresOrdered = ref([]);

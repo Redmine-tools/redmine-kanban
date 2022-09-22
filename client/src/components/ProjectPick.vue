@@ -30,7 +30,6 @@ export default {
   setup() {
     const projectsOrdered = ref();
     let stringOptions;
-    const selectedProject = ref();
     const store = useStore();
     const selectedProject = ref(store.state?.project?.id ? { value: store.state.project.id, name: store.state.project.name } : {});
     let projects;
