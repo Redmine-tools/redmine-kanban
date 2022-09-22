@@ -1,7 +1,11 @@
 <template>
-  <aside class="navigation">
+  <aside v-if="!props.miniState" class="navigation">
     <router-link to="/kanban" :class="{active: activeRoute.includes('kanban')}" >Kanban board</router-link>
     <router-link to="/tasks" :class="{active: activeRoute.includes('tasks')}" >Tasks</router-link>
+  </aside>
+  <aside v-else class="mini-container">
+    <q-icon name="leaderboard" />
+    <q-icon name="toys" />
   </aside>
 </template>
 
@@ -14,12 +18,16 @@ export default {
   components: {
 
   },
-  setup() {
+  props: {
+    miniState: Boolean
+  },
+  setup(props) {
     const router = useRouter();
     const activeRoute = computed(() => router.currentRoute._value.path);
 
     return {
       activeRoute,
+      props
     };
   },
 };
@@ -46,11 +54,15 @@ export default {
   text-decoration: underline;
 }
 
-.active {
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 24px;
-  color: black;
-  background: red;
+.mini-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.mini-container> i {
+  font-size: 24px;
+  padding-block-start: 12px;
 }
 </style>

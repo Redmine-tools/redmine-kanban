@@ -76,7 +76,7 @@
           alt="company-logo"
         >
       </aside>
-      <Navigation />
+      <Navigation :miniState="miniState" />
       <aside class="settings">
         <div
           v-if="!miniState"

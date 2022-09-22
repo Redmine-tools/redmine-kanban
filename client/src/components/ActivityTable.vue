@@ -30,8 +30,9 @@ export default {
   setup() {
     const store = useStore();
     const result = ref([]);
+    const yesterday = new Date((new Date()).valueOf() - 1000*60*60*24);
+
     onMounted(async () => {
-      const yesterday = new Date((new Date()).valueOf() - 1000*60*60*24);
       
       for (const key of Object.keys(store.state.issues)) {
         const lastUpdatedOn = new Date(store.state.issues[key].updated_on)
