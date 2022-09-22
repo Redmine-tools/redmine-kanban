@@ -40,7 +40,7 @@ export default {
       const response = await RedmineService.getProjectQueries(store.state.user.api_key, offset);
       return {
         queries: response?.data?.queries || [],
-        totalCount: response?.data?.totalCount || 0,
+        totalCount: response?.data?.total_count || 0,
       };
     }
 

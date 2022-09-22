@@ -39,7 +39,7 @@ export default {
       ));
       return {
         issues: response?.data?.issues || [],
-        totalCount: response?.data?.totalCount || 0,
+        totalCount: response?.data?.total_count || 0,
       };
     }
 
