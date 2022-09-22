@@ -1,7 +1,7 @@
+
+
 <template>
   <section class="tasks-page">
-    <p>{{ assignee }}</p>
-    <p>{{ timeEntriesForUser }}</p>
     <table class="demTable">
 		<thead>
 			<tr>
@@ -34,32 +34,22 @@ import {
   ref,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
-
 export default {
   name: 'TimeTables',
   components: {
-
   },
   setup() {
     const store = useStore();
-    const assignee = computed(() => {
-      return store.state.assignee;
-    });
     const timeEntriesForUser = ref([]);
-
-    onMounted( async () => {
-      timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(store.state.user.api_key, store.state.project.id, store.state.user.id)).data.time_entries
-      console.log(timeEntriesForUser.value)
+    onMounted(async () => {
+      timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(store.state.user.api_key, store.state.project.id, store.state.user.id)).data.time_entries;
     });
-
     return {
-      assignee,
-      timeEntriesForUser
+      timeEntriesForUser,
     };
   },
 };
 </script>
 
 <style scoped>
-
 </style>

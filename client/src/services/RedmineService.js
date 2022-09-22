@@ -1,4 +1,4 @@
-import Api from '@/services/Api';
+import Api from "@/services/Api";
 
 export default {
   getRedmineUrl() {
@@ -100,9 +100,17 @@ export default {
         "X-Redmine-API-Key": apiKey
       },
       params: {
-        user_id: "me",
+        user_id: userId,
         project_id: projectId,
         limit: 100
+      }
+    });
+  },
+  // http://localhost:3000/api/issues/295.json?include=journals
+  getIssueJournals(apiKey, issueId) {
+    return Api().get(`issues/${issueId}.json?include=journals`, {
+      headers: {
+        "X-Redmine-API-Key": apiKey
       }
     });
   }

@@ -1,12 +1,13 @@
-import { createStore } from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
+import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 function initialState() {
   return {
     user: {},
     project: {},
     query: {},
-    assignee: '',
+    issues: {},
+    assignee: ""
   };
 }
 
@@ -15,7 +16,8 @@ const store = createStore({
     user: {},
     project: {},
     query: {},
-    assignee: '',
+    issues: {},
+    assignee: ""
   },
   mutations: {
     addUser(state, payload) {
@@ -26,6 +28,12 @@ const store = createStore({
     },
     addQuerie(state, payload) {
       state.query = { ...payload.payload };
+    },
+    addAllIssues(state, payload) {
+      state.issues = { ...payload.payload };
+    },
+    updateIssue(state, payload) {
+      state.issues[parseInt(payload.key, 10)] = payload.payload;
     },
     updateAssignee(state, payload) {
       state.assignee = payload.payload;

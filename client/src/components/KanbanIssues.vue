@@ -193,7 +193,7 @@ export default {
         : [];
       return Array.from(new Set(names));
     });
-    const selectedAssignees = ref([]);
+    const selectedAssignees = ref(store.state?.assignee ? [...store.state?.assignee] : []);
 
     async function openTicket(element) {
       openIssueDialoge.value = true;
