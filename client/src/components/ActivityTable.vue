@@ -1,6 +1,7 @@
 <template>
   <section class="tasks-page">
     <h4>Activity table</h4>
+    <div>{{ range }}</div>
     <table class="demTable">
 		<tbody>
 			<tr
@@ -25,12 +26,18 @@ import {
 import RedmineService from '@/services/RedmineService';
 export default {
   name: 'ActivityTable',
+  props: {
+    range: {
+      type: String
+    }
+  },
   components: {
   },
-  setup() {
+  setup(props) {
     const store = useStore();
     const result = ref([]);
     const yesterday = new Date((new Date()).valueOf() - 1000*60*60*24);
+    const range = computed(() => props.range)
 
     onMounted(async () => {
       
@@ -52,6 +59,7 @@ export default {
 
     return {
       result,
+      range
     };
   },
 };

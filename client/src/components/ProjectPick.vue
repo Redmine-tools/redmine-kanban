@@ -38,6 +38,7 @@ export default {
       const response = await RedmineService.getProjects(store.state.user.api_key, offset);
       return {
         projects: response?.data?.projects || [],
+         // eslint-disable-line
         totalCount: response?.data?.total_count || 0,
       };
     }
