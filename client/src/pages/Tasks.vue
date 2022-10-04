@@ -1,9 +1,16 @@
 <template>
-  <section class="tasks-page">
+  <section>
+    <article v-if="assignee.length < 1">
+      <h4>
+        Please select a user.
+      </h4>
+    </article>
+    <section v-else class="tasks-page">
     <h3>Tasks for {{ assignee }}</h3>
 
     <Tables />
   </section>
+</section>
 </template>
 
 <script>

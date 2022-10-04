@@ -7,6 +7,7 @@ function initialState() {
     project: {},
     query: {},
     issues: {},
+    projectQueries: {},
     assignee: '',
   };
 }
@@ -17,7 +18,8 @@ const store = createStore({
     project: {},
     query: {},
     issues: {},
-    assignee: '',
+    projectQueries: {},
+    assignee: ""
   },
   mutations: {
     addUser(state, payload) {
@@ -40,16 +42,16 @@ const store = createStore({
     },
     resetState(state) {
       const s = initialState();
-      Object.keys(s).forEach((key) => {
+      Object.keys(s).forEach(key => {
         state[key] = s[key];
       });
-    },
+    }
   },
   plugins: [
     createPersistedState({
-      storage: window.localStorage,
-    }),
-  ],
+      storage: window.localStorage
+    })
+  ]
 });
 
 export default store;
