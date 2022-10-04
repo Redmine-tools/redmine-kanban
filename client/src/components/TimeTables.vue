@@ -1,5 +1,3 @@
-
-
 <template>
   <section class="tasks-page">
     <table class="demTable">
@@ -34,6 +32,7 @@ import {
   ref,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
+
 export default {
   name: 'TimeTables',
   components: {

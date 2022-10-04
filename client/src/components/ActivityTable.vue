@@ -24,31 +24,31 @@ import {
   ref,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
+
 export default {
   name: 'ActivityTable',
   props: {
     range: {
-      type: String
-    }
+      type: String,
+    },
   },
   components: {
   },
   setup(props) {
     const store = useStore();
     const result = ref([]);
-    const yesterday = new Date((new Date()).valueOf() - 1000*60*60*24);
-    const range = computed(() => props.range)
+    const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
+    const range = computed(() => props.range);
 
     onMounted(async () => {
-      
       for (const key of Object.keys(store.state.issues)) {
-        const lastUpdatedOn = new Date(store.state.issues[key].updated_on)
-        if(lastUpdatedOn > yesterday) {
-          const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue
+        const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
+        if (lastUpdatedOn > yesterday) {
+          const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
           store.commit({
             type: 'updateIssue',
             key,
-            payload: issueWithJournals
+            payload: issueWithJournals,
           });
           issueWithJournals?.journals.length > 0 && result.value.push(issueWithJournals.journals);
         }
@@ -59,7 +59,7 @@ export default {
 
     return {
       result,
-      range
+      range,
     };
   },
 };

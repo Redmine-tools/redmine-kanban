@@ -15,6 +15,7 @@
 import TimeTables from '@/components/TimeTables.vue';
 import ActivityTable from '@/components/ActivityTable.vue';
 import { ref } from 'vue';
+
 export default {
   name: 'Tables',
   components: {

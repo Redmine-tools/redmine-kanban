@@ -10,6 +10,7 @@
 import { computed } from 'vue';
 import { useStore } from 'vuex';
 import Tables from '@/components/Tables.vue';
+
 export default {
   name: 'Tasks',
   components: {

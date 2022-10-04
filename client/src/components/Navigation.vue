@@ -19,7 +19,7 @@ export default {
 
   },
   props: {
-    miniState: Boolean
+    miniState: Boolean,
   },
   setup(props) {
     const router = useRouter();
@@ -27,7 +27,7 @@ export default {
 
     return {
       activeRoute,
-      props
+      props,
     };
   },
 };
