@@ -189,10 +189,18 @@ export default {
 
     const assignees = computed(() => {
       const names = props.issues.value
-        ? props?.issues?.value.filter((i) => i.assigned_to).map((i) => i.assigned_to.name)
+        ? props?.issues?.value.filter((i) => i.assigned_to).map((i) => i.assigned_to)
         : [];
-      return Array.from(new Set(names));
+      let resArr = [];
+      names.forEach(function(item){
+        let i = resArr.findIndex(x => x.name == item.name);
+        if(i <= -1){
+          resArr.push({id: item.id, name: item.name});
+        }
+      })
+      return resArr;
     });
+    console.log(assignees)
     const selectedAssignees = ref(store.state?.assignee ? [...store.state?.assignee] : []);
 
     async function openTicket(element) {
