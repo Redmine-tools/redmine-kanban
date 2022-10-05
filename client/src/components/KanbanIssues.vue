@@ -20,6 +20,7 @@
           filled
           multiple
           :options="assignees"
+          :option-label="'name'"
           use-chips
           stack-label
           label="Assignee"
@@ -200,7 +201,7 @@ export default {
       })
       return resArr;
     });
-    console.log(assignees)
+
     const selectedAssignees = ref(store.state?.assignee ? [...store.state?.assignee] : []);
 
     async function openTicket(element) {
@@ -253,6 +254,7 @@ export default {
     }
 
     watch(selectedAssignees, () => {
+      console.log(selectedAssignees.value)
       if (Object.keys(selectedAssignees.value).length === 0) {
         updateAssigneeInStore(selectedAssignees.value);
         issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
@@ -260,7 +262,8 @@ export default {
         updateAssigneeInStore(selectedAssignees.value);
         issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
         for (const group in issuesByStatus.value) {
-          issuesByStatus.value[group] = issuesByStatus.value[group].filter((issue) => selectedAssignees.value.includes(issue?.assigned_to?.name));
+          console.log(selectedAssignees.value)
+          issuesByStatus.value[group] = issuesByStatus.value[group].filter((issue) => selectedAssignees.value.some(person => person.name === issue?.assigned_to?.name));
         }
       }
     });
