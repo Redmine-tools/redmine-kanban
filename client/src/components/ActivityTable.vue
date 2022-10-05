@@ -39,12 +39,17 @@ export default {
     const result = ref([]);
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
-    const selectedRange = range === 'day' ? yesterday : lastWeek;
     const range = computed(() => props.range);
+    const selectedRange = range.value === 'day' ? yesterday : lastWeek;
+
+    const filterByTime = (range) => {
+      
+    }
 
     onMounted(async () => {
       for (const key of Object.keys(store.state.issues)) {
         const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
+        console.log(selectedRange)
         if (lastUpdatedOn > selectedRange) {
           const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
           store.commit({
