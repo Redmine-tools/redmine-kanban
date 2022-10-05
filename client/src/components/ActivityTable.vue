@@ -41,12 +41,10 @@ export default {
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
     const range = computed(() => props.range);
-    let selectedRange = range.value === 'day' ? yesterday : lastWeek;
 
     watch(range, () => {
       result.value = []
-      selectedRange = range.value === 'day' ? yesterday : lastWeek;
-      filterByTime(selectedRange);
+      filterByTime(range.value === 'day' ? yesterday : lastWeek);
     })
 
     const filterByTime = async (rangeToCheck) => {
@@ -66,7 +64,7 @@ export default {
     }
 
     onMounted(async () => {
-      filterByTime(selectedRange);
+      filterByTime(range.value === 'day' ? yesterday : lastWee);
     });
 
     console.log(result.value);
