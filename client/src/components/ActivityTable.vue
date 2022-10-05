@@ -22,6 +22,7 @@ import {
   computed,
   onMounted,
   ref,
+  watch,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
 
@@ -40,17 +41,19 @@ export default {
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
     const range = computed(() => props.range);
-    const selectedRange = range.value === 'day' ? yesterday : lastWeek;
+    let selectedRange = range.value === 'day' ? yesterday : lastWeek;
 
-    const filterByTime = (range) => {
-      
-    }
+    watch(range, () => {
+      result.value = []
+      selectedRange = range.value === 'day' ? yesterday : lastWeek;
+      filterByTime(selectedRange);
+    })
 
-    onMounted(async () => {
+    const filterByTime = async (rangeToCheck) => {
       for (const key of Object.keys(store.state.issues)) {
         const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
-        console.log(selectedRange)
-        if (lastUpdatedOn > selectedRange) {
+        
+        if (lastUpdatedOn > rangeToCheck) {
           const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
           store.commit({
             type: 'updateIssue',
@@ -60,6 +63,10 @@ export default {
           issueWithJournals?.journals.length > 0 && result.value.push(issueWithJournals.journals);
         }
       }
+    }
+
+    onMounted(async () => {
+      filterByTime(selectedRange);
     });
 
     console.log(result.value);
