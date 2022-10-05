@@ -254,7 +254,6 @@ export default {
     }
 
     watch(selectedAssignees, () => {
-      console.log(selectedAssignees.value)
       if (Object.keys(selectedAssignees.value).length === 0) {
         updateAssigneeInStore(selectedAssignees.value);
         issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
@@ -262,7 +261,6 @@ export default {
         updateAssigneeInStore(selectedAssignees.value);
         issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
         for (const group in issuesByStatus.value) {
-          console.log(selectedAssignees.value)
           issuesByStatus.value[group] = issuesByStatus.value[group].filter((issue) => selectedAssignees.value.some(person => person.name === issue?.assigned_to?.name));
         }
       }

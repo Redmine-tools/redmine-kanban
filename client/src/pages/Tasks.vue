@@ -6,7 +6,7 @@
       </h4>
     </article>
     <section v-else class="tasks-page">
-    <h3>Tasks for {{ assignee }}</h3>
+    <h3>Tasks for {{ assignee.name }}</h3>
 
     <Tables />
   </section>
@@ -25,7 +25,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    const assignee = computed(() => store.state.assignee);
+    const assignee = computed(() => store.state.assignee[0]);
     return {
       assignee,
     };

@@ -42,7 +42,7 @@ export default {
     const timeEntriesForUser = ref([]);
 
     onMounted(async () => {
-      timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(store.state.user.api_key, store.state.project.id, store.state.user.id)).data.time_entries;
+      timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(store.state.user.api_key, store.state.project.id, store.state.assignee[0].id)).data.time_entries;
     });
     return {
       timeEntriesForUser,
