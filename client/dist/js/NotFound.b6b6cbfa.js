@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["NotFound"],{"76d4":function(n,t,e){},"8d84":function(n,t,e){"use strict";e("76d4")},aa4b:function(n,t,e){"use strict";e.r(t);var o=e("7a23"),c={class:"app-container"};function a(n,t,e,a,d,r){return Object(o["openBlock"])(),Object(o["createElementBlock"])("section",c,[Object(o["createElementVNode"])("h6",null,Object(o["toDisplayString"])(n.$t("notFound")),1)])}var d={name:"NotFound"},r=(e("8d84"),e("6b0d")),u=e.n(r);const i=u()(d,[["render",a]]);t["default"]=i}}]);
+//# sourceMappingURL=NotFound.b6b6cbfa.js.map
