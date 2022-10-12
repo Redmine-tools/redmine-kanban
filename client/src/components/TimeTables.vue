@@ -93,6 +93,16 @@ table {
   width: 100%;
   text-align: justify;
   vertical-align: baseline;
+  border-collapse: collapse; 
+}
+
+caption {
+  padding-block-start: 24px;
+  padding-inline-start: 24px;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: left;
+  color: #333;
 }
 
 thead {
@@ -111,5 +121,11 @@ tbody {
   line-height: 24px;
   letter-spacing: 0.15px;
   color: rgba(0, 0, 0, 0.45);
+}
+
+tbody > tr {
+  background: #EDF2F2;
+  height: 38px;
+  border-bottom-right-radius: 1px solid red;
 }
 </style>

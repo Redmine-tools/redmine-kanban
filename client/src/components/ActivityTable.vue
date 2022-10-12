@@ -82,4 +82,19 @@ export default {
 </script>
 
 <style scoped>
+table {
+  padding: 24px;
+  width: 100%;
+  text-align: justify;
+  vertical-align: baseline;
+}
+
+caption {
+  padding-block-start: 24px;
+  padding-inline-start: 24px;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: left;
+  color: #333;
+}
 </style>

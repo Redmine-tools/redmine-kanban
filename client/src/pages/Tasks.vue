@@ -48,7 +48,7 @@ export default {
 </script>
 
 <style scoped>
-.tasks-page > header {
+header {
   display: flex;
   align-content: center;
   justify-content: space-between;
