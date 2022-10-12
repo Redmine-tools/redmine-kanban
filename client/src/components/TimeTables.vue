@@ -1,9 +1,10 @@
 <template>
-  <section class="tasks-page">
+  <section >
     <div v-if="loading" class="loading-container">
       <q-inner-loading :showing="loading" />
     </div>
-    <table v-else class="demTable">
+    <table v-else class="">
+      <caption>Time reported</caption>
 		<thead>
 			<tr>
 				<th>Project</th>
@@ -87,4 +88,28 @@ export default {
 </script>
 
 <style scoped>
+table {
+  padding: 24px;
+  width: 100%;
+  text-align: justify;
+  vertical-align: baseline;
+}
+
+thead {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+tbody {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.45);
+}
 </style>

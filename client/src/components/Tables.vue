@@ -42,6 +42,7 @@ export default {
   margin-block-start: 48px;
   margin-inline: 48px;
   filter: drop-shadow(0px 6px 15px rgba(0, 0, 0, 0.25));
+  min-height: 192px;
 }
 
 .table-container > .header {

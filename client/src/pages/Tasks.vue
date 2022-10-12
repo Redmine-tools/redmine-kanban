@@ -5,11 +5,14 @@
         Please select a user.
       </h4>
     </article>
-    <section v-else class="tasks-page">
+    <section v-else >
       <header>
         <h3>{{ assignee.name }}'s activity</h3>
         <q-btn-toggle
           v-model="range"
+          no-caps
+          rounded
+          unelevated
           toggle-color="primary"
           :options="[
             {label: 'Day', value: 'day'},

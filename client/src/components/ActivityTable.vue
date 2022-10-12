@@ -1,9 +1,10 @@
 <template>
-  <section class="tasks-page">
+  <section >
     <div v-if="loading" class="loading-container">
       <q-inner-loading :showing="loading" />
     </div>
-    <table v-else class="demTable">
+    <table v-else class="">
+    <caption>Activities</caption>
 		<tbody>
 			<tr
         v-for="entry in result"
