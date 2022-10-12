@@ -1,8 +1,9 @@
 <template>
   <section class="tasks-page">
-    <h4>Activity table</h4>
-    <div>{{ range }}</div>
-    <table class="demTable">
+    <div v-if="loading" class="loading-container">
+      <q-inner-loading :showing="loading" />
+    </div>
+    <table v-else class="demTable">
 		<tbody>
 			<tr
         v-for="entry in result"
@@ -41,6 +42,7 @@ export default {
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
     const range = computed(() => props.range);
+    const loading = ref(false);
 
     watch(range, () => {
       result.value = []
@@ -48,6 +50,7 @@ export default {
     })
 
     const filterByTime = async (rangeToCheck) => {
+      loading.value = true;
       for (const key of Object.keys(store.state.issues)) {
         const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
         
@@ -61,6 +64,7 @@ export default {
           issueWithJournals?.journals.length > 0 && result.value.push(issueWithJournals.journals);
         }
       }
+      loading.value = false;
     }
 
     onMounted(async () => {
@@ -70,6 +74,7 @@ export default {
     return {
       result,
       range,
+      loading,
     };
   },
 };

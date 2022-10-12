@@ -1,7 +1,9 @@
 <template>
   <section class="tasks-page">
-    <div>range: {{ range }}</div>
-    <table class="demTable">
+    <div v-if="loading" class="loading-container">
+      <q-inner-loading :showing="loading" />
+    </div>
+    <table v-else class="demTable">
 		<thead>
 			<tr>
 				<th>Project</th>
@@ -51,6 +53,7 @@ export default {
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24).toISOString().slice(0, 10);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7).toISOString().slice(0, 10);
     const range = computed(() => props.range);
+    const loading = ref(false);
 
     watch(range, () => {
       timeEntriesForUser.value = []
@@ -58,7 +61,7 @@ export default {
     })
 
     const getTimeEntriesForUser = async (rangeToCheck) => {
-      // &from=${process.env.VUE_APP_YEAR}-01-01&to=${process.env.VUE_APP_YEAR}-12-31
+      loading.value = true;
       timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(
         store.state.user.api_key,
         store.state.project.id,
@@ -66,6 +69,7 @@ export default {
         today,
         range.value === 'day' ? yesterday : lastWeek)
       ).data.time_entries;
+      loading.value = false;
     }
 
 
@@ -76,10 +80,16 @@ export default {
     return {
       timeEntriesForUser,
       range,
+      loading,
     };
   },
 };
 </script>
 
 <style scoped>
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 </style>
