@@ -1,12 +1,4 @@
 <template>
-    <q-btn-toggle
-      v-model="range"
-      toggle-color="primary"
-      :options="[
-        {label: 'Day', value: 'day'},
-        {label: 'Week', value: 'week'},
-      ]"
-    />
   <section class="table-container">
     <div class="header"></div>
     <TimeTables :range="range"></TimeTables>
@@ -17,16 +9,21 @@
 <script>
 import TimeTables from '@/components/TimeTables.vue';
 import ActivityTable from '@/components/ActivityTable.vue';
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 
 export default {
   name: 'Tables',
+  props: {
+    range: {
+      type: String,
+    },
+  },
   components: {
     TimeTables,
     ActivityTable,
   },
-  setup() {
-    const range = ref('day');
+  setup(props) {
+    const range = computed(() => props.range);
     return {
       range,
     };
