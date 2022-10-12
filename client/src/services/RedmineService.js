@@ -94,7 +94,7 @@ export default {
   getUserByPassword(user) {
     return Api().post('login', user);
   },
-  getTimeEntriesByUser(apiKey, projectId, userId) {
+  getTimeEntriesByUser(apiKey, projectId, userId, today, from) {
     return Api().get('time_entries.json', {
       headers: {
         'X-Redmine-API-Key': apiKey,
@@ -102,6 +102,8 @@ export default {
       params: {
         user_id: userId,
         project_id: projectId,
+        from,
+        to: today,
         limit: 100,
       },
     });

@@ -64,10 +64,8 @@ export default {
     }
 
     onMounted(async () => {
-      filterByTime(range.value === 'day' ? yesterday : lastWee);
+      filterByTime(range.value === 'day' ? yesterday : lastWeek);
     });
-
-    console.log(result.value);
 
     return {
       result,

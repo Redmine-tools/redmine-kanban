@@ -1,5 +1,6 @@
 <template>
   <section class="tasks-page">
+    <div>range: {{ range }}</div>
     <table class="demTable">
 		<thead>
 			<tr>
@@ -30,31 +31,51 @@ import {
   computed,
   onMounted,
   ref,
+  watch,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
 
 export default {
   name: 'TimeTables',
+  props: {
+    range: {
+      type: String,
+    },
+  },
   components: {
   },
   setup(props) {
     const store = useStore();
     const timeEntriesForUser = ref([]);
+    const today = new Date().toISOString().slice(0, 10);
+    const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24).toISOString().slice(0, 10);
+    const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7).toISOString().slice(0, 10);
     const range = computed(() => props.range);
-    const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
-    const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
-    console.log(yesterday.toISOString());
 
-    onMounted(async () => {
+    watch(range, () => {
+      timeEntriesForUser.value = []
+      getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
+    })
+
+    const getTimeEntriesForUser = async (rangeToCheck) => {
       // &from=${process.env.VUE_APP_YEAR}-01-01&to=${process.env.VUE_APP_YEAR}-12-31
       timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(
         store.state.user.api_key,
         store.state.project.id,
-        store.state.assignee[0].id)
+        store.state.assignee[0].id,
+        today,
+        range.value === 'day' ? yesterday : lastWeek)
       ).data.time_entries;
+    }
+
+
+    onMounted(async () => {
+      getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
     });
+
     return {
       timeEntriesForUser,
+      range,
     };
   },
 };
