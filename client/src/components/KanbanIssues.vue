@@ -202,7 +202,7 @@ export default {
       return resArr;
     });
 
-    const selectedAssignees = ref(store.state?.assignee ? [...store.state?.assignee] : []);
+    let selectedAssignees = ref();
 
     async function openTicket(element) {
       openIssueDialoge.value = true;
@@ -292,6 +292,7 @@ export default {
       setupColumnConfig();
       issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name');
       originalIssuesByStatus = JSON.parse(JSON.stringify(issuesByStatus.value));
+      selectedAssignees.value = store.state?.assignee ? [...store.state?.assignee] : [];
     });
 
     return {
