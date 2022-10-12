@@ -1,10 +1,10 @@
 <template>
   <section>
-    <q-banner v-if="assignees.length > 1 || showBanner" class="text-white bg-red">
+    <q-banner v-if="assignees.length > 1 && showBanner" class="text-white bg-red">
       <template v-slot:avatar>
         <q-icon name="announcement" color="white" />
       </template>
-      Selecting more than one user for kanban board filter will be clipped and only one user will be kept for this page.
+      Selecting more than one user from the kanban board filter will be clipped and only one user will be kept.
       <template v-slot:action>
         <q-btn flat color="white" label="Nice" @click="hideBanner"/>
         <q-btn flat color="white" label="Back to kanban board" @click="navigateBackToKanban"/>
@@ -50,8 +50,8 @@ export default {
     const store = useStore();
     const assignee = computed(() => store.state.assignee[0]);
     const assignees = computed(() => store.state.assignee)
-    const range = ref('day');
     const showBanner = ref(true);
+    const range = ref('day');
     const router = useRouter();
 
     const hideBanner = () => {
@@ -66,8 +66,8 @@ export default {
       assignee,
       assignees,
       range,
-      showBanner,
       hideBanner,
+      showBanner,
       navigateBackToKanban
     };
   },
