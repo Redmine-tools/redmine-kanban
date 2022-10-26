@@ -5,13 +5,27 @@
     </div>
     <table v-else class="">
     <caption>Activities</caption>
+    <thead>
+			<tr>
+				<th>Project</th>
+				<th>Task</th>
+				<th>Action</th>
+			</tr>
+		</thead>
 		<tbody>
 			<tr
         v-for="entry in result"
         :id="entry.id"
         :key="entry.id">
-				<td>{{ entry }}</td>
-
+				<td>{{ entry.project.name }}</td>
+        <td>{{ entry.id }}</td>
+        <td>
+          <ul>
+            <li v-for="journal in renderJournals(entry.journals)">
+              {{ journal }}
+            </li>
+          </ul>
+        </td>
 			</tr>
 		</tbody>
 	</table>
@@ -62,10 +76,36 @@ export default {
             key,
             payload: issueWithJournals,
           });
-          issueWithJournals?.journals.length > 0 && result.value.push(issueWithJournals.journals);
+          issueWithJournals?.journals.length > 0 && result.value.push(issueWithJournals);
         }
       }
       loading.value = false;
+    }
+
+    const renderJournals = (journals) => {
+      const actions = new Map();
+      journals = journals.filter(journal => new Date(journal.created_on) > (range.value === 'day' ? yesterday : lastWeek))
+      for (let i = 0; i < journals.length; i += 1) {
+        if(journals[i]?.details.length > 0) {
+          console.log(journals[i].details[0].name);
+          switch (journals[i].details[0].name) {
+            case "status_id":
+              actions.set('status updated to', journals[i].details[0].new_value)
+              break;
+            case "tracker_id":
+              actions.set('tracker updated to', journals[i].details[0].new_value)
+              break;
+            case "assigned_to_id":
+              actions.set('assignee updated to', journals[i].details[0].new_value)
+              break;
+          }
+        } else {
+          actions.set('note added', journals[i].notes)
+        }
+
+      }
+      console.log(actions.entries());
+      return actions.entries();
     }
 
     onMounted(async () => {
@@ -76,6 +116,7 @@ export default {
       result,
       range,
       loading,
+      renderJournals,
     };
   },
 };
@@ -87,6 +128,7 @@ table {
   width: 100%;
   text-align: justify;
   vertical-align: baseline;
+  border-collapse: collapse; 
 }
 
 caption {
@@ -96,5 +138,29 @@ caption {
   font-size: 24px;
   text-align: left;
   color: #333;
+}
+
+thead {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+tbody {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
+  color: rgba(0, 0, 0, 0.45);
+}
+
+tbody > tr {
+  background: #EDF2F2;
+  height: 38px;
+  border-bottom-right-radius: 1px solid red;
 }
 </style>
