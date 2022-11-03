@@ -319,19 +319,6 @@ export default {
   overflow-y: scroll;
 }
 
-.partial-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 56px;
-}
-
-@media screen and (max-width: 1024px) {
-  .partial-header {
-    flex-direction: column;
-  }
-}
-
 .list-item {
   background: #FFFFFF;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
@@ -348,6 +335,13 @@ export default {
 
 .list-item > div {
   padding-bottom: 5px;
+}
+
+.title-container {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .title {
@@ -378,11 +372,6 @@ export default {
   color: rgba(0, 0, 0, 0.35);
 }
 
-.filter-field {
-  padding: 4px;
-  margin: 0 20px 20px;
-}
-
 .kanban-col {
   height: 92%;
   overflow: scroll;
@@ -394,12 +383,27 @@ export default {
   justify-content: center;
 }
 
-::-webkit-scrollbar {
-
+.kanban div:nth-child(1n) .kanban-col {
+   border-top: 5px solid #FDB600;
 }
 
-html {
-/* Firefox */
+.kanban div:nth-child(2n) .kanban-col {
+   border-top: 5px solid rgba(35, 140, 185, 0.38);
+}
+
+.kanban div:nth-child(3n) .kanban-col {
+   border-top: 5px solid #E2B1FF;
+}
+
+.kanban div:nth-child(4n) .kanban-col {
+   border-top: 5px solid #295365;
+}
+
+.partial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
 }
 
 .kanban-container {
@@ -452,7 +456,6 @@ html {
 
 .kanban-container > .kanban {
   grid-area: kanban;
-
 }
 
 .q-field, .q-select {
@@ -536,22 +539,6 @@ html {
   color: rgba(0, 0, 0, 0.65);
 }
 
-.kanban div:nth-child(1n) .kanban-col {
-   border-top: 5px solid #FDB600;
-}
-
-.kanban div:nth-child(2n) .kanban-col {
-   border-top: 5px solid rgba(35, 140, 185, 0.38);
-}
-
-.kanban div:nth-child(3n) .kanban-col {
-   border-top: 5px solid #E2B1FF;
-}
-
-.kanban div:nth-child(4n) .kanban-col {
-   border-top: 5px solid #295365;
-}
-
 .author-circle {
   width: 28px;
   height: 28px;
@@ -607,13 +594,6 @@ html {
   overflow: hidden;
   text-overflow: ellipsis;
   height: 26px;
-}
-
-.title-container {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
 }
 
 .q-card__actions {

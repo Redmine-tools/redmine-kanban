@@ -99,7 +99,7 @@ export default {
                 actions.set('assignee updated to', journals[i].details[j].new_value)
                 break;
               default:
-                actions.set(journals[i].details[j].name, journals[i].details[j].new_value)
+                actions.set(journals[i].details[j].name + ' new value', journals[i].details[j].new_value)
                 break;
             }
           }

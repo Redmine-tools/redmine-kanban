@@ -124,13 +124,14 @@ tbody {
 }
 
 tbody > tr {
-  background: #EDF2F2;
+  background: #EBEDED;
   height: 38px;
   border-bottom: 1px solid #C3D1D1;
 }
 
 tbody > tr:hover {
-  background: #EBEDED;
+  
+  background: #EDF2F2;
 }
 
 tr > th:first-of-type {
