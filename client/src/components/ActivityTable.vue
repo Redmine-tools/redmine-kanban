@@ -22,7 +22,7 @@
         <td>
           <ul>
             <li v-for="journal in renderJournals(entry.journals)">
-              {{ journal }}
+              {{ journal[0] }}: {{ journal[1] }}
             </li>
           </ul>
         </td>
