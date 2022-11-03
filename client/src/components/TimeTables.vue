@@ -9,7 +9,6 @@
 			<tr>
 				<th>Project</th>
 				<th>Task</th>
-				<th>Note</th>
 				<th>Hours</th>
 			</tr>
 		</thead>
@@ -20,7 +19,6 @@
         :key="entry.id">
 				<td>{{ entry.project.name }}</td>
 				<td>{{ entry.issue.id }}</td>
-				<td>{{ entry.comments }}</td>
 				<td>{{ entry.hours }}</td>
 			</tr>
 		</tbody>
@@ -101,6 +99,7 @@ caption {
   font-size: 24px;
   text-align: left;
   color: #333;
+  padding-inline-start: 24px;
 }
 
 thead {
@@ -110,11 +109,12 @@ thead {
   line-height: 24px;
   letter-spacing: 0.15px;
   color: rgba(0, 0, 0, 0.45);
+  padding-inline-start: 24px;
 }
 
 tbody {
   font-style: normal;
-  font-weight: 400;
+  font-weight: 600;
   font-size: 12px;
   line-height: 24px;
   letter-spacing: 0.15px;
@@ -124,6 +124,22 @@ tbody {
 tbody > tr {
   background: #EDF2F2;
   height: 38px;
-  border-bottom-right-radius: 1px solid red;
+  border-bottom: 1px solid #C3D1D1;
+}
+
+tbody > tr:hover {
+  background: #EBEDED;
+}
+
+tr > th:first-of-type {
+  padding-inline-start: 24px;
+}
+
+tr > td:first-of-type {
+  padding-inline-start: 24px;
+}
+
+section {
+  padding-block-start: 24px;
 }
 </style>
