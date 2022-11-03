@@ -17,7 +17,7 @@
     </article>
     <section v-else >
       <header>
-        <h3>{{ assignee.name }}'s activity</h3>
+        <h3 class="assignee-title">{{ assignee.name }}'s activity</h3>
         <q-btn-toggle
           v-model="range"
           no-caps
@@ -87,5 +87,12 @@ header {
   justify-content: space-between;
   margin-inline: 48px;
   margin-block-start: 96px;
+}
+
+.assignee-title {
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 24px;
+  letter-spacing: 0.15px;
 }
 </style>
