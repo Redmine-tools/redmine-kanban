@@ -98,6 +98,9 @@ export default {
               case "assigned_to_id":
                 actions.set('assignee updated to', journals[i].details[j].new_value)
                 break;
+              default:
+                actions.set(journals[i].details[j].name, journals[i].details[j].new_value)
+                break;
             }
           }
         } else {
@@ -128,6 +131,8 @@ table {
   text-align: justify;
   vertical-align: baseline;
   border-collapse: collapse; 
+  table-layout: fixed;
+  width: 100%;
 }
 
 caption {
@@ -146,6 +151,8 @@ thead {
   letter-spacing: 0.15px;
   color: rgba(0, 0, 0, 0.45);
   padding-inline-start: 24px;
+  table-layout: fixed;
+  width: 100%;
 }
 
 tbody {

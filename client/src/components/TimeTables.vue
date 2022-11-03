@@ -91,7 +91,9 @@ table {
   width: 100%;
   text-align: justify;
   vertical-align: baseline;
-  border-collapse: collapse; 
+  border-collapse: collapse;
+  table-layout: fixed;
+  width: 100%;
 }
 
 caption {
