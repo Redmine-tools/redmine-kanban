@@ -87,24 +87,23 @@ export default {
       journals = journals.filter(journal => new Date(journal.created_on) > (range.value === 'day' ? yesterday : lastWeek))
       for (let i = 0; i < journals.length; i += 1) {
         if(journals[i]?.details.length > 0) {
-          console.log(journals[i].details[0].name);
-          switch (journals[i].details[0].name) {
-            case "status_id":
-              actions.set('status updated to', journals[i].details[0].new_value)
-              break;
-            case "tracker_id":
-              actions.set('tracker updated to', journals[i].details[0].new_value)
-              break;
-            case "assigned_to_id":
-              actions.set('assignee updated to', journals[i].details[0].new_value)
-              break;
+          for (let j = 0; j < journals[i].details.length; j += 1) {
+            switch (journals[i].details[j].name) {
+              case "status_id":
+                actions.set('status updated to', journals[i].details[j].new_value)
+                break;
+              case "tracker_id":
+                actions.set('tracker updated to', journals[i].details[j].new_value)
+                break;
+              case "assigned_to_id":
+                actions.set('assignee updated to', journals[i].details[j].new_value)
+                break;
+            }
           }
         } else {
           actions.set('note added', journals[i].notes)
         }
-
       }
-      console.log(actions.entries());
       return actions.entries();
     }
 
