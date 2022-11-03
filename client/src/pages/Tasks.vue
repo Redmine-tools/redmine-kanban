@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="tasks-page-container">
     <q-banner v-if="assignees.length > 1 && showBanner" class="text-white bg-red">
       <template v-slot:avatar>
         <q-icon name="announcement" color="white" />
@@ -75,6 +75,12 @@ export default {
 </script>
 
 <style scoped>
+.tasks-page-container {
+  height: 100vh;
+  overflow-y: scroll;
+  padding-block-end: 24px;
+}
+
 header {
   display: flex;
   align-content: center;
