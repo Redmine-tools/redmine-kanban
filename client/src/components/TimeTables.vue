@@ -9,7 +9,7 @@
 			<tr>
 				<th>Project</th>
 				<th>Task</th>
-				<th>Hours</th>
+				<th>Hours ({{ timeEntriesForUser.reduce((sum, value) => {return sum + value.hours}, 0) }})</th>
 			</tr>
 		</thead>
 		<tbody>
