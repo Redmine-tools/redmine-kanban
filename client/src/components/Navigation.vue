@@ -3,9 +3,21 @@
     <router-link to="/kanban" :class="{active: activeRoute.includes('kanban')}" >Kanban board</router-link>
     <router-link to="/tasks" :class="{active: activeRoute.includes('tasks')}" >Tasks</router-link>
   </aside>
-  <aside v-else class="mini-container">
-    <q-icon name="leaderboard" />
-    <q-icon name="toys" />
+  <aside v-else class="mini-navigation">
+    <router-link to="/kanban">
+      <q-icon name="leaderboard" size="24px">
+        <q-tooltip anchor="center end" self="center left">
+          Kanban board
+        </q-tooltip>
+      </q-icon>
+    </router-link>
+    <router-link to="/tasks">
+      <q-icon name="toys" size="24px">
+        <q-tooltip anchor="center end" self="center left">
+          Tasks
+        </q-tooltip>
+      </q-icon>
+    </router-link>
   </aside>
 </template>
 
@@ -54,15 +66,21 @@ export default {
   text-decoration: underline;
 }
 
-.mini-container {
+.mini-navigation {
+  padding-block-start: 48px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
 }
 
-.mini-container> i {
+.mini-navigation> a {
   font-size: 24px;
   padding-block-start: 12px;
+  color: black;
+}
+
+.mini-navigation> a:hover {
+  color: #555;
 }
 </style>

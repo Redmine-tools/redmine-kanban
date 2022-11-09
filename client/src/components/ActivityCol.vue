@@ -33,7 +33,6 @@ export default {
           break;
         case "assigned_to_id":
           const assignedTo = (await RedmineService.getUserById(store.state.user.api_key, props.journal[1])).data.user;
-          console.log(assignedTo);
           activity.value.name = "Newly assigned to"
           activity.value.newValue = `${assignedTo.firstname} ${assignedTo.lastname}`
           break;
