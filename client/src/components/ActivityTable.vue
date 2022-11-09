@@ -21,9 +21,9 @@
         <td>{{ entry.id }}</td>
         <td>
           <ul>
-            <li v-for="journal in renderJournals(entry.journals)">
-              {{ journal[0] }}: {{ journal[1] }}
-            </li>
+            <template v-for="journal in renderJournals(entry.journals)">
+              <ActivityCol :journal="journal" />
+            </template>
           </ul>
         </td>
 			</tr>
@@ -41,6 +41,7 @@ import {
   watch,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
+import ActivityCol from '@/components/ActivityCol';
 
 export default {
   name: 'ActivityTable',
@@ -50,6 +51,7 @@ export default {
     },
   },
   components: {
+    ActivityCol
   },
   setup(props) {
     const store = useStore();
@@ -88,20 +90,7 @@ export default {
       for (let i = 0; i < journals.length; i += 1) {
         if(journals[i]?.details.length > 0) {
           for (let j = 0; j < journals[i].details.length; j += 1) {
-            switch (journals[i].details[j].name) {
-              case "status_id":
-                actions.set('status updated to', journals[i].details[j].new_value)
-                break;
-              case "tracker_id":
-                actions.set('tracker updated to', journals[i].details[j].new_value)
-                break;
-              case "assigned_to_id":
-                actions.set('assignee updated to', journals[i].details[j].new_value)
-                break;
-              default:
-                actions.set(journals[i].details[j].name + ' new value', journals[i].details[j].new_value)
-                break;
-            }
+            actions.set(journals[i].details[j].name, journals[i].details[j].new_value);
           }
         } else {
           actions.set('note added', journals[i].notes)
