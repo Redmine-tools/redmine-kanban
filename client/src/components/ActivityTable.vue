@@ -93,7 +93,7 @@ export default {
             actions.set(journals[i].details[j].name, journals[i].details[j].new_value);
           }
         } else {
-          actions.set('note added', journals[i].notes)
+          actions.set('note', journals[i].notes)
         }
       }
       return actions.entries();
