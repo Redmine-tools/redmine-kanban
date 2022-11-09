@@ -3,20 +3,7 @@
     view="hHh lpR fFf"
     style="background: #FBFBFB"
   >
-    <q-page-sticky
-      v-if="store.state.user.firstname"
-      position="top-right"
-      :offset="[18, 18]"
-    >
-      <q-btn
-        unelevated
-        rounded
-        color="light-blue-8"
-        @click="logout"
-      >
-        {{ $t("logout") }}
-      </q-btn>
-    </q-page-sticky>
+    <FloatingLogoutButton />
     <q-drawer
       v-if="store.state.user.api_key"
       v-model="leftDrawerOpen"
@@ -127,11 +114,13 @@ import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
 import Navigation from '@/components/Navigation';
+import FloatingLogoutButton from '@/components/FloatingLogoutButton';
 
 export default {
   name: 'App',
   components: {
     Navigation,
+    FloatingLogoutButton
   },
   setup() {
     const store = useStore();
