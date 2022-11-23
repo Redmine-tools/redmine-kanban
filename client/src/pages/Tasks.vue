@@ -4,12 +4,11 @@
       <q-select
         v-model="selectedAssignees"
         filled
-        multiple
         :options="availableAssignees"
         :option-label="'name'"
         use-chips
         stack-label
-        label="Assigneesad"
+        label="Assignee"
       />
     </header>
     <q-banner v-if="assignees.length > 1 && showBanner" class="text-white bg-red">
@@ -112,7 +111,7 @@ header {
   align-content: center;
   justify-content: space-between;
   margin-inline: 48px;
-  margin-block-start: 96px;
+  margin-block-start: 24px;
 }
 
 .assignee-title {

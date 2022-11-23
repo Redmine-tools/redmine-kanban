@@ -5,16 +5,6 @@
   >
     <header>
       <aside class="partial-header">
-        <q-input
-          v-model="searchKeyWord"
-          debounce="600"
-          outlined
-          :label="$t('filter')"
-        >
-          <template #prepend>
-            <q-icon name="search" />
-          </template>
-        </q-input>
         <q-select
           v-model="selectedAssignees"
           filled
@@ -25,6 +15,16 @@
           stack-label
           label="Assignee"
         />
+        <q-input
+          v-model="searchKeyWord"
+          debounce="600"
+          outlined
+          :label="$t('filter')"
+        >
+          <template #prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
       </aside>
       <p class="path">
         <router-link to="/setup">
@@ -406,6 +406,10 @@ export default {
   height: 56px;
 }
 
+.partial-header > .q-select {
+  padding-inline-end: 24px;
+}
+
 .kanban-container {
   display: grid;
   grid-template-rows: 200px calc(100vh - 200px);
@@ -498,9 +502,7 @@ export default {
 }
 
 .q-select {
-  padding-inline-start: 24px;
   width: 280px;
-
 }
 
 .card-header {
