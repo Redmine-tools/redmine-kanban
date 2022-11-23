@@ -24,6 +24,7 @@ export default {
   },
   setup(props) {
     const range = computed(() => props.range);
+
     return {
       range,
     };

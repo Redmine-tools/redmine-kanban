@@ -6,7 +6,7 @@ function initialState() {
     user: {},
     project: {},
     query: {},
-    issues: {},
+    issues: [],
     projectQueries: {},
     assignee: '',
   };
@@ -17,7 +17,7 @@ const store = createStore({
     user: {},
     project: {},
     query: {},
-    issues: {},
+    issues: [],
     projectQueries: {},
     assignee: ""
   },
@@ -32,7 +32,7 @@ const store = createStore({
       state.query = { ...payload.payload };
     },
     addAllIssues(state, payload) {
-      state.issues = { ...payload.payload };
+      state.issues = [ ...payload.payload ];
     },
     updateIssue(state, payload) {
       state.issues[parseInt(payload.key, 10)] = payload.payload;

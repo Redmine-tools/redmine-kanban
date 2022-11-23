@@ -1,5 +1,17 @@
 <template>
   <section class="tasks-page-container">
+    <header>
+      <q-select
+        v-model="selectedAssignees"
+        filled
+        multiple
+        :options="availableAssignees"
+        :option-label="'name'"
+        use-chips
+        stack-label
+        label="Assigneesad"
+      />
+    </header>
     <q-banner v-if="assignees.length > 1 && showBanner" class="text-white bg-red">
       <template v-slot:avatar>
         <q-icon name="announcement" color="white" />
@@ -17,7 +29,7 @@
     </article>
     <section v-else >
       <header>
-        <h3 class="assignee-title">{{ assignee.name }}'s activity</h3>
+        <h3 class="assignee-title">{{ selectedAssignees.name }}'s activity</h3>
         <q-btn-toggle
           v-model="range"
           no-caps
@@ -48,11 +60,24 @@ export default {
   },
   setup() {
     const store = useStore();
-    const assignee = computed(() => store.state.assignee[0]);
+    const selectedAssignees = computed(() => store.state.assignee[0]);
     const assignees = computed(() => store.state.assignee)
     const showBanner = ref(true);
     const range = ref('day');
     const router = useRouter();
+    const availableAssignees = computed(() => {
+      let resArr = [];
+      const names = store.state.issues.filter((i) => i.assigned_to).map((i) => i.assigned_to)
+      names.forEach(function(item){
+        let i = resArr.findIndex(x => x.name == item.name);
+        if(i <= -1){
+          resArr.push({id: item.id, name: item.name});
+        }
+      })
+      return resArr;
+    });
+
+    console.log(availableAssignees)
 
     const hideBanner = () => {
       showBanner.value = false;
@@ -63,12 +88,13 @@ export default {
     }
 
     return {
-      assignee,
+      selectedAssignees,
       assignees,
       range,
       hideBanner,
       showBanner,
-      navigateBackToKanban
+      navigateBackToKanban,
+      availableAssignees
     };
   },
 };
