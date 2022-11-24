@@ -1,15 +1,15 @@
 import { expect, Locator, Page } from '@playwright/test';
 
 export class LoginPage {
-    readonly usernameInput;
-    readonly passwordInput;
-    readonly apiKeyLink;
-    readonly apiKeyInput;
-    readonly loginButton;
-    readonly setupTitle;
-    readonly logoutButton;
+    readonly usernameInput: Locator;
+    readonly passwordInput: Locator;
+    readonly apiKeyLink: Locator;
+    readonly apiKeyInput: Locator;
+    readonly loginButton: Locator;
+    readonly setupTitle: Locator;
+    readonly logoutButton: Locator;
 
-    constructor(readonly page) {
+    constructor(readonly page: Page) {
         this.usernameInput = page.locator('[aria-label="Username"]');
         this.passwordInput = page.locator('[aria-label="Password"]');
         this.apiKeyLink = page.locator('button:has-text("api key")');
@@ -20,7 +20,7 @@ export class LoginPage {
     }
 
     async goto() {
-        await this.page.goto('localhost:8080');
+        await this.page.goto('/');
     }
 
     async logout(button) {

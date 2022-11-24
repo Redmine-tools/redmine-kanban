@@ -1,6 +1,6 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage  } from './LoginPage';
-import { SetupPage } from './SetupPage';
+import { LoginPage  } from '../api/pages/LoginPage';
+import { SetupPage } from '../api/pages/SetupPage';
 
 test.describe('login feature', () => {
   test.beforeEach(async ({ page }) => {
