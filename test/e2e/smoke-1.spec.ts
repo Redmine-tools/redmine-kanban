@@ -1,6 +1,10 @@
 import { test, expect } from '@playwright/test';
-import { LoginPage  } from '../api/pages/LoginPage';
+import { Munkatars } from '../api/dto/munkatars';
+import { LoginPage } from '../api/pages/LoginPage';
 import { SetupPage } from '../api/pages/SetupPage';
+
+const tester = new Munkatars('tester001', 'almaALMA01', '68471da69b2bd619f1386555a24395f0ee08d328');
+
 
 test.describe('login feature', () => {
   test.beforeEach(async ({ page }) => {
@@ -16,20 +20,22 @@ test.describe('login feature', () => {
     const loginPage = new LoginPage(page);
   
     //Fill the usename and password inputs and press the button
-    await loginPage.loginUsernamePassword('kobor.levente', 'bookMonkeyBeerShirtFood9', 'Login');
+    await loginPage.loginUsernamePassword(tester.username, tester.password);
   
     //Make sure the user successfully loged in
-    await loginPage.expectLogin('Kanban board configuration');
+    const setupPage = new SetupPage(page)
+    await setupPage.at();
   });
   
   test('should login with api key', async ({ page }) => {
     const loginPage = new LoginPage(page);
   
     //Fill the api key input with the api key
-    await loginPage.loginApiKey('975aad20b8ee01cda1527d3daa53074594572365', 'Login');
+    await loginPage.loginApiKey(tester.apiKey);
   
     //Make sure the user successfully loged in
-    await loginPage.expectLogin('Kanban board configuration');
+    const setupPage = new SetupPage(page)
+    await setupPage.at();
   });
 });
 
@@ -41,26 +47,18 @@ test.describe('setup feature', () => {
 
     await loginPage.goto();
 
-    await loginPage.loginUsernamePassword('kobor.levente', 'bookMonkeyBeerShirtFood9', 'Login');
+    await loginPage.loginApiKey(tester.apiKey);
   });
 
   test('select the project', async ({ page }) => {
     const setupPage = new SetupPage(page);
   
-    //Wait to load the setup page
-    await Promise.all([
-      page.waitForNavigation({ url: 'http://localhost:8080/setup' })
-    ]);
-  
-    //Select the project by searching for it
-    /*await setupPage.selectProject('the', 'the cool kanban board');
+    await setupPage.at();
 
-    await setupPage.selectQuery('version 1');
+    const queryName = 'version 1';
+    await setupPage.setupConfiguration ('the', 'The Cool Kanban Board', queryName);
 
-    await setupPage.proceedToNextPage('Proceed');*/
+    await expect(page.getByRole('heading', { name: queryName })).toBeVisible();
 
-    await setupPage.setupConfiguration ('the', 'the cool kanban board', 'version 1', 'Proceed');
-
-    await setupPage.expectKanban('version 1');
   });
 });

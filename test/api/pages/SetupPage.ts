@@ -1,20 +1,16 @@
 import { expect, Locator, Page } from '@playwright/test';
+import { AbstractPage } from './AbstractPage';
 
-export class SetupPage {
+export class SetupPage extends AbstractPage {
     readonly projectSelector: Locator;
     readonly querySelector: Locator;
     readonly proceedButton: Locator;
-    readonly projectText: Locator;
-    readonly queryText: Locator;
-    readonly kanbanTitle: Locator;
 
-    constructor (readonly page: Page) {
+    constructor (page: Page) {
+        super(page, '/setup', page.locator('h1:has-text("Kanban board configuration")'));
         this.projectSelector = page.locator('[aria-label="Project"]');
         this.querySelector = page.locator('[aria-label="Query"]');
         this.proceedButton = page.locator('button:has-text("Proceed")');
-        this.projectText = page.locator('span:has-text("the cool kanban board")');
-        this.queryText = page.locator('span:has-text("version 1")');
-        this.kanbanTitle = page.locator('h1:has-text("version 1")');
     }
 
     /*async selectProject(project, option) {
@@ -32,19 +28,14 @@ export class SetupPage {
         await this.proceedButton.click(button);
     }*/
 
-    async setupConfiguration (project, option, query, button) {
-        await this.projectSelector.fill(option);
-        await this.projectSelector.click(project);
-        await this.projectText.click();
+    async setupConfiguration (searchString, option, query) {
+        await this.projectSelector.type(searchString);
+        await this.page.getByRole('option', { name: option }).click();
 
         await this.querySelector.click(query);
-        await this.queryText.click();
+        await this.page.getByRole('option', { name: query }).click();
 
-        await this.proceedButton.click(button);
-    }
-
-    async expectKanban(title) {
-        await expect(this.kanbanTitle).toHaveText(title);
+        await this.proceedButton.click();
     }
 
 }
