@@ -1,5 +1,6 @@
 import type { PlaywrightTestConfig } from '@playwright/test';
 import { devices } from '@playwright/test';
+import { Munkatars } from './api/dto/munkatars';
 
 /**
  * Read environment variables from file.
@@ -105,3 +106,9 @@ const config: PlaywrightTestConfig = {
 };
 
 export default config;
+
+export const testUser = new Munkatars(
+  process.env.USERNAME ? process.env.USERNAME : 'tester001',
+  process.env.PASSWORD ? process.env.PASSWORD : 'almaALMA01',
+  process.env.API_KEY ? process.env.API_KEY : '68471da69b2bd619f1386555a24395f0ee08d328',
+);

@@ -1,9 +1,7 @@
 import { test, expect } from '@playwright/test';
-import { Munkatars } from '../api/dto/munkatars';
 import { LoginPage } from '../api/pages/LoginPage';
 import { SetupPage } from '../api/pages/SetupPage';
-
-const tester = new Munkatars('tester001', 'almaALMA01', '68471da69b2bd619f1386555a24395f0ee08d328');
+import { testUser } from '../playwright.config';
 
 
 test.describe('login feature', () => {
@@ -20,7 +18,7 @@ test.describe('login feature', () => {
     const loginPage = new LoginPage(page);
   
     //Fill the usename and password inputs and press the button
-    await loginPage.loginUsernamePassword(tester.username, tester.password);
+    await loginPage.loginUsernamePassword(testUser.username, testUser.password);
   
     //Make sure the user successfully loged in
     const setupPage = new SetupPage(page)
@@ -31,7 +29,7 @@ test.describe('login feature', () => {
     const loginPage = new LoginPage(page);
   
     //Fill the api key input with the api key
-    await loginPage.loginApiKey(tester.apiKey);
+    await loginPage.loginApiKey(testUser.apiKey);
   
     //Make sure the user successfully loged in
     const setupPage = new SetupPage(page)
@@ -47,7 +45,8 @@ test.describe('setup feature', () => {
 
     await loginPage.goto();
 
-    await loginPage.loginApiKey(tester.apiKey);
+    await loginPage.loginApiKey(testUser.apiKey);
+
   });
 
   test('select the project', async ({ page }) => {
