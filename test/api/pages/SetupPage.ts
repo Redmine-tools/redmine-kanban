@@ -1,14 +1,14 @@
 import { expect, Locator, Page } from '@playwright/test';
 
 export class SetupPage {
-    readonly projectSelector;
-    readonly querySelector;
-    readonly proceedButton;
-    readonly projectText;
-    readonly queryText;
-    readonly kanbanTitle;
+    readonly projectSelector: Locator;
+    readonly querySelector: Locator;
+    readonly proceedButton: Locator;
+    readonly projectText: Locator;
+    readonly queryText: Locator;
+    readonly kanbanTitle: Locator;
 
-    constructor (readonly page) {
+    constructor (readonly page: Page) {
         this.projectSelector = page.locator('[aria-label="Project"]');
         this.querySelector = page.locator('[aria-label="Query"]');
         this.proceedButton = page.locator('button:has-text("Proceed")');
