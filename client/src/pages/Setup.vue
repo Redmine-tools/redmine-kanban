@@ -4,7 +4,10 @@
       <h1>{{ $t("setupTitle") }}</h1>
       <p>{{ $t("setupHelper") }}</p>
     </header>
-    <section id="setup-container" class="setup-container">
+    <section
+      id="setup-container"
+      class="setup-container"
+    >
       <article class="input-container">
         <ProjectPick />
       </article>
@@ -13,31 +16,37 @@
       </article>
     </section>
     <div class="button-container">
-      <q-btn :disabled="!store.state.query.id" class="action" @click="proceedToKanbanBoard">{{ $t("proceed") }}</q-btn>
+      <q-btn
+        :disabled="!store.state.query.id"
+        class="action"
+        @click="proceedToKanbanBoard"
+      >
+        {{ $t("proceed") }}
+      </q-btn>
     </div>
   </section>
 </template>
 
 <script>
-import { ref } from 'vue'
-import ProjectPick from '@/components/ProjectPick'
-import QueriesPick from '@/components/QueriesPick'
-import { useRouter } from 'vue-router'
-import { useStore } from "vuex"
+import { ref } from 'vue';
+import ProjectPick from '@/components/ProjectPick.vue';
+import QueriesPick from '@/components/QueriesPick.vue';
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 export default {
-  name: "Setup",
+  name: 'Setup',
   components: {
     ProjectPick,
-    QueriesPick
+    QueriesPick,
   },
   setup() {
-    const projectSelected = ref(false)
-    const router = useRouter()
-    const store = useStore()
+    const projectSelected = ref(false);
+    const router = useRouter();
+    const store = useStore();
 
     function proceedToKanbanBoard() {
-      router.push('/kanban')
+      router.push('/kanban');
     }
 
     /*
@@ -60,10 +69,10 @@ export default {
     return {
       projectSelected,
       proceedToKanbanBoard,
-      store
-    }
-  }
-}
+      store,
+    };
+  },
+};
 </script>
 
 <style scoped>

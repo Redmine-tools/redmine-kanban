@@ -1,62 +1,151 @@
 <template>
-  <section id="kanban-container" class="kanban-container">
+  <section
+    id="kanban-container"
+    class="kanban-container"
+  >
     <header>
-      <q-input debounce="600" outlined v-model="searchKeyWord" :label="$t('filter')">
-        <template v-slot:prepend>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-      <p class="path"> <router-link to="/setup">{{ $t("setupTitle") }}</router-link> / {{ store.state.project.name }} / {{ store.state.query.name }}</p>
+      <aside class="partial-header">
+        <q-input
+          v-model="searchKeyWord"
+          debounce="600"
+          outlined
+          :label="$t('filter')"
+        >
+          <template #prepend>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+        <q-select
+          v-model="selectedAssignees"
+          filled
+          multiple
+          :options="assignees"
+          use-chips
+          stack-label
+          label="Assignee"
+        />
+      </aside>
+      <p class="path">
+        <router-link to="/setup">
+          {{ $t("setupTitle") }}
+        </router-link> / {{ store.state.project.name }} / {{ store.state.query.name }}
+      </p>
       <h1>{{ store.state.query.name }}</h1>
     </header>
-    <div class="kanban">
-      <div class="" v-for="status in columnConfig" :id="status.id" :key="status.id">
-        <h6 class="status-name">{{ status.name }} <p> {{ (Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name].length : 0 }} </p></h6>
+    <section class="kanban">
+      <div
+        v-for="status in columnConfig"
+        :id="status.id"
+        :key="status.id"
+        class=""
+      >
+        <h6 class="status-name">
+          {{ status.name }}
+          <p>
+            {{ (Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name].length : 0 }}
+          </p>
+        </h6>
         <div class="kanban-col">
           <draggable
-                  class="list-group"
-                  :list="(Object.keys(issuesByStatus).indexOf(status.name) > -1) ? issuesByStatus[status.name] : createNewStatusGroup(status.name)"
-                  @add="add"
-                  itemKey="id"
-                  group="issues"
-                  v-bind:id="status.name"
+            :id="status.name"
+            class="list-group"
+            :list="(Object.keys(issuesByStatus).indexOf(status.name) > -1) ?
+              issuesByStatus[status.name] :
+              createNewStatusGroup(status.name)"
+            item-key="id"
+            group="issues"
+            @add="add"
           >
             <template #item="{ element }">
-              <div class="list-item" v-bind:id="element.id" @click="openTicket(element)">
+              <div
+                :id="element.id"
+                class="list-item"
+                @click="openTicket(element)"
+              >
                 <div class="title-container">
-                  <div class="title">#{{ element.id }}</div>
-                  <div class="author-circle" v-if="element?.assigned_to?.name">
-                    <span class="author-tooltiptext">{{ $t("assignedTo") }}: {{ element.assigned_to.name }}</span>
+                  <div class="title">
+                    #{{ element.id }}
+                  </div>
+                  <div
+                    v-if="element?.assigned_to?.name"
+                    class="author-circle"
+                  >
+                    <span class="author-tooltiptext">
+                      {{ $t("assignedTo") }}: {{ element.assigned_to.name }}
+                    </span>
                     {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
                   </div>
                 </div>
-                <div class="title subject">{{ element.subject }}</div>
+                <div class="title subject">
+                  {{ element.subject }}
+                </div>
               </div>
-            </template> 
+            </template>
           </draggable>
         </div>
       </div>
-    </div>
-    <q-dialog v-model="openIssueDialoge" persistent>
+    </section>
+    <q-dialog
+      v-model="openIssueDialoge"
+      persistent
+    >
       <q-card>
-          <header class="card-header">
-            <h4 class="text-h5">{{ clickedIssue.subject }}</h4>
-            <q-space />
-            <q-btn icon="close" flat round dense v-close-popup /> 
-          </header>
+        <header class="card-header">
+          <h4 class="text-h5">
+            {{ clickedIssue.subject }}
+          </h4>
+          <q-space />
+          <q-btn
+            v-close-popup
+            icon="close"
+            flat
+            round
+            dense
+          />
+        </header>
 
         <q-card-section class="row card-data">
-          <div><span class="gray-text">{{ $t("subject") }}:</span> {{ clickedIssue.subject }}</div>
-          <div><span class="gray-text">{{ $t("createdOn") }}:</span> {{ new Date(clickedIssue.created_on).toLocaleString() }}</div>
-          <div><span class="gray-text">{{ $t("updatedOn") }}:</span> {{ new Date(clickedIssue.updated_on).toLocaleString() }}</div>
-          <div><span class="gray-text">{{ $t("priority") }}:</span> {{ clickedIssue.priority.name }}</div>
-          <div><span class="gray-text">{{ $t("project") }}:</span> {{ clickedIssue.project.name }}</div>
-          <div><span class="gray-text">{{ $t("status") }}:</span> {{ clickedIssue.status.name }}</div>
-          <div v-if="clickedIssue.assigned_to?.name"><span class="gray-text">{{ $t("assignedTo") }}:</span> {{ clickedIssue.assigned_to.name }} </div>
+          <div>
+            <span class="gray-text">{{ $t("subject") }}:</span>
+            {{ clickedIssue.subject }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("createdOn") }}:</span>
+            {{ new Date(clickedIssue.created_on).toLocaleString() }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("updatedOn") }}:</span>
+            {{ new Date(clickedIssue.updated_on).toLocaleString() }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("priority") }}:</span>
+            {{ clickedIssue.priority.name }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("project") }}:</span>
+            {{ clickedIssue.project.name }}
+          </div>
+          <div>
+            <span class="gray-text">{{ $t("status") }}:</span>
+            {{ clickedIssue.status.name }}
+          </div>
+          <div v-if="clickedIssue.assigned_to?.name">
+            <span class="gray-text">{{ $t("assignedTo") }}:</span>
+            {{ clickedIssue.assigned_to.name }}
+          </div>
         </q-card-section>
         <q-card-actions align="left">
-          <q-btn @click="open()" :label="$t('openInRedmine')" class="action" v-close-popup />
-          <q-btn :label="$t('closePopup')" class="cancel" v-close-popup />
+          <q-btn
+            v-close-popup
+            :label="$t('openInRedmine')"
+            class="action"
+            @click="open()"
+          />
+          <q-btn
+            v-close-popup
+            :label="$t('closePopup')"
+            class="cancel"
+          />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -64,127 +153,165 @@
 </template>
 
 <script>
-  import draggable from 'vuedraggable'
-  import lodash from "lodash"
-  import { ref, onMounted, watch, computed } from 'vue'
-  import RedmineService from '@/services/RedmineService.js'
-  import { useStore } from "vuex"
+import draggable from 'vuedraggable';
+import lodash from 'lodash';
+import {
+  ref, onMounted, watch, computed,
+} from 'vue';
+import RedmineService from '@/services/RedmineService';
+import { useStore } from 'vuex';
 
-  export default {
-    name: 'KanbanIssues',
-    components: {
-      draggable
+export default {
+  name: 'KanbanIssues',
+  components: {
+    draggable,
+  },
+  props: {
+    issues: {
+      required: true,
     },
-    props: {
-      issues: {
-        required: true
+  },
+  setup(props) {
+    const searchKeyWord = ref('');
+    const clickedIssue = ref();
+    const openIssueDialoge = ref(false);
+    const originalIssuesStringifyed = computed(() => {
+      if (props.issues.value.length > 0) {
+        return JSON.stringify(props.issues.value).split('},{');
       }
-    },
-    setup(props) {
-      const searchKeyWord = ref('')
-      const clickedIssue = ref()
-      const openIssueDialoge = ref(false)
-      let originalIssuesStringifyed = computed(() => {
-        if (props.issues.value.length > 0) {
-          return JSON.stringify(props.issues.value).split('},{')
-        } else {
-          return []
-        }
-      })
-      const store = useStore()
-      const columnConfig = ref([])
-      const issuesByStatus = ref([])
+      return [];
+    });
 
-      async function openTicket(element) {
-        openIssueDialoge.value = true
-        clickedIssue.value = element
-      }
+    const store = useStore();
+    const columnConfig = ref([]);
+    const issuesByStatus = ref([]);
+    let originalIssuesByStatus;
 
-      async function open() {
-        const response = await RedmineService.getRedmineUrl()
-        window.open(response.data + 'issues/' + clickedIssue.value.id, '_blank');
-      }
+    const assignees = computed(() => {
+      const names = props.issues.value
+        ? props?.issues?.value.filter((i) => i.assigned_to).map((i) => i.assigned_to.name)
+        : [];
+      return Array.from(new Set(names));
+    });
+    const selectedAssignees = ref([]);
 
-      async function setupColumnConfig() {
-        let redmineStatuses
-        let configIssue
-        let columnNames
-        try {
-          redmineStatuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses
-          configIssue = await RedmineService.getKanbanConfigTracker(store.state.user.api_key).then(async (res) =>
-            (await RedmineService.getKanbanConfig(store.state.user.api_key, store.state.project.id, res.data.trackers.find(tracker => tracker.name === 'Kanban').id)).data.issues[0]
-          )
-          let config = JSON.parse(configIssue.description).config
-          columnNames = config.columns
-        } catch (error) {
-          console.log("error in config")
-        }
-        columnConfig.value = redmineStatuses.filter(status => columnNames.includes(status.name))
-      }
-
-      async function add(event){
-        const movedTo = event.to.id
-        const movedId = parseInt(event.item.id)
-        const newStatus = columnConfig.value.find(i => i.name === movedTo)
-        await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id)
-      }
-
-      const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), [])
-    
-      const searchByKeyWord = (searchKeyWord) => {
-        const foundIndexes = indexOfAll(originalIssuesStringifyed.value, searchKeyWord)
-        let foundItems = []
-        foundIndexes.forEach(i => foundItems.push(props.issues.value[i]))
-        return foundItems
-      }
-
-      watch(searchKeyWord, () => {
-        if (searchKeyWord.value != '') {
-          const issuesToHighlight = searchByKeyWord(searchKeyWord.value.toString())
-          const matches = document.querySelectorAll(".list-item")
-          matches.forEach(i => {
-            if(!(issuesToHighlight.some(j => j.id == i.id))) {
-              i.style.display = 'none'
-            }
-          })
-        } else {
-          const matches = document.querySelectorAll(".list-item")
-          matches.forEach(i => {
-              i.style.display = 'flex'
-          })
-        }
-      })
-
-      function createNewStatusGroup(status) {
-        issuesByStatus.value[status] = []
-        return []
-      }
-
-      onMounted(() => {
-        setupColumnConfig()
-        issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name')
-      })
-
-      return {
-        add,
-        issuesByStatus,
-        columnConfig,
-        searchKeyWord,
-        openTicket,
-        store,
-        openIssueDialoge,
-        clickedIssue,
-        open,
-        createNewStatusGroup
-      }
+    async function openTicket(element) {
+      openIssueDialoge.value = true;
+      clickedIssue.value = element;
     }
-  }
+
+    async function open() {
+      const response = await RedmineService.getRedmineUrl();
+      window.open(`${response.data}issues/${clickedIssue.value.id}`, '_blank');
+    }
+
+    async function setupColumnConfig() {
+      let redmineStatuses;
+      let configIssue;
+      let columnNames;
+      try {
+        redmineStatuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses;
+        configIssue = await RedmineService.getKanbanConfigTracker(store.state.user.api_key).then(async (res) => (await RedmineService.getKanbanConfig(store.state.user.api_key, store.state.project.id, res.data.trackers.find((tracker) => tracker.name === 'Kanban').id)).data.issues[0]);
+        const { config } = JSON.parse(configIssue.description);
+        columnNames = config.columns;
+      } catch (error) {
+        console.log('error in config');
+      }
+
+      columnConfig.value = columnNames.map((status_name) => redmineStatuses.find((status) => status.name === status_name)).filter(Boolean);
+    }
+
+    async function add(event) {
+      const movedTo = event.to.id;
+      const movedId = parseInt(event.item.id, 10);
+      const newStatus = columnConfig.value.find((i) => i.name === movedTo);
+      await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id);
+    }
+
+    const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), []);
+
+    const searchByKeyWord = (searchKeyWord) => {
+      const foundIndexes = indexOfAll(originalIssuesStringifyed.value, searchKeyWord);
+      const foundItems = [];
+      foundIndexes.forEach((i) => foundItems.push(props.issues.value[i]));
+      return foundItems;
+    };
+
+    watch(selectedAssignees, () => {
+      if (Object.keys(selectedAssignees.value).length === 0) {
+        issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
+      } else {
+        issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
+        for (const group in issuesByStatus.value) {
+          issuesByStatus.value[group] = issuesByStatus.value[group].filter((issue) => selectedAssignees.value.includes(issue?.assigned_to?.name));
+        }
+      }
+    });
+
+    watch(searchKeyWord, () => {
+      if (searchKeyWord.value != '') {
+        const issuesToHighlight = searchByKeyWord(searchKeyWord.value.toString());
+        const matches = document.querySelectorAll('.list-item');
+        matches.forEach((i) => {
+          if (!(issuesToHighlight.some((j) => j.id == i.id))) {
+            i.style.display = 'none';
+          }
+        });
+      } else {
+        const matches = document.querySelectorAll('.list-item');
+        matches.forEach((i) => {
+          i.style.display = 'flex';
+        });
+      }
+    });
+
+    function createNewStatusGroup(status) {
+      issuesByStatus.value[status] = [];
+      return [];
+    }
+
+    onMounted(() => {
+      setupColumnConfig();
+      issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name');
+      originalIssuesByStatus = JSON.parse(JSON.stringify(issuesByStatus.value));
+      console.log(originalIssuesByStatus);
+    });
+
+    return {
+      add,
+      issuesByStatus,
+      columnConfig,
+      searchKeyWord,
+      openTicket,
+      store,
+      openIssueDialoge,
+      clickedIssue,
+      open,
+      createNewStatusGroup,
+      assignees,
+      selectedAssignees,
+    };
+  },
+};
 </script>
 
 <style scoped>
 .kanban {
   display: flex;
   overflow-y: scroll;
+}
+
+.partial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+}
+
+@media screen and (max-width: 1024px) {
+  .partial-header {
+    flex-direction: column;
+  }
 }
 
 .list-item {
@@ -250,18 +377,17 @@
 }
 
 ::-webkit-scrollbar {
-  display: none;
+
 }
 
 html {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+/* Firefox */
 }
 
 .kanban-container {
   display: grid;
   grid-template-rows: 200px calc(100vh - 200px);
-  grid-template-areas: 
+  grid-template-areas:
   "header"
   "kanban";
 }
@@ -311,6 +437,11 @@ html {
 
 }
 
+.q-field, .q-select {
+  height: 57px;
+  overflow: auto;
+}
+
 .kanban-container > .kanban > div:first-of-type {
   margin-inline-start: 48px;
 }
@@ -343,6 +474,12 @@ html {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+}
+
+.q-select {
+  padding-inline-start: 24px;
+  width: 280px;
+
 }
 
 .card-header {
@@ -382,19 +519,19 @@ html {
 }
 
 .kanban div:nth-child(1n) .kanban-col {
-   border-top: 5px solid #FDB600;  
+   border-top: 5px solid #FDB600;
 }
 
 .kanban div:nth-child(2n) .kanban-col {
-   border-top: 5px solid rgba(35, 140, 185, 0.38);  
+   border-top: 5px solid rgba(35, 140, 185, 0.38);
 }
 
 .kanban div:nth-child(3n) .kanban-col {
-   border-top: 5px solid #E2B1FF;  
+   border-top: 5px solid #E2B1FF;
 }
 
 .kanban div:nth-child(4n) .kanban-col {
-   border-top: 5px solid #295365;  
+   border-top: 5px solid #295365;
 }
 
 .author-circle {
