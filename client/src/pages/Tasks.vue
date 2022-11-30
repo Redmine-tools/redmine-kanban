@@ -31,9 +31,8 @@
         <q-btn-toggle
           v-model="range"
           no-caps
-          rounded
           unelevated
-          toggle-color="primary"
+          toggle-color="teal-10"
           :options="[
             {label: 'Day', value: 'day'},
             {label: 'Week', value: 'week'},
