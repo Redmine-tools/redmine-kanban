@@ -60,6 +60,12 @@ export default {
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
     const range = computed(() => props.range);
     const loading = ref(false);
+    const selectedAssignee = computed(() => store.state.assignee[0]);
+
+    watch(selectedAssignee, () => {
+      result.value = []
+      filterByTime(range.value === 'day' ? yesterday : lastWeek);
+    })
 
     watch(range, () => {
       result.value = []

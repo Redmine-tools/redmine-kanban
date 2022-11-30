@@ -6,7 +6,6 @@
         filled
         :options="availableAssignees"
         :option-label="'name'"
-        use-chips
         stack-label
         label="Assignee"
       />
@@ -47,7 +46,7 @@
 </template>
 
 <script>
-import { computed, ref } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import Tables from '@/components/Tables.vue';
 import { useRouter } from 'vue-router';
@@ -59,7 +58,7 @@ export default {
   },
   setup() {
     const store = useStore();
-    const selectedAssignees = computed(() => store.state.assignee[0]);
+    const selectedAssignees = ref(store.state.assignee[0]);
     const assignees = computed(() => store.state.assignee)
     const showBanner = ref(true);
     const range = ref('day');
@@ -76,7 +75,16 @@ export default {
       return resArr;
     });
 
-    console.log(availableAssignees)
+    function updateAssigneeInStore(assignee) {
+      store.commit({
+        type: 'updateAssignee',
+        payload: [assignee],
+      });
+    }
+
+    watch(selectedAssignees, () => {
+      updateAssigneeInStore(selectedAssignees.value);
+    });
 
     const hideBanner = () => {
       showBanner.value = false;
@@ -119,5 +127,9 @@ header {
   font-size: 36px;
   line-height: 24px;
   letter-spacing: 0.15px;
+}
+
+.q-select {
+  width: 280px;
 }
 </style>
