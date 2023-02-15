@@ -83,6 +83,17 @@ export default {
       }
     });
   },
+  getRedmineTrackers(apiKey, offset) {
+    return Api().get("trackers.json", {
+      headers: {
+        "X-Redmine-API-Key": apiKey
+      },
+      params: {
+        limit: 100,
+        offset
+      }
+    });
+  },
   updateIssueStatus(apiKey, issueId, statusId) {
     return Api().put(
       `issues/${issueId}.json`,

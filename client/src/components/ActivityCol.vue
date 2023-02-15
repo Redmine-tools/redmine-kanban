@@ -25,6 +25,7 @@ export default {
     });
 
     const getJournalDetails = async() => {
+      console.log(props.journal)
       switch(props.journal[0]) {
         case "status_id":
           const statuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses;
@@ -38,6 +39,19 @@ export default {
           break;
         case "note":
           activity.value.name = 'New note'
+          activity.value.newValue = props.journal[1]
+          break;
+        case "subject":
+          activity.value.name = 'New title/subject'
+          activity.value.newValue = props.journal[1]
+          break;
+        case "tracker_id":
+          const trackers = (await RedmineService.getRedmineTrackers(store.state.user.api_key)).data.trackers;
+          activity.value.name = 'New tracker'
+          activity.value.newValue = trackers.filter(i => i.id == props.journal[1])[0].name
+          break;
+        case "fixed_version_id":
+          activity.value.name = 'New version'
           activity.value.newValue = props.journal[1]
           break;
         default:
