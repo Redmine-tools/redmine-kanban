@@ -76,21 +76,27 @@ export default {
     return Api().get("issue_statuses.json", {
       headers: {
         "X-Redmine-API-Key": apiKey
-      },
-      params: {
-        limit: 100,
-        offset
       }
     });
   },
-  getRedmineTrackers(apiKey, offset) {
+  getRedmineTrackers(apiKey) {
     return Api().get("trackers.json", {
       headers: {
         "X-Redmine-API-Key": apiKey
-      },
-      params: {
-        limit: 100,
-        offset
+      }
+    });
+  },
+  getRedminePriority(apiKey) {
+    return Api().get("enumerations/issue_priorities.json", {
+      headers: {
+        "X-Redmine-API-Key": apiKey
+      }
+    });
+  },
+  getRedmineFixedVersion(apiKey, versionId) {
+    return Api().get(`versions/${versionId}.json`, {
+      headers: {
+        "X-Redmine-API-Key": apiKey
       }
     });
   },

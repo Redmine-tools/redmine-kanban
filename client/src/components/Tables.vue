@@ -40,7 +40,7 @@ export default {
 .table-container {
   background: #F7F7F7;
   border-radius: 12px;
-  margin-block-start: 48px;
+  margin-block-start: 16px;
   margin-inline: 48px;
   filter: drop-shadow(0px 6px 15px rgba(0, 0, 0, 0.25));
   min-height: 192px;

@@ -51,8 +51,15 @@ export default {
           activity.value.newValue = trackers.filter(i => i.id == props.journal[1])[0].name
           break;
         case "fixed_version_id":
+          const fixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal[1])).data.version;
           activity.value.name = 'New version'
-          activity.value.newValue = props.journal[1]
+          activity.value.newValue = fixedVersion.name
+          break;
+        case "priority_id":
+          const priorities = (await RedmineService.getRedminePriority(store.state.user.api_key)).data.issue_priorities;
+          console.log(priorities)
+          activity.value.name = 'New priority'
+          activity.value.newValue = priorities.filter(i => i.id == props.journal[1])[0].name
           break;
         default:
           activity.value.name = props.journal[0]
