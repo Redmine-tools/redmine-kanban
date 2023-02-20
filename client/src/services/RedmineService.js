@@ -29,6 +29,20 @@ export default {
       }
     });
   },
+  getProjectById(apiKey, projectId) {
+    return Api().get(`projects/${projectId}.json`, {
+      headers: {
+        "X-Redmine-API-Key": apiKey
+      }
+    });
+  },
+  getCategoriesByProjectId(apiKey, projectId) {
+    return Api().get(`projects/${projectId}/issue_categories.json`, {
+      headers: {
+        "X-Redmine-API-Key": apiKey
+      }
+    });
+  },
   getProjectQueries(apiKey, offset) {
     return Api().get("queries.json", {
       headers: {

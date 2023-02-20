@@ -57,9 +57,48 @@ export default {
           break;
         case "priority_id":
           const priorities = (await RedmineService.getRedminePriority(store.state.user.api_key)).data.issue_priorities;
-          console.log(priorities)
           activity.value.name = 'New priority'
           activity.value.newValue = priorities.filter(i => i.id == props.journal[1])[0].name
+          break;
+        case "start_date":
+          activity.value.name = 'New start date set to'
+          activity.value.newValue = props.journal[1]
+          break;
+        case "due_date":
+          activity.value.name = 'New due date set to'
+          activity.value.newValue = props.journal[1]
+          break;
+        case "done_ratio":
+          activity.value.name = 'Done ratio'
+          activity.value.newValue = props.journal[1] + '%'
+          break;
+        case "project_id":
+          const project = (await RedmineService.getProjectById(store.state.user.api_key, props.journal[1])).data.project;
+          activity.value.name = 'New Project'
+          activity.value.newValue = project.name
+          break;
+        case "category_id":
+          const categories = (await RedmineService.getCategoriesByProjectId(store.state.user.api_key, store.state.project.id)).data.issue_categories;
+          activity.value.name = 'New category'
+          activity.value.newValue = categories.filter(i => i.id = props.journal[1])[0].name
+          break;
+        case "estimated_hours":
+          activity.value.name = 'Estimated hours'
+          activity.value.newValue = props.journal[1] + 'h'
+          break;
+        case "relates":
+          const issue = store.state.issues.filter(i => i.id == props.journal[1])[0]
+          activity.value.name = 'Relates to'
+          activity.value.newValue = `${issue?.subject} (id: ${issue?.id})`
+          break;
+        case "parent_id":
+          const parentIssue = store.state.issues.filter(i => i.id == props.journal[1])[0]
+          activity.value.name = 'Parent'
+          activity.value.newValue = `${parentIssue?.subject} (id: ${parentIssue?.id})`
+          break;
+        case "description":
+          activity.value.name = 'Description'
+          activity.value.newValue = props.journal[1]
           break;
         default:
           activity.value.name = props.journal[0]
