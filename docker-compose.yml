@@ -1,0 +1,24 @@
+version: '3'
+services:
+  client:
+    build: 
+      context: ./client
+      dockerfile: Dockerfile
+    ports: 
+      - "8080:80"
+    volumes:
+      - /app/node_modules
+      - ./client:/app
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    volumes:
+      - /app/node_modules
+      - ./server:/app
+    environment:
+      - BASE_URL=https://agile.tigra.hu/
+      - PORT=3000
+    ports: 
+      - 3000:3000
+  
