@@ -35,80 +35,91 @@ export default {
           activity.value.oldValue = oldAssignee && `${oldAssignee.firstname} ${oldAssignee.lastname}`
           activity.value.name = props.journal.name
           activity.value.newValue = newAssignee && `${newAssignee.firstname} ${newAssignee.lastname}`
-          console.log(oldAssignee)
-          console.log(newAssignee)
           break;
         case "status_id":
           const statuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses;
-          activity.value.name = 'New status'
-          activity.value.newValue = statuses.filter(i => i.id == props.journal[1])[0].name
-          break;
-        case "note":
-          activity.value.name = 'New note'
-          activity.value.newValue = props.journal[1]
-          break;
-        case "subject":
-          activity.value.name = 'New title/subject'
-          activity.value.newValue = props.journal[1]
+          activity.value.name = props.journal.name
+          activity.value.newValue = statuses.filter(i => i.id == props.journal?.new_value)[0].name
+          activity.value.oldValue = statuses.filter(i => i.id == props.journal?.old_value)[0].name
           break;
         case "tracker_id":
           const trackers = (await RedmineService.getRedmineTrackers(store.state.user.api_key)).data.trackers;
-          activity.value.name = 'New tracker'
-          activity.value.newValue = trackers.filter(i => i.id == props.journal[1])[0].name
+          activity.value.name = props.journal.name
+          activity.value.newValue = trackers.filter(i => i.id == props.journal?.new_value)[0].name
+          activity.value.oldValue = trackers.filter(i => i.id == props.journal?.old_value)[0].name
           break;
         case "fixed_version_id":
-          const fixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal[1])).data.version;
-          activity.value.name = 'New version'
-          activity.value.newValue = fixedVersion.name
+          const newFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.new_value)).data.version;
+          const oldFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.old_value)).data.version;
+          activity.value.name = props.journal.name
+          activity.value.newValue = newFixedVersion.name
+          activity.value.oldValue = oldFixedVersion.name
           break;
         case "priority_id":
           const priorities = (await RedmineService.getRedminePriority(store.state.user.api_key)).data.issue_priorities;
-          activity.value.name = 'New priority'
-          activity.value.newValue = priorities.filter(i => i.id == props.journal[1])[0].name
-          break;
-        case "start_date":
-          activity.value.name = 'New start date set to'
-          activity.value.newValue = props.journal[1]
-          break;
-        case "due_date":
-          activity.value.name = 'New due date set to'
-          activity.value.newValue = props.journal[1]
-          break;
-        case "done_ratio":
-          activity.value.name = 'Done ratio'
-          activity.value.newValue = props.journal[1] + '%'
+          activity.value.name = props.journal.name
+          activity.value.newValue = priorities.filter(i => i.id == props.journal.new_value)[0].name
+          activity.value.oldValue = priorities.filter(i => i.id == props.journal.old_value)[0].name
           break;
         case "project_id":
-          const project = (await RedmineService.getProjectById(store.state.user.api_key, props.journal[1])).data.project;
-          activity.value.name = 'New Project'
-          activity.value.newValue = project.name
+          const newProject = (await RedmineService.getProjectById(store.state.user.api_key, props.journal.new_value)).data.project;
+          const oldProject = (await RedmineService.getProjectById(store.state.user.api_key, props.journal.old_value)).data.project;
+          activity.value.name = props.journal.name
+          activity.value.newValue = newProject.name
+          activity.value.oldValue = oldProject.name
           break;
         case "category_id":
           const categories = (await RedmineService.getCategoriesByProjectId(store.state.user.api_key, store.state.project.id)).data.issue_categories;
           activity.value.name = 'New category'
           activity.value.newValue = categories.filter(i => i.id = props.journal[1])[0].name
           break;
+        case "start_date":
+          activity.value.name = props.journal.name
+          activity.value.newValue = props.journal.new_value
+          activity.value.oldValue = props.journal.old_value
+          break;
+        case "due_date":
+          activity.value.name = props.journal.name
+          activity.value.newValue = props.journal.new_value
+          activity.value.oldValue = props.journal.old_value
+          break;
+        case "done_ratio":
+          activity.value.name = props.journal.name
+          activity.value.newValue = props.journal.new_value + '%'
+          activity.value.oldValue = props.journal.old_value + '%'
+          break;
         case "estimated_hours":
-          activity.value.name = 'Estimated hours'
-          activity.value.newValue = props.journal[1] + 'h'
+          activity.value.name = props.journal.name
+          activity.value.newValue = props.journal.new_value + 'h'
+          activity.value.oldValue = props.journal.old_value + 'h'
           break;
         case "relates":
-          const issue = store.state.issues.filter(i => i.id == props.journal[1])[0]
-          activity.value.name = 'Relates to'
-          activity.value.newValue = `${issue?.subject} (id: ${issue?.id})`
-          break;
         case "parent_id":
-          const parentIssue = store.state.issues.filter(i => i.id == props.journal[1])[0]
-          activity.value.name = 'Parent'
-          activity.value.newValue = `${parentIssue?.subject} (id: ${parentIssue?.id})`
+          const newIssue = store.state.issues.filter(i => i.id == props.journal.new_value)[0]
+          const oldIssue = store.state.issues.filter(i => i.id == props.journal.old_value)[0]
+          activity.value.name = props.journal.name
+          activity.value.newValue = `${newIssue?.subject} (id: ${newIssue?.id})`
+          activity.value.oldIssue = `${oldIssue?.subject} (id: ${oldIssue?.id})`
           break;
         case "description":
-          activity.value.name = 'Description'
-          activity.value.newValue = props.journal[1]
+          activity.value.name = props.journal.name
+          activity.value.newValue = props.journal.new_value
+          activity.value.oldValue = props.journal.old_value
+          break;
+        case "subject":
+          activity.value.name = props.journal.name
+          activity.value.newValue = props.journal.new_value
+          activity.value.oldValue = props.journal.old_value
+          break;
+        case "note":
+          activity.value.name = props.journal.name
+          activity.value.newValue = props.journal.new_value
+          activity.value.oldValue = props.journal.old_value
           break;
         default:
-          activity.value.name = props.journal[0]
-          activity.value.newValue = props.journal[1]
+          activity.value.name = props.journal.name
+          activity.value.newValue = props.journal.new_value
+          activity.value.oldValue = props.journal.old_value
           break;
       }
     }

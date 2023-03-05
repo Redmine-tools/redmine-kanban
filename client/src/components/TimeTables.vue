@@ -54,8 +54,7 @@ export default {
     const range = computed(() => props.range);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
-    console.log(today)
-    console.log(yesterday)
+
 
     watch(selectedAssignee, () => {
       getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);

@@ -107,7 +107,7 @@
 
         <q-card-section class="row card-data">
           <div>
-            <span class="gray-text">{{ $t("subject") }}:</span>
+            <span class="gray-text">{{ $t("subjectKeyword") }}:</span>
             {{ clickedIssue.subject }}
           </div>
           <div>

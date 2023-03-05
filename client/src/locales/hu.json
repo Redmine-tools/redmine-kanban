@@ -41,5 +41,19 @@
   "newKeyword": "új értéke: ",
   "changed": "megváltozott,",
   "to": "helyett",
-  "deleted": "törölve lett"
+  "deleted": "törölve lett",
+  "status_id": "Státusz",
+  "tracker_id": "Típus",
+  "start_date": "Kezdés",
+  "due_date": "Határidő",
+  "project_id": "Projekt",
+  "category_id": "Kategória",
+  "done_ratio": "Készültség",
+  "estimated_hours": "Becsült időigény",
+  "relates": "Kapcsolódik",
+  "parent_id": "Szülő feladat",
+  "description": "Leírás",
+  "subject": "Tárgy",
+  "note": "Feljegyzések",
+  "priority_id": "Prioritás"
 }
