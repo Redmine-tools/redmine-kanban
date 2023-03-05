@@ -1,6 +1,7 @@
 <template>
-  <li v-if="activity?.oldValue">{{ $t(activity.name) }} {{ $t("changed") }} {{ activity.oldValue }} {{ $t("to") }} {{ activity.newValue }}</li>
-  <li v-else>{{ $t(activity.name) }} {{ $t("newKeyword") }} {{ activity.newValue }}</li>
+  <li v-if="activity.newValue && activity?.oldValue"><b>{{ $t(activity.name) }}</b> {{ $t("changed") }} {{ activity.oldValue }} {{ $t("to") }} {{ activity.newValue }}</li>
+  <li v-else-if="activity.newValue && !activity?.oldValue"><b>{{ $t(activity.name) }}</b> {{ $t("newKeyword") }} {{ activity.newValue }}</li>
+  <li v-else><b>{{ $t(activity.name) }}</b> {{ $t("deleted") }} (<s> {{ activity.oldValue }}</s>)</li>
 </template>
 
 <script>
@@ -27,12 +28,12 @@ export default {
     });
 
     const getJournalDetails = async() => {
-      switch(props.journal[0]) {
+      switch(props.journal.name) {
         case "assigned_to_id":
-          const oldAssignee = props?.journal[1] && (await RedmineService.getUserById(store.state.user.api_key, props.journal[1])).data.user;
-          const newAssignee = props?.journal[2] && (await RedmineService.getUserById(store.state.user.api_key, props.journal[2])).data.user;
+          const oldAssignee = props.journal?.old_value && (await RedmineService.getUserById(store.state.user.api_key, props.journal.old_value)).data.user;
+          const newAssignee = props.journal?.new_value && (await RedmineService.getUserById(store.state.user.api_key, props.journal.new_value)).data.user;
           activity.value.oldValue = oldAssignee && `${oldAssignee.firstname} ${oldAssignee.lastname}`
-          activity.value.name = props.journal[0]
+          activity.value.name = props.journal.name
           activity.value.newValue = newAssignee && `${newAssignee.firstname} ${newAssignee.lastname}`
           console.log(oldAssignee)
           console.log(newAssignee)

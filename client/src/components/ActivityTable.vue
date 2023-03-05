@@ -21,7 +21,9 @@
         <td>{{ entry.id }}</td>
         <td>
           <ul>
-              <ActivityCol :journal="renderJournals(entry.journals)" />
+            <template v-for="journal in renderJournals(entry.journals)">
+              <ActivityCol :journal="journal" />
+            </template>
           </ul>
         </td>
 			</tr>
@@ -94,9 +96,7 @@ export default {
       for (let i = 0; i < journals.length; i += 1) {
         if(journals[i]?.details.length > 0) {
           for (let j = 0; j < journals[i].details.length; j += 1) {
-            actions.push(journals[i].details[j].name);
-            actions.push(journals[i].details[j].old_value);
-            actions.push(journals[i].details[j].new_value);
+            actions.push(journals[i].details[j])
           }
         } else {
           actions.push('note', journals[i].notes)
@@ -152,7 +152,6 @@ thead {
 
 tbody {
   font-style: normal;
-  font-weight: 600;
   font-size: 12px;
   line-height: 24px;
   letter-spacing: 0.15px;

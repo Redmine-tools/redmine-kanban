@@ -40,5 +40,6 @@
     "notFound": "We cannot find the page you are looking for!",
     "newKeyword": "new value:", 
     "changed": "changed from",
-    "to": "to"
+    "to": "to",
+    "deleted": "has been deleted"
 }

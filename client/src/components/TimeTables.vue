@@ -123,7 +123,6 @@ thead {
 
 tbody {
   font-style: normal;
-  font-weight: 600;
   font-size: 12px;
   line-height: 24px;
   letter-spacing: 0.15px;

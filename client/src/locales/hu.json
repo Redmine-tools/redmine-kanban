@@ -40,5 +40,6 @@
   "notFound": "A keresett oldal nem található!",
   "newKeyword": "új értéke: ",
   "changed": "megváltozott,",
-  "to": "helyett"
+  "to": "helyett",
+  "deleted": "törölve lett"
 }
