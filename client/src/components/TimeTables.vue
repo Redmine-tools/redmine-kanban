@@ -18,7 +18,7 @@
         :id="entry.id"
         :key="entry.id">
 				<td>{{ entry.project.name }}</td>
-				<td>{{ entry.issue.id }}</td>
+				<TaskCol :issueId="entry.id " />
 				<td>{{ entry.hours }}</td>
 			</tr>
 		</tbody>
@@ -35,6 +35,7 @@ import {
   watch,
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
+import TaskCol from '@/components/TaskCol';
 
 export default {
   name: 'TimeTables',
@@ -44,6 +45,7 @@ export default {
     },
   },
   components: {
+    TaskCol
   },
   setup(props) {
     const store = useStore();

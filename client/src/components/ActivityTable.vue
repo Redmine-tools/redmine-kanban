@@ -18,7 +18,7 @@
         :id="entry.id"
         :key="entry.id">
 				<td>{{ entry.project.name }}</td>
-        <td>{{ entry.id }}</td>
+        <TaskCol :issueId="entry.id " />
         <td>
           <ul>
             <template v-for="journal in renderJournals(entry.journals)">
@@ -42,6 +42,7 @@ import {
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
 import ActivityCol from '@/components/ActivityCol';
+import TaskCol from '@/components/TaskCol';
 
 export default {
   name: 'ActivityTable',
@@ -51,7 +52,8 @@ export default {
     },
   },
   components: {
-    ActivityCol
+    ActivityCol,
+    TaskCol
   },
   setup(props) {
     const store = useStore();
