@@ -21,9 +21,7 @@
         <td>{{ entry.id }}</td>
         <td>
           <ul>
-            <template v-for="journal in renderJournals(entry.journals)">
-              <ActivityCol :journal="journal" />
-            </template>
+              <ActivityCol :journal="renderJournals(entry.journals)" />
           </ul>
         </td>
 			</tr>
@@ -91,18 +89,20 @@ export default {
     }
 
     const renderJournals = (journals) => {
-      const actions = new Map();
+      const actions = [];
       journals = journals.filter(journal => new Date(journal.created_on) > (range.value === 'day' ? yesterday : lastWeek))
       for (let i = 0; i < journals.length; i += 1) {
         if(journals[i]?.details.length > 0) {
           for (let j = 0; j < journals[i].details.length; j += 1) {
-            actions.set(journals[i].details[j].name, journals[i].details[j].new_value);
+            actions.push(journals[i].details[j].name);
+            actions.push(journals[i].details[j].old_value);
+            actions.push(journals[i].details[j].new_value);
           }
         } else {
-          actions.set('note', journals[i].notes)
+          actions.push('note', journals[i].notes)
         }
       }
-      return actions.entries();
+      return actions;
     }
 
     onMounted(async () => {

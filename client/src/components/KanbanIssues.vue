@@ -72,7 +72,7 @@
                     class="author-circle"
                   >
                     <span class="author-tooltiptext">
-                      {{ $t("assignedTo") }}: {{ element.assigned_to.name }}
+                      {{ $t("assigned_to_id") }}: {{ element.assigned_to.name }}
                     </span>
                     {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
                   </div>
@@ -131,7 +131,7 @@
             {{ clickedIssue.status.name }}
           </div>
           <div v-if="clickedIssue.assigned_to?.name">
-            <span class="gray-text">{{ $t("assignedTo") }}:</span>
+            <span class="gray-text">{{ $t("assigned_to_id") }}:</span>
             {{ clickedIssue.assigned_to.name }}
           </div>
         </q-card-section>

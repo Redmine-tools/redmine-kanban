@@ -1,5 +1,6 @@
 <template>
-  <li>{{ activity.name }}: {{ activity.newValue }}</li>
+  <li v-if="activity?.oldValue">{{ $t(activity.name) }} {{ $t("changed") }} {{ activity.oldValue }} {{ $t("to") }} {{ activity.newValue }}</li>
+  <li v-else>{{ $t(activity.name) }} {{ $t("newKeyword") }} {{ activity.newValue }}</li>
 </template>
 
 <script>
@@ -21,21 +22,25 @@ export default {
     const store = useStore();
     const activity = ref({
       name: '',
+      oldValue: '',
       newValue: '',
     });
 
     const getJournalDetails = async() => {
-      console.log(props.journal)
       switch(props.journal[0]) {
+        case "assigned_to_id":
+          const oldAssignee = props?.journal[1] && (await RedmineService.getUserById(store.state.user.api_key, props.journal[1])).data.user;
+          const newAssignee = props?.journal[2] && (await RedmineService.getUserById(store.state.user.api_key, props.journal[2])).data.user;
+          activity.value.oldValue = oldAssignee && `${oldAssignee.firstname} ${oldAssignee.lastname}`
+          activity.value.name = props.journal[0]
+          activity.value.newValue = newAssignee && `${newAssignee.firstname} ${newAssignee.lastname}`
+          console.log(oldAssignee)
+          console.log(newAssignee)
+          break;
         case "status_id":
           const statuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses;
           activity.value.name = 'New status'
           activity.value.newValue = statuses.filter(i => i.id == props.journal[1])[0].name
-          break;
-        case "assigned_to_id":
-          const assignedTo = (await RedmineService.getUserById(store.state.user.api_key, props.journal[1])).data.user;
-          activity.value.name = "Newly assigned to"
-          activity.value.newValue = `${assignedTo.firstname} ${assignedTo.lastname}`
           break;
         case "note":
           activity.value.name = 'New note'

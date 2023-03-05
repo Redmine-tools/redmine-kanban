@@ -35,7 +35,10 @@
     "closePopup": "Close popup",
     "openInRedmine": "Open in Redmine",
     "author": "Author",
-    "assignedTo": "Assigned to",
+    "assigned_to_id": "Assigned to",
     "filter": "filter (beta)",
-    "notFound": "We cannot find the page you are looking for!"
+    "notFound": "We cannot find the page you are looking for!",
+    "newKeyword": "new value:", 
+    "changed": "changed from",
+    "to": "to"
 }
