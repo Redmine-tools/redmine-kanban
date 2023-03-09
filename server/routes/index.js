@@ -23,7 +23,7 @@ routes.post('/api/login', jsonParser, async function(req, res) {
             logger.info("User successfully logged in")
             res.send(response.body)
         } else {
-            res.status(401).send('error')
+            res.status(401).send(error)
         }
     })
 })
