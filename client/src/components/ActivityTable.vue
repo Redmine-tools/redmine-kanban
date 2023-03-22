@@ -181,6 +181,7 @@ tr > th:first-of-type {
 }
 
 tr > td:first-of-type {
+  display: flex;
   padding-inline-start: 24px;
 }
 
