@@ -1,5 +1,5 @@
 <template>
-  <td @click="open()">{{ issue.tracker.name }} #{{ issue.id }} {{ issue.subject }}</td>
+  <td @click="open()">{{ issue?.tracker.name }} #{{ issue?.id }} {{ issue?.subject }}</td>
 </template>
 
 <script>
@@ -20,7 +20,7 @@ export default {
   setup(props) {
     const store = useStore();
     const issue = store.state.issues.filter(i => i.id === props.issueId)[0];
-
+    
     async function open() {
       const response = await RedmineService.getRedmineUrl()
       window.open(`${response.data}issues/${props.issueId}`, '_blank');

@@ -74,19 +74,25 @@ export default {
       filterByTime(range.value === 'day' ? yesterday : lastWeek);
     })
 
+    const filterJournalsForUser = (journals) => {
+      return journals.journals.some(issue => issue.user.id === selectedAssignee.value.id)
+    }
+
     const filterByTime = async (rangeToCheck) => {
       loading.value = true;
       for (const key of Object.keys(store.state.issues)) {
         const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
-        
+
         if (lastUpdatedOn > rangeToCheck) {
           const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
-          store.commit({
-            type: 'updateIssue',
-            key,
-            payload: issueWithJournals,
-          });
-          issueWithJournals?.journals.length > 0 && result.value.push(issueWithJournals);
+          if (issueWithJournals.assigned_to?.id === selectedAssignee.value.id || filterJournalsForUser(issueWithJournals)) {
+            store.commit({
+              type: 'updateIssue',
+              key,
+              payload: issueWithJournals,
+            });
+            issueWithJournals?.journals.length > 0 && result.value.push(issueWithJournals);
+          }
         }
       }
       loading.value = false;
