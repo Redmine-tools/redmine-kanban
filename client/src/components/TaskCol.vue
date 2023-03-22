@@ -20,7 +20,7 @@ export default {
   setup(props) {
     const store = useStore();
     const issue = store.state.issues.filter(i => i.id === props.issueId)[0];
-    
+
     async function open() {
       const response = await RedmineService.getRedmineUrl()
       window.open(`${response.data}issues/${props.issueId}`, '_blank');
@@ -35,6 +35,10 @@ export default {
 </script>
 
 <style scoped>
+td {
+  padding-inline-end: 16px;
+}
+
 td:hover {
   color: blue;
   cursor: pointer;

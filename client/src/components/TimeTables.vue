@@ -18,7 +18,7 @@
         :id="entry.id"
         :key="entry.id">
 				<td>{{ entry.project.name }}</td>
-				<TaskCol :issueId="entry.id " />
+				<TaskCol :issueId="entry.issue.id " />
 				<td>{{ entry.hours }}</td>
 			</tr>
 		</tbody>
@@ -73,7 +73,7 @@ export default {
         store.state.user.api_key,
         store.state.project.id,
         store.state.assignee[0].id,
-        yesterday,
+        today,
         range.value === 'day' ? yesterday : lastWeek)
       ).data.time_entries;
       loading.value = false;
