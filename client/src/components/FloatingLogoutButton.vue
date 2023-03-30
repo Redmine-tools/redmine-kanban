@@ -17,6 +17,7 @@
 
 <script>
 import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import Navigation from '@/components/Navigation';
 
@@ -26,6 +27,7 @@ export default {
   },
   setup() {
     const store = useStore();
+    const router = useRouter();
     const { t, locale } = useI18n({ useScope: 'global' });
 
     function logout() {

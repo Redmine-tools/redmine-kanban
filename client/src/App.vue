@@ -141,13 +141,6 @@ export default {
       localStorage.setItem('locale', locale.value);
     }
 
-    function logout() {
-      store.commit({
-        type: 'resetState',
-      });
-      router.push('/');
-    }
-
     return {
       user,
       t,
@@ -156,7 +149,6 @@ export default {
       miniState,
       store,
       setLang,
-      logout,
       version,
     };
   },
