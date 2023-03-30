@@ -10,6 +10,7 @@
 				<th>Project</th>
 				<th>Task</th>
 				<th>Hours ({{ timeEntriesForUser.reduce((sum, value) => {return sum + value.hours}, 0) }})</th>
+        <th>Comment</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -20,6 +21,7 @@
 				<td>{{ entry.project.name }}</td>
 				<TaskCol :issueId="entry.issue.id " />
 				<td>{{ entry.hours }}</td>
+        <td>{{ entry?.comments }}</td>
 			</tr>
 		</tbody>
 	</table>
@@ -77,6 +79,7 @@ export default {
         range.value === 'day' ? yesterday : lastWeek)
       ).data.time_entries;
       loading.value = false;
+      console.log(timeEntriesForUser)
     }
 
 
@@ -101,7 +104,6 @@ table {
   vertical-align: baseline;
   border-collapse: collapse;
   table-layout: fixed;
-  width: 100%;
 }
 
 caption {
@@ -137,16 +139,30 @@ tbody > tr {
 }
 
 tbody > tr:hover {
-  
   background: #EDF2F2;
+}
+
+tr > *:nth-child(1) { width:20%; }
+tr > *:nth-child(2) { width:30%; }
+tr > *:nth-child(3) { width:25%; }
+tr > *:nth-child(4) { width:25%; }
+
+tr > td {
+  padding-block-start: 6px;
+  vertical-align: baseline;
 }
 
 tr > th:first-of-type {
   padding-inline-start: 24px;
+  padding-inline-end: 24px;
 }
 
 tr > td:first-of-type {
-  display: flex;
+  padding-inline-start: 24px;
+  padding-inline-end: 24px;
+}
+
+tr > td:nth-child(3), th:nth-child(3) {
   padding-inline-start: 24px;
 }
 

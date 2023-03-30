@@ -176,12 +176,27 @@ tbody > tr:hover {
   background: #EBEDED;
 }
 
+
+tr > *:nth-child(1) { width:20%; }
+tr > *:nth-child(2) { width:30%; }
+tr > *:nth-child(3) { width:50%; }
+
+tr > td {
+  padding-block-start: 6px;
+  vertical-align: baseline;
+}
+
 tr > th:first-of-type {
   padding-inline-start: 24px;
+  padding-inline-end: 24px;
 }
 
 tr > td:first-of-type {
-  display: flex;
+  padding-inline-start: 24px;
+  padding-inline-end: 24px;
+}
+
+tr > td:nth-child(3), th:nth-child(3) {
   padding-inline-start: 24px;
 }
 
