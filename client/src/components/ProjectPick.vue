@@ -31,7 +31,7 @@ export default {
     const projectsOrdered = ref();
     let stringOptions;
     const store = useStore();
-    const selectedProject = ref(store.state?.project?.id ? { value: store.state.project.id, name: store.state.project.name } : {});
+    const selectedProject = ref(store.state?.project?.id ? { value: store.state.project.id, name: store.state.project.name } : null);
     let projects;
 
     async function getProjectsWithOffset(offset = 0) {

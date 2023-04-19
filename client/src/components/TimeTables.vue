@@ -79,7 +79,6 @@ export default {
         range.value === 'day' ? yesterday : lastWeek)
       ).data.time_entries;
       loading.value = false;
-      console.log(timeEntriesForUser)
     }
 
 
@@ -144,12 +143,15 @@ tbody > tr:hover {
 
 tr > *:nth-child(1) { width:20%; }
 tr > *:nth-child(2) { width:30%; }
-tr > *:nth-child(3) { width:25%; }
-tr > *:nth-child(4) { width:25%; }
+tr > *:nth-child(3) { width:15%; }
+tr > *:nth-child(4) { width:35%; }
 
 tr > td {
   padding-block-start: 6px;
   vertical-align: baseline;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 tr > th:first-of-type {

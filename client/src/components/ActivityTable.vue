@@ -107,7 +107,10 @@ export default {
             actions.push(journals[i].details[j])
           }
         } else {
-          actions.push('note', journals[i].notes)
+          actions.push({
+            name: 'note',
+            new_value: journals[i].notes
+          })
         }
       }
       return actions;
@@ -184,6 +187,9 @@ tr > *:nth-child(3) { width:50%; }
 tr > td {
   padding-block-start: 6px;
   vertical-align: baseline;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 tr > th:first-of-type {
