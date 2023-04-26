@@ -1,13 +1,14 @@
 <template>
   <aside class="navigation">
-    <router-link to="/kanban">Kanban board</router-link>
-    <router-link to="/tasks">Tasks</router-link>
+    <router-link v-if="store.state?.issues.length > 0" to="/kanban">Kanban board</router-link>
+    <router-link v-if="store.state?.issues.length > 0"  to="/tasks">Tasks</router-link>
   </aside>
 </template>
 
 <script>
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   name: 'MainNavigation',
@@ -15,7 +16,9 @@ export default {
 
   },
   setup() {
+    const store = useStore();
     return {
+      store
     };
   },
 };

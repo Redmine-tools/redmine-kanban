@@ -1,13 +1,13 @@
 <template>
   <aside class="mini-navigation">
-    <router-link to="/kanban">
+    <router-link v-if="store.state?.issues.length > 0"  to="/kanban">
       <q-icon name="leaderboard" size="24px">
         <q-tooltip anchor="center end" self="center left">
           Kanban board
         </q-tooltip>
       </q-icon>
     </router-link>
-    <router-link to="/tasks">
+    <router-link v-if="store.state?.issues.length > 0"  to="/tasks">
       <q-icon name="toys" size="24px">
         <q-tooltip anchor="center end" self="center left">
           Tasks
@@ -20,16 +20,17 @@
 <script>
 import { useRouter } from 'vue-router';
 import { ref, computed } from 'vue';
+import { useStore } from 'vuex';
 
 export default {
   name: 'MiniNavigation',
   components: {
   },
   setup() {
-
+    const store = useStore();
 
     return {
-
+      store
     };
   },
 };
