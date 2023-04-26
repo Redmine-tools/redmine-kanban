@@ -28,6 +28,7 @@
     <section v-else >
       <header>
         <h3 class="assignee-title">{{ selectedAssignees.name }}'s activity</h3>
+        <q-btn round color="primary" icon="refresh" @click="getIssuesForProject" />
         <q-btn-toggle
           v-model="range"
           no-caps
@@ -49,6 +50,7 @@ import { computed, ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import Tables from '@/components/Tables.vue';
 import { useRouter } from 'vue-router';
+import RedmineService from '@/services/RedmineService';
 
 export default {
   name: 'Tasks',
@@ -73,12 +75,43 @@ export default {
       })
       return resArr;
     });
+    const issuesForProject = [];
+    const loading = ref(false);
 
     function updateAssigneeInStore(assignee) {
       store.commit({
         type: 'updateAssignee',
         payload: [assignee],
       });
+    }
+
+    async function getIssuesWithOffset(offset = 0) {
+      const response = (await RedmineService.getIssuesForProject(
+        store.state.user.api_key, store.state.query.id, store.state.project.id, offset,
+      ));
+      return {
+        issues: response?.data?.issues || [],
+        totalCount: response?.data?.total_count || 0,
+      };
+    }
+
+    async function getIssuesForProject() {
+      console.log("getting the good stuff")
+      const PAGE_SIZE = 100;
+      const { issues, totalCount } = await getIssuesWithOffset();
+      issuesForProject.value = [...issues];
+      if (totalCount > PAGE_SIZE) {
+        const iterations = Math.ceil(totalCount / PAGE_SIZE);
+        for (let i = 1; i < iterations; i += 1) {
+          const { issues: currentIssues } = await getIssuesWithOffset(i * PAGE_SIZE);
+          issuesForProject.value = [...issuesForProject.value, ...currentIssues];
+        }
+      }
+      store.commit({
+        type: 'addAllIssues',
+        payload: issuesForProject.value,
+      });
+      loading.value = false;
     }
 
     watch(selectedAssignees, () => {
@@ -100,7 +133,8 @@ export default {
       hideBanner,
       showBanner,
       navigateBackToKanban,
-      availableAssignees
+      availableAssignees,
+      getIssuesForProject
     };
   },
 };

@@ -206,6 +206,12 @@ tr > td:nth-child(3), th:nth-child(3) {
   padding-inline-start: 24px;
 }
 
+td > ul > li  {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 section {
   padding-block-start: 24px;
   padding-block-end: 24px;
