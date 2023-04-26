@@ -47,10 +47,10 @@ router.beforeEach((to, from, next) => {
   if (to.name === 'Login' && store.state.user.api_key) {
     next({ name: 'Setup' });
   }
-  if (to.name === "KanbanView" && store.state.issues.length === 0) {
+  if (to.name === "KanbanView" && (!store.state.project.id || !store.state.query.id)) {
     next({ name: "Setup" });
   }
-  if (to.name === "Tasks" && store.state.issues.length === 0) {
+  if (to.name === "Tasks" && (!store.state.project.id || !store.state.query.id)) {
     next({ name: "Setup" });
   }
   if (to.matched.some(record => record.meta.requiresAuth)) {
