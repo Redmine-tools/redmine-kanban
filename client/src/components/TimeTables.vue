@@ -45,6 +45,9 @@ export default {
     range: {
       type: String,
     },
+    key: {
+      type: Number
+    }
   },
   components: {
     TaskCol
@@ -56,6 +59,7 @@ export default {
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24).toISOString().slice(0, 10);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7).toISOString().slice(0, 10);
     const range = computed(() => props.range);
+    const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
 
@@ -64,7 +68,7 @@ export default {
       getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
     })
 
-    watch(range, () => {
+    watch([range, key], () => {
       timeEntriesForUser.value = []
       getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
     })

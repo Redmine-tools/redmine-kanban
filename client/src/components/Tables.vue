@@ -1,8 +1,8 @@
 <template>
   <section class="table-container">
     <div class="header"></div>
-    <TimeTables :range="range"></TimeTables>
-    <ActivityTable :range="range"></ActivityTable>
+    <TimeTables :range="range" :key="key"></TimeTables>
+    <ActivityTable :range="range" :key="key"></ActivityTable>
   </section>
 </template>
 
@@ -17,6 +17,9 @@ export default {
     range: {
       type: String,
     },
+    key: {
+      type: Number
+    }
   },
   components: {
     TimeTables,
@@ -24,6 +27,7 @@ export default {
   },
   setup(props) {
     const range = computed(() => props.range);
+    const key = computed(() => props.key);
 
     return {
       range,

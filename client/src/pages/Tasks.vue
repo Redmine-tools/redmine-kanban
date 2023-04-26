@@ -28,7 +28,7 @@
     <section v-else >
       <header>
         <h3 class="assignee-title">{{ selectedAssignees.name }}'s activity</h3>
-        <q-btn round color="primary" icon="refresh" @click="getIssuesForProject" />
+        <q-btn round color="primary" icon="refresh" @click="key+=1" />
         <q-btn-toggle
           v-model="range"
           no-caps
@@ -40,7 +40,7 @@
           ]"
         />
       </header>
-    <Tables :range="range" />
+    <Tables :range="range" :key="key" />
   </section>
 </section>
 </template>
@@ -63,6 +63,7 @@ export default {
     const assignees = computed(() => store.state.assignee)
     const showBanner = ref(true);
     const range = ref('day');
+    const key = ref(0);
     const router = useRouter();
     const availableAssignees = computed(() => {
       let resArr = [];
@@ -85,35 +86,6 @@ export default {
       });
     }
 
-    async function getIssuesWithOffset(offset = 0) {
-      const response = (await RedmineService.getIssuesForProject(
-        store.state.user.api_key, store.state.query.id, store.state.project.id, offset,
-      ));
-      return {
-        issues: response?.data?.issues || [],
-        totalCount: response?.data?.total_count || 0,
-      };
-    }
-
-    async function getIssuesForProject() {
-      console.log("getting the good stuff")
-      const PAGE_SIZE = 100;
-      const { issues, totalCount } = await getIssuesWithOffset();
-      issuesForProject.value = [...issues];
-      if (totalCount > PAGE_SIZE) {
-        const iterations = Math.ceil(totalCount / PAGE_SIZE);
-        for (let i = 1; i < iterations; i += 1) {
-          const { issues: currentIssues } = await getIssuesWithOffset(i * PAGE_SIZE);
-          issuesForProject.value = [...issuesForProject.value, ...currentIssues];
-        }
-      }
-      store.commit({
-        type: 'addAllIssues',
-        payload: issuesForProject.value,
-      });
-      loading.value = false;
-    }
-
     watch(selectedAssignees, () => {
       updateAssigneeInStore(selectedAssignees.value);
     });
@@ -134,7 +106,7 @@ export default {
       showBanner,
       navigateBackToKanban,
       availableAssignees,
-      getIssuesForProject
+      key
     };
   },
 };

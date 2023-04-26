@@ -50,6 +50,9 @@ export default {
     range: {
       type: String,
     },
+    key: {
+      type: Number
+    }
   },
   components: {
     ActivityCol,
@@ -61,6 +64,7 @@ export default {
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
     const range = computed(() => props.range);
+    const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
 
@@ -69,7 +73,7 @@ export default {
       filterByTime(range.value === 'day' ? yesterday : lastWeek);
     })
 
-    watch(range, () => {
+    watch([range, key], () => {
       result.value = []
       filterByTime(range.value === 'day' ? yesterday : lastWeek);
     })
