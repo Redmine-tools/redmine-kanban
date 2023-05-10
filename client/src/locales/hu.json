@@ -65,5 +65,6 @@
   "hours": "Órák",
   "selectUser": "Kérlek válassz egy felhasználót.",
   "selectUserWarning": "Csak egy felhasználó jeleníthető meg feladatok nézetben.",
-  "usersActivity": " aktivitása"
+  "usersActivity": " aktivitása",
+  "waitForButtonCooldown": "Kérlek várj pár másodpercet mielőtt újra frissítesz."
 }

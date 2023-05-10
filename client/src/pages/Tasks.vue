@@ -28,7 +28,11 @@
     <section v-else >
       <header>
         <h3 class="assignee-title">{{ selectedAssignees.name }}{{ $t("usersActivity") }}</h3>
-        <q-btn round color="primary" icon="refresh" @click="key+=1" />
+        <q-btn type="a" :disable="disableRefreshButton" round color="primary" icon="refresh" @click="forceReload" >
+          <q-tooltip anchor="top middle" self="center middle" v-if="showTooltip">
+            {{ $t("waitForButtonCooldown") }}
+          </q-tooltip>
+        </q-btn>
         <q-btn-toggle
           v-model="range"
           no-caps
@@ -78,6 +82,8 @@ export default {
     });
     const issuesForProject = [];
     const loading = ref(false);
+    const showTooltip = ref(false);
+    const disableRefreshButton = ref(false);
 
     function updateAssigneeInStore(assignee) {
       store.commit({
@@ -98,6 +104,16 @@ export default {
       router.back();
     }
 
+    const forceReload = () => {
+      showTooltip.value = true
+      disableRefreshButton.value = true
+      key.value+=1
+      setTimeout(() => {
+        showTooltip.value = false
+        disableRefreshButton.value = false
+      }, 5000)
+    }
+
     return {
       selectedAssignees,
       assignees,
@@ -106,7 +122,10 @@ export default {
       showBanner,
       navigateBackToKanban,
       availableAssignees,
-      key
+      key,
+      forceReload,
+      showTooltip,
+      disableRefreshButton
     };
   },
 };

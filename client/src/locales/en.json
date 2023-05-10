@@ -65,5 +65,6 @@
   "hours": "hours",
   "selectUser": "Please select a user.",
   "selectUserWarning": "Selecting more than one user from the kanban board filter will be clipped and only one user will be kept.",
-  "usersActivity": "'s activity"
+  "usersActivity": "'s activity",
+  "waitForButtonCooldown": "Please wait a couple of seconds before refreshing again."
 }
