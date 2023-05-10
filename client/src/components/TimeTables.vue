@@ -4,13 +4,13 @@
       <q-inner-loading :showing="loading" />
     </div>
     <table v-else class="">
-      <caption>Time reported</caption>
+      <caption>{{ $t("timeReported") }}</caption>
 		<thead>
 			<tr>
-				<th>Project</th>
-				<th>Task</th>
-				<th>Hours ({{ timeEntriesForUser.reduce((sum, value) => {return sum + value.hours}, 0) }})</th>
-        <th>Comment</th>
+				<th>{{ $t("project") }}</th>
+				<th>{{ $t("task") }}</th>
+				<th>{{ $t("hours") }} ({{ timeEntriesForUser.reduce((sum, value) => {return sum + value.hours}, 0) }})</th>
+        <th>{{ $t("comment") }}</th>
 			</tr>
 		</thead>
 		<tbody>

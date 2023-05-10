@@ -1,7 +1,7 @@
 <template>
   <aside class="navigation">
-    <router-link v-if="store.state?.issues.length > 0" to="/kanban">Kanban board</router-link>
-    <router-link v-if="store.state?.issues.length > 0"  to="/tasks">Tasks</router-link>
+    <router-link v-if="store.state?.issues.length > 0" to="/kanban">{{ $t("kanbanBoard") }}</router-link>
+    <router-link v-if="store.state?.issues.length > 0"  to="/tasks">{{ $t("tasks") }}</router-link>
   </aside>
 </template>
 

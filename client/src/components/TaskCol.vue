@@ -1,5 +1,5 @@
 <template>
-  <td @click="open()">{{ issue?.tracker.name }} #{{ issue?.id }} {{ issue?.subject }}</td>
+  <td @click="open()">{{ issue?.tracker.name }} #{{ issue?.id }}: {{ issue?.subject }}</td>
 </template>
 
 <script>

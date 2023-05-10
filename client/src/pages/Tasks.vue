@@ -14,7 +14,7 @@
       <template v-slot:avatar>
         <q-icon name="announcement" color="white" />
       </template>
-      Selecting more than one user from the kanban board filter will be clipped and only one user will be kept.
+      {{ $t("selectUserWarning") }}
       <template v-slot:action>
         <q-btn flat color="white" label="Nice" @click="hideBanner"/>
         <q-btn flat color="white" label="Back to kanban board" @click="navigateBackToKanban"/>
@@ -22,7 +22,7 @@
     </q-banner>
     <article v-if="assignees.length < 1">
       <h4>
-        Please select a user.
+        {{ $t("selectUser") }}
       </h4>
     </article>
     <section v-else >

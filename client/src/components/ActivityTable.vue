@@ -4,12 +4,12 @@
       <q-inner-loading :showing="loading" />
     </div>
     <table v-else class="">
-    <caption>Activities</caption>
+    <caption>{{ $t("activities") }}</caption>
     <thead>
 			<tr>
-				<th>Project</th>
-				<th>Task</th>
-				<th>Action</th>
+				<th>{{ $t("project") }}</th>
+				<th>{{ $t("task") }}</th>
+				<th>{{ $t("action") }}</th>
 			</tr>
 		</thead>
 		<tbody>

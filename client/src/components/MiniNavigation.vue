@@ -3,14 +3,14 @@
     <router-link v-if="store.state?.issues.length > 0"  to="/kanban">
       <q-icon name="leaderboard" size="24px">
         <q-tooltip anchor="center end" self="center left">
-          Kanban board
+          {{ $t("kanbanBoard") }}
         </q-tooltip>
       </q-icon>
     </router-link>
     <router-link v-if="store.state?.issues.length > 0"  to="/tasks">
       <q-icon name="toys" size="24px">
         <q-tooltip anchor="center end" self="center left">
-          Tasks
+          {{ $t("tasks") }}
         </q-tooltip>
       </q-icon>
     </router-link>

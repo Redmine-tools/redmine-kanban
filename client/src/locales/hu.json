@@ -55,5 +55,14 @@
   "description": "Leírás",
   "subject": "Tárgy",
   "note": "Feljegyzések",
-  "priority_id": "Prioritás"
+  "priority_id": "Prioritás",
+  "activities": "Aktivitások",
+  "task": "Feladat",
+  "tasks": "Feladatok",
+  "action": "Aktivitás",
+  "timeReported": "Idő rögzítések",
+  "comment": "Komment",
+  "hours": "Órák",
+  "selectUser": "Kérlek válassz egy felhasználót.",
+  "selectUserWarning": "Csak egy felhasználó jeleníthető meg feladatok nézetben."
 }
