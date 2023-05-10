@@ -467,6 +467,10 @@ export default {
   overflow: auto;
 }
 
+.q-field--auto-height .q-field__control {
+  height: -webkit-fill-available;
+}
+
 .kanban-container > .kanban > div:first-of-type {
   margin-inline-start: 48px;
 }

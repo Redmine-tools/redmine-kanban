@@ -64,5 +64,6 @@
   "comment": "Komment",
   "hours": "Órák",
   "selectUser": "Kérlek válassz egy felhasználót.",
-  "selectUserWarning": "Csak egy felhasználó jeleníthető meg feladatok nézetben."
+  "selectUserWarning": "Csak egy felhasználó jeleníthető meg feladatok nézetben.",
+  "usersActivity": " aktivitása"
 }

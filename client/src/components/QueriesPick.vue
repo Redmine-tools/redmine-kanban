@@ -13,7 +13,7 @@
     use-input
     hide-selected
     fill-input
-    :disable="queiresOrdered.length === 0"
+    :disable="queiresOrdered.length === 0 && !selectedQuerie"
     @filter="filterFn"
     @update:model-value="updateQuery"
   />
@@ -31,7 +31,7 @@ export default {
   setup() {
     const projectsOrdered = ref();
     const store = useStore();
-    const selectedQuerie = ref(store.state?.query?.id ? { value: store.state.query.id, name: store.state.query.name } : null);
+    const selectedQuerie = ref();
     const queiresOrdered = ref([]);
     let queries;
     let stringOptions;
@@ -85,6 +85,10 @@ export default {
     });
 
     onMounted(() => {
+      if(store.state?.project?.id) {
+        getProjectQueries()
+        selectedQuerie.value = store.state?.query?.id ? { value: store.state.query.id, name: store.state.query.name } : null
+      }
     });
 
     return {

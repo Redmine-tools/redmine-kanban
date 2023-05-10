@@ -27,7 +27,7 @@
     </article>
     <section v-else >
       <header>
-        <h3 class="assignee-title">{{ selectedAssignees.name }}'s activity</h3>
+        <h3 class="assignee-title">{{ selectedAssignees.name }}{{ $t("usersActivity") }}</h3>
         <q-btn round color="primary" icon="refresh" @click="key+=1" />
         <q-btn-toggle
           v-model="range"
