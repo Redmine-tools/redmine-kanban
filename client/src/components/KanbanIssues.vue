@@ -12,7 +12,6 @@
           :options="assignees"
           :option-label="'name'"
           use-chips
-          stack-label
           label="Assignee"
         />
         <q-input

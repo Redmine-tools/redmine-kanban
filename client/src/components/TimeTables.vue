@@ -3,28 +3,16 @@
     <div v-if="loading" class="loading-container">
       <q-inner-loading :showing="loading" />
     </div>
-    <table v-else class="">
-      <caption>{{ $t("timeReported") }}</caption>
-		<thead>
-			<tr>
-				<th>{{ $t("project") }}</th>
-				<th>{{ $t("task") }}</th>
-				<th>{{ $t("hours") }} ({{ timeEntriesForUser.reduce((sum, value) => {return sum + value.hours}, 0) }})</th>
-        <th>{{ $t("comment") }}</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr
-        v-for="entry in timeEntriesForUser"
-        :id="entry.id"
-        :key="entry.id">
-				<td>{{ entry.project.name }}</td>
-				<TaskCol :issueId="entry.issue.id " />
-				<td>{{ entry.hours }}</td>
-        <td>{{ entry?.comments }}</td>
-			</tr>
-		</tbody>
-	</table>
+    <div v-else class="q-pa-md">
+      <q-table
+        flat bordered
+        title="Time reported"
+        :rows="timeEntriesForUser"
+        :columns="columns"
+        row-key="name"
+        hide-bottom
+      />
+    </div>
   </section>
 </template>
 
@@ -62,6 +50,33 @@ export default {
     const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
+    const columns = ref([{
+      name: 'project',
+      label: 'Project',
+      align: 'left',
+      field: row => row.project.name
+    },
+    {
+      name: 'task',
+      label: 'Task',
+      align: 'left',
+      field: row => getIssueData(row.issue.id)
+    },
+    {
+      name: 'hours',
+      label: 'Hours',
+      align: 'left',
+      field: row => row.hours
+    },
+    {
+      name: 'comment',
+      label: 'Comment',
+      align: 'left',
+      field: row => row.comments
+    }
+    ]);
+
+    const rows = ref([]);
 
 
     watch(selectedAssignee, () => {
@@ -73,6 +88,12 @@ export default {
       getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
     })
 
+    const getIssueData = (id) => {
+      const issue = store.state.issues.filter(i => i.id === id)[0];
+      console.log(`${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`)
+      return `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
+    }
+
     const getTimeEntriesForUser = async (rangeToCheck) => {
       loading.value = true;
       timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(
@@ -83,6 +104,7 @@ export default {
         range.value === 'day' ? yesterday : lastWeek)
       ).data.time_entries;
       loading.value = false;
+      console.log(timeEntriesForUser)
     }
 
 
@@ -94,6 +116,8 @@ export default {
       timeEntriesForUser,
       range,
       loading,
+      columns,
+      rows
     };
   },
 };
