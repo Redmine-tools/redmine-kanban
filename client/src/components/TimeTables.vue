@@ -46,6 +46,7 @@ export default {
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24).toISOString().slice(0, 10);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7).toISOString().slice(0, 10);
     const range = computed(() => props.range);
+    console.log(range)
     const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
@@ -76,17 +77,12 @@ export default {
     ]);
 
     watch(selectedAssignee, () => {
-      getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
+      getTimeEntriesForUser(range)
     })
 
     watch([range, key], () => {
       timeEntriesForUser.value = []
-      if(typeof(range.value) === 'string') {
-        getTimeEntriesForUser(today, (range.value).replaceAll('/', '-'));
-      }
-      if(typeof(range.value) === 'object') {
-        getTimeEntriesForUser((range.value.from).replaceAll('/', '-'), (range.value.to).replaceAll('/', '-'));
-      }
+      getTimeEntriesForUser(range)
     })
 
     const getIssueData = (id) => {
@@ -94,7 +90,18 @@ export default {
       return `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
     }
 
-    const getTimeEntriesForUser = async (from, to) => {
+    const getTimeEntriesForUser = async (range) => {
+      console.log(range)
+      let from;
+      let to;
+      if(typeof(range.value) === 'string') {
+        from=today;
+        to=(range.value).replaceAll('/', '-');
+      }
+      if(typeof(range.value) === 'object') {
+        to=(range.value.from).replaceAll('/', '-');
+        from=(range.value.to).replaceAll('/', '-');
+      }
       loading.value = true;
       timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(
         store.state.user.api_key,
@@ -108,7 +115,7 @@ export default {
 
 
     onMounted(async () => {
-      getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
+      getTimeEntriesForUser(range)
     });
 
     return {

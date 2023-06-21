@@ -88,8 +88,9 @@ export default {
       return resArr;
     });
     const key = ref(0);
-    const date = ref('2019/03/01')
-    const proxyDate = ref('2019/03/01')
+    const today = new Date().toISOString().slice(0, 10);
+    const date = ref(today)
+    const proxyDate = ref(today)
 
     const updateProxy = () => {
       proxyDate.value = date.value
