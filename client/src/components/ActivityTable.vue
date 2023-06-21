@@ -16,7 +16,7 @@
           <q-td
             :props="props"
           >
-            <ul :props="props" v-for="journal in renderJournals(props.row.journals)" :key="journal.id">
+            <ul v-for="journal in renderJournals(props.row.journals)" :key="journal.id">
               <ActivityCol :journal="journal" />
             </ul>
           </q-td>
@@ -132,9 +132,18 @@ export default {
     }
 
     const renderJournals = (journals) => {
-      console.log('foo', journals)
+      let from;
+      let to;
+      if(typeof(range.value) === 'string') {
+        from=yesterday;
+        to=new Date(range.value);
+      }
+      if(typeof(range.value) === 'object') {
+        from=new Date(range.value.from);
+        to=new Date(range.value.to);
+      }
       const actions = [];
-      journals = journals.filter(journal => new Date(journal.created_on) > (range.value === 'day' ? yesterday : lastWeek))
+      journals = journals.filter(journal => new Date(journal.created_on) >= from)
       for (let i = 0; i < journals.length; i += 1) {
         if(journals[i]?.details.length > 0) {
           for (let j = 0; j < journals[i].details.length; j += 1) {
