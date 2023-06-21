@@ -3,32 +3,17 @@
     <div v-if="loading" class="loading-container">
       <q-inner-loading :showing="loading" />
     </div>
-    <table v-else class="">
-    <caption>{{ $t("activities") }}</caption>
-    <thead>
-			<tr>
-				<th>{{ $t("project") }}</th>
-				<th>{{ $t("task") }}</th>
-				<th>{{ $t("action") }}</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr
-        v-for="entry in result"
-        :id="entry.id"
-        :key="entry.id">
-				<td>{{ entry.project.name }}</td>
-        <TaskCol :issueId="entry.id " />
-        <td>
-          <ul>
-            <template v-for="journal in renderJournals(entry.journals)">
-              <ActivityCol :journal="journal" />
-            </template>
-          </ul>
-        </td>
-			</tr>
-		</tbody>
-	</table>
+        <div v-else class="q-pa-md">
+      <q-table
+        :loading="loading"
+        flat bordered
+        title="Activites"
+        :rows="result"
+        :columns="columns"
+        row-key="name"
+        hide-bottom
+      />
+    </div>
   </section>
 </template>
 
@@ -67,6 +52,29 @@ export default {
     const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
+
+    const columns = ref([{
+      name: 'project',
+      label: 'Project',
+      align: 'left',
+      field: row => row.project.name
+    },
+    {
+      name: 'task',
+      label: 'Task',
+      align: 'left',
+      field: row => getIssueData(row.id)
+    },
+    {
+      name: 'action',
+      label: 'Action',
+    }
+    ]);
+
+    const getIssueData = (id) => {
+      const issue = store.state.issues.filter(i => i.id === id)[0];
+      return `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
+    }
 
     watch(selectedAssignee, () => {
       result.value = []
@@ -129,6 +137,7 @@ export default {
       range,
       loading,
       renderJournals,
+      columns,
     };
   },
 };

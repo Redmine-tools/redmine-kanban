@@ -26,25 +26,7 @@
       </h4>
     </article>
     <section v-else >
-      <header>
-        <h3 class="assignee-title">{{ selectedAssignees.name }}{{ $t("usersActivity") }}</h3>
-        <q-btn type="a" :disable="disableRefreshButton" round color="primary" icon="refresh" @click="forceReload" >
-          <q-tooltip anchor="top middle" self="center middle" v-if="showTooltip">
-            {{ $t("waitForButtonCooldown") }}
-          </q-tooltip>
-        </q-btn>
-        <q-btn-toggle
-          v-model="range"
-          no-caps
-          unelevated
-          toggle-color="teal-10"
-          :options="[
-            {label: 'Day', value: 'day'},
-            {label: 'Week', value: 'week'},
-          ]"
-        />
-      </header>
-    <Tables :range="range" :key="key" />
+    <Tables />
   </section>
 </section>
 </template>

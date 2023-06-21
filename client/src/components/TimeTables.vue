@@ -5,12 +5,12 @@
     </div>
     <div v-else class="q-pa-md">
       <q-table
+        :loading="loading"
         flat bordered
         title="Time reported"
         :rows="timeEntriesForUser"
         :columns="columns"
         row-key="name"
-        hide-bottom
       />
     </div>
   </section>
@@ -31,7 +31,6 @@ export default {
   name: 'TimeTables',
   props: {
     range: {
-      type: String,
     },
     key: {
       type: Number
@@ -76,35 +75,35 @@ export default {
     }
     ]);
 
-    const rows = ref([]);
-
-
     watch(selectedAssignee, () => {
       getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
     })
 
     watch([range, key], () => {
       timeEntriesForUser.value = []
-      getTimeEntriesForUser(range.value === 'day' ? yesterday : lastWeek);
+      if(typeof(range.value) === 'string') {
+        getTimeEntriesForUser(today, (range.value).replaceAll('/', '-'));
+      }
+      if(typeof(range.value) === 'object') {
+        getTimeEntriesForUser((range.value.from).replaceAll('/', '-'), (range.value.to).replaceAll('/', '-'));
+      }
     })
 
     const getIssueData = (id) => {
       const issue = store.state.issues.filter(i => i.id === id)[0];
-      console.log(`${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`)
       return `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
     }
 
-    const getTimeEntriesForUser = async (rangeToCheck) => {
+    const getTimeEntriesForUser = async (from, to) => {
       loading.value = true;
       timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(
         store.state.user.api_key,
         store.state.project.id,
         store.state.assignee[0].id,
-        today,
-        range.value === 'day' ? yesterday : lastWeek)
+        from,
+        to)
       ).data.time_entries;
       loading.value = false;
-      console.log(timeEntriesForUser)
     }
 
 
@@ -117,7 +116,6 @@ export default {
       range,
       loading,
       columns,
-      rows
     };
   },
 };
