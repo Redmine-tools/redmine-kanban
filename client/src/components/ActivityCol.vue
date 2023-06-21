@@ -28,7 +28,6 @@ export default {
     });
 
     const getJournalDetails = async() => {
-      console.log('foo asd', props.journal.name)
       switch(props.journal.name) {
         case "assigned_to_id":
           const oldAssignee = props.journal?.old_value && (await RedmineService.getUserById(store.state.user.api_key, props.journal.old_value)).data.user;
