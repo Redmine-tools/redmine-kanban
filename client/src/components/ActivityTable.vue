@@ -11,7 +11,6 @@
         :rows="result"
         :columns="columns"
         row-key="name"
-        hide-bottom
       />
     </div>
   </section>
@@ -46,6 +45,7 @@ export default {
   setup(props) {
     const store = useStore();
     const result = ref([]);
+    const today = new Date();
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
     const range = computed(() => props.range);
@@ -78,12 +78,12 @@ export default {
 
     watch(selectedAssignee, () => {
       result.value = []
-      filterByTime(range.value === 'day' ? yesterday : lastWeek);
+      filterByTime(range);
     })
 
     watch([range, key], () => {
       result.value = []
-      filterByTime(range.value === 'day' ? yesterday : lastWeek);
+      filterByTime(range);
     })
 
     const filterJournalsForUser = (journals) => {
@@ -92,10 +92,20 @@ export default {
 
     const filterByTime = async (rangeToCheck) => {
       loading.value = true;
+      let from;
+      let to;
+      if(typeof(range.value) === 'string') {
+        from=yesterday;
+        to=new Date(range.value);
+      }
+      if(typeof(range.value) === 'object') {
+        from=new Date(range.value.from);
+        to=new Date(range.value.to);
+      }
       for (const key of Object.keys(store.state.issues)) {
         const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
 
-        if (lastUpdatedOn > rangeToCheck) {
+        if (lastUpdatedOn >= from) {
           const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
           if (issueWithJournals.assigned_to?.id === selectedAssignee.value.id || filterJournalsForUser(issueWithJournals)) {
             store.commit({
@@ -129,7 +139,7 @@ export default {
     }
 
     onMounted(async () => {
-      filterByTime(range.value === 'day' ? yesterday : lastWeek);
+      filterByTime(range);
     });
 
     return {

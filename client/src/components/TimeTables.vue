@@ -91,7 +91,6 @@ export default {
     }
 
     const getTimeEntriesForUser = async (range) => {
-      console.log(range)
       let from;
       let to;
       if(typeof(range.value) === 'string') {

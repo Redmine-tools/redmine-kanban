@@ -10,20 +10,10 @@
             {{ $t("waitForButtonCooldown") }}
           </q-tooltip>
         </q-btn>
-        <q-btn-toggle
-          v-model="range"
-          no-caps
-          unelevated
-          toggle-color="teal-10"
-          :options="[
-            {label: 'Day', value: 'day'},
-            {label: 'Week', value: 'week'},
-          ]"
-        />
         <div class="q-pa-md">
           <div class="q-mb-sm">
             <q-badge color="teal">
-              Model: {{ date }}
+              Date: {{ date }}
             </q-badge>
           </div>
 
@@ -43,7 +33,7 @@
         </div>
     </div>
     <TimeTables :range="date" :key="key"></TimeTables>
-    <ActivityTable :range="range" :key="key"></ActivityTable>
+    <ActivityTable :range="date" :key="key"></ActivityTable>
   </section>
 </template>
 
@@ -68,7 +58,6 @@ export default {
     ActivityTable,
   },
   setup(props) {
-    const range = ref('day');
     const store = useStore();
     const disableRefreshButton = ref(false);
     const issuesForProject = [];
@@ -122,7 +111,6 @@ export default {
     }
 
     return {
-      range,
       selectedAssignees,
       assignees,
       availableAssignees,
