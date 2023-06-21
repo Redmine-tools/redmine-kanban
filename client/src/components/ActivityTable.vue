@@ -11,7 +11,17 @@
         :rows="result"
         :columns="columns"
         row-key="name"
-      />
+      >
+        <template #body-cell-action="props">
+          <q-td
+            :props="props"
+          >
+            <ul :props="props" v-for="journal in renderJournals(props.row.journals)" :key="journal.id">
+              <ActivityCol :journal="journal" />
+            </ul>
+          </q-td>
+        </template>
+      </q-table>
     </div>
   </section>
 </template>
@@ -68,6 +78,7 @@ export default {
     {
       name: 'action',
       label: 'Action',
+      field: row => row.journals
     }
     ]);
 
@@ -121,6 +132,7 @@ export default {
     }
 
     const renderJournals = (journals) => {
+      console.log('foo', journals)
       const actions = [];
       journals = journals.filter(journal => new Date(journal.created_on) > (range.value === 'day' ? yesterday : lastWeek))
       for (let i = 0; i < journals.length; i += 1) {
