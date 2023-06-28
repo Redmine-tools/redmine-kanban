@@ -107,12 +107,12 @@ export default {
       let from;
       let to;
       if(typeof(range.value) === 'string') {
-        from=today;
+        from=(range.value).replaceAll('/', '-');
         to=(range.value).replaceAll('/', '-');
       }
       if(typeof(range.value) === 'object') {
-        to=(range.value.from).replaceAll('/', '-');
-        from=(range.value.to).replaceAll('/', '-');
+        to=(range.value?.from).replaceAll('/', '-');
+        from=(range.value?.to).replaceAll('/', '-');
       }
       loading.value = true;
       timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(

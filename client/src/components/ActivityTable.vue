@@ -124,17 +124,17 @@ export default {
       let from;
       let to;
       if(typeof(range.value) === 'string') {
-        from=yesterday;
+        from=new Date(range.value);
         to=new Date(range.value);
+        to.setDate(to.getDate() + 1)
       }
       if(typeof(range.value) === 'object') {
-        from=new Date(range.value.from);
-        to=new Date(range.value.to);
+        from=new Date(range.value?.from);
+        to=new Date(range.value?.to);
       }
       for (const key of Object.keys(store.state.issues)) {
         const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
-
-        if (lastUpdatedOn >= from) {
+        if (lastUpdatedOn >= from && lastUpdatedOn <= to) {
           const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
           if (issueWithJournals.assigned_to?.id === selectedAssignee.value.id || filterJournalsForUser(issueWithJournals)) {
             store.commit({
@@ -153,15 +153,16 @@ export default {
       let from;
       let to;
       if(typeof(range.value) === 'string') {
-        from=yesterday;
+        // d.setDate(d.getDate() - 5);
+        from=new Date(range.value);
         to=new Date(range.value);
       }
       if(typeof(range.value) === 'object') {
-        from=new Date(range.value.from);
-        to=new Date(range.value.to);
+        from=new Date(range.value?.from);
+        to=new Date(range.value?.to);
       }
       const actions = [];
-      journals = journals.filter(journal => new Date(journal.created_on) >= from)
+      journals = journals.filter(journal => new Date(journal.created_on) >= from && new Date(journal.created_on) <= new Date(to.setDate(to.getDate() + 1)))
       for (let i = 0; i < journals.length; i += 1) {
         if(journals[i]?.details.length > 0) {
           for (let j = 0; j < journals[i].details.length; j += 1) {
