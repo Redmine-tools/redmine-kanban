@@ -47,7 +47,6 @@ export default {
   name: 'Tables',
   props: {
     range: {
-      type: String,
     },
     key: {
       type: Number

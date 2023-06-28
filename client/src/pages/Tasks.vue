@@ -48,7 +48,6 @@ export default {
     const selectedAssignees = ref(store.state.assignee[0]);
     const assignees = computed(() => store.state.assignee)
     const showBanner = ref(true);
-    const range = ref('day');
     const key = ref(0);
     const router = useRouter();
     const availableAssignees = computed(() => {
@@ -99,7 +98,6 @@ export default {
     return {
       selectedAssignees,
       assignees,
-      range,
       hideBanner,
       showBanner,
       navigateBackToKanban,

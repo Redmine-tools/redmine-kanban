@@ -28,6 +28,7 @@ export default {
     });
 
     const getJournalDetails = async() => {
+      console.log(props.journal.name)
       switch(props.journal.name) {
         case "assigned_to_id":
           const oldAssignee = props.journal?.old_value && (await RedmineService.getUserById(store.state.user.api_key, props.journal.old_value)).data.user;
@@ -113,8 +114,16 @@ export default {
           break;
         case "note":
           activity.value.name = props.journal.name
-          activity.value.newValue = props.journal.new_value
-          activity.value.oldValue = props.journal.old_value
+          if (props.journal.new_value.length > 70) {
+            activity.value.newValue = props.journal.new_value.slice?.(0, 70) + '...';
+          } else {
+            activity.value.newValue = props.journal.new_value
+          }
+          if (props.journal.new_value.length > 70) {
+            activity.value.oldValue = props.journal.old_value.slice?.(0, 70) + '...';
+          } else {
+            activity.value.oldValue = props.journal.old_value
+          }
           break;
         default:
           activity.value.name = props.journal.name
@@ -136,5 +145,7 @@ export default {
 </script>
 
 <style scoped>
-
+li {
+  text-align: justify;
+}
 </style>
