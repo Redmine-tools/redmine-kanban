@@ -11,7 +11,16 @@
         :rows="timeEntriesForUser"
         :columns="columns"
         row-key="name"
-      />
+      >
+        <template #body-cell-task="props">
+          <q-td
+            :props="props"
+            class="link"
+          >
+            <a @click="open(props.row.id)">{{ props.value }}</a>
+          </q-td>
+        </template>
+      </q-table>
     </div>
   </section>
 </template>
@@ -46,7 +55,6 @@ export default {
     const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24).toISOString().slice(0, 10);
     const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7).toISOString().slice(0, 10);
     const range = computed(() => props.range);
-    console.log(range)
     const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
@@ -87,7 +95,12 @@ export default {
 
     const getIssueData = (id) => {
       const issue = store.state.issues.filter(i => i.id === id)[0];
-      return `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
+      const title = `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
+      if (title.length > 80) {
+        return title.slice?.(0, 80) + '...';
+      } else {
+        return title;
+      }
     }
 
     const getTimeEntriesForUser = async (range) => {
@@ -112,6 +125,10 @@ export default {
       loading.value = false;
     }
 
+    async function open(issueId) {
+      const response = await RedmineService.getRedmineUrl()
+      window.open(`${response.data}issues/${issueId}`, '_blank');
+    }
 
     onMounted(async () => {
       getTimeEntriesForUser(range)
@@ -122,85 +139,20 @@ export default {
       range,
       loading,
       columns,
+      open
     };
   },
 };
 </script>
 
 <style scoped>
-table {
-  padding: 24px;
-  width: 100%;
-  text-align: justify;
-  vertical-align: baseline;
-  border-collapse: collapse;
-  table-layout: fixed;
-}
-
-caption {
-  font-weight: bold;
-  font-size: 24px;
-  text-align: left;
-  color: #333;
-  padding-inline-start: 24px;
-}
-
-thead {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-  color: rgba(0, 0, 0, 0.45);
-  padding-inline-start: 24px;
-}
-
-tbody {
-  font-style: normal;
-  font-size: 12px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-  color: rgba(0, 0, 0, 0.45);
-}
-
-tbody > tr {
-  background: #EBEDED;
-  height: 38px;
-  border-bottom: 1px solid #C3D1D1;
-}
-
-tbody > tr:hover {
-  background: #EDF2F2;
-}
-
-tr > *:nth-child(1) { width:20%; }
-tr > *:nth-child(2) { width:30%; }
-tr > *:nth-child(3) { width:15%; }
-tr > *:nth-child(4) { width:35%; }
-
-tr > td {
-  padding-block-start: 6px;
-  vertical-align: baseline;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-tr > th:first-of-type {
-  padding-inline-start: 24px;
-  padding-inline-end: 24px;
-}
-
-tr > td:first-of-type {
-  padding-inline-start: 24px;
-  padding-inline-end: 24px;
-}
-
-tr > td:nth-child(3), th:nth-child(3) {
-  padding-inline-start: 24px;
-}
 
 section {
   padding-block-start: 24px;
+}
+
+.link {
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

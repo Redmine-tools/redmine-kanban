@@ -12,6 +12,14 @@
         :columns="columns"
         row-key="name"
       >
+        <template #body-cell-task="props">
+          <q-td
+            :props="props"
+            class="link"
+          >
+            <a @click="open(props.row.id)">{{ props.value }}</a>
+          </q-td>
+        </template>
         <template #body-cell-action="props">
           <q-td
             :props="props"
@@ -84,7 +92,17 @@ export default {
 
     const getIssueData = (id) => {
       const issue = store.state.issues.filter(i => i.id === id)[0];
-      return `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
+      const title = `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
+      if (title.length > 80) {
+        return title.slice?.(0, 80) + '...';
+      } else {
+        return title;
+      }
+    }
+
+    async function open(issueId) {
+      const response = await RedmineService.getRedmineUrl()
+      window.open(`${response.data}issues/${issueId}`, '_blank');
     }
 
     watch(selectedAssignee, () => {
@@ -169,91 +187,16 @@ export default {
       loading,
       renderJournals,
       columns,
+      open,
     };
   },
 };
 </script>
 
 <style scoped>
-table {
-  padding: 24px;
-  width: 100%;
-  text-align: justify;
-  vertical-align: baseline;
-  border-collapse: collapse; 
-  table-layout: fixed;
-  width: 100%;
-}
-
-caption {
-  font-weight: bold;
-  font-size: 24px;
-  text-align: left;
-  color: #333;
-  padding-inline-start: 24px;
-}
-
-thead {
-  font-style: normal;
-  font-weight: 500;
-  font-size: 18px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-  color: rgba(0, 0, 0, 0.45);
-  padding-inline-start: 24px;
-  table-layout: fixed;
-  width: 100%;
-}
-
-tbody {
-  font-style: normal;
-  font-size: 12px;
-  line-height: 24px;
-  letter-spacing: 0.15px;
-  color: rgba(0, 0, 0, 0.45);
-}
-
-tbody > tr {
-  background: #EDF2F2;
-  height: 38px;
-  border-bottom: 1px solid #C3D1D1;
-}
-
-tbody > tr:hover {
-  background: #EBEDED;
-}
-
-
-tr > *:nth-child(1) { width:20%; }
-tr > *:nth-child(2) { width:30%; }
-tr > *:nth-child(3) { width:50%; }
-
-tr > td {
-  padding-block-start: 6px;
-  vertical-align: baseline;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-
-tr > th:first-of-type {
-  padding-inline-start: 24px;
-  padding-inline-end: 24px;
-}
-
-tr > td:first-of-type {
-  padding-inline-start: 24px;
-  padding-inline-end: 24px;
-}
-
-tr > td:nth-child(3), th:nth-child(3) {
-  padding-inline-start: 24px;
-}
-
-td > ul > li  {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+.link {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 section {
