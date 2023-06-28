@@ -3,34 +3,39 @@
     <div class="header">
     </div>
     <div class="header-row">
-      <div class="card-title">{{ selectedAssignees.name }}{{ $t("usersActivity") }}</div>
-        <q-space />
+      <div class="banner-container">
+        <div class="card-title">{{ selectedAssignees.name }}{{ $t("usersActivity") }}</div>
         <q-btn type="a" :disable="disableRefreshButton" round color="primary" icon="refresh" @click="forceReload" >
           <q-tooltip anchor="top middle" self="center middle" v-if="showTooltip">
             {{ $t("waitForButtonCooldown") }}
           </q-tooltip>
         </q-btn>
-        <div class="q-pa-md">
-          <div class="q-mb-sm">
-            <q-badge color="teal">
-              Date: {{ date }}
-            </q-badge>
-          </div>
+      </div>
+      <q-space />
+      <div class="refresh-container">
 
-          <q-btn icon="event" round color="primary">
-            <q-popup-proxy @before-show="updateProxy" cover transition-show="scale" transition-hide="scale">
-              <q-date
-                v-model="proxyDate"
-                range
-              >
-                <div class="row items-center justify-end q-gutter-sm">
-                  <q-btn label="Cancel" color="primary" flat v-close-popup />
-                  <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
-                </div>
-              </q-date>
-            </q-popup-proxy>
-          </q-btn>
+      </div>
+      <div class="q-pa-md">
+        <div class="q-mb-sm">
+          <q-badge color="teal">
+            Date: {{ date }}
+          </q-badge>
         </div>
+
+        <q-btn icon="event" round color="primary">
+          <q-popup-proxy @before-show="updateProxy" cover transition-show="scale" transition-hide="scale">
+            <q-date
+              v-model="proxyDate"
+              range
+            >
+              <div class="row items-center justify-end q-gutter-sm">
+                <q-btn label="Cancel" color="primary" flat v-close-popup />
+                <q-btn label="OK" color="primary" flat @click="save" v-close-popup />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-btn>
+      </div>
     </div>
     <TimeTables :range="date" :key="key"></TimeTables>
     <ActivityTable :range="date" :key="key"></ActivityTable>
@@ -174,5 +179,17 @@ export default {
 
 .header-row {
   display: flex;
+}
+
+.refresh-container {
+  display: flex;
+  align-items: center;
+}
+
+.banner-container {
+  padding-block-start: 8px;
+  display: flex;
+  align-items: flex-start;
+  height: 36px;
 }
 </style>
