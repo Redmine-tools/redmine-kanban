@@ -166,7 +166,7 @@ export default {
   margin: auto;
   display: flex;
   flex-direction: column;
-  max-width: 600px;
+  width: 500px;
   padding: 20px 50px 48px 50px;
   background: #ffffff;
   border-radius: 10px;
