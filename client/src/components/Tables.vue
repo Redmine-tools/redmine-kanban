@@ -4,7 +4,7 @@
     </div>
     <div class="header-row">
       <div class="banner-container">
-        <div class="card-title">{{ selectedAssignees.name }}{{ $t("usersActivity") }}</div>
+        <div class="card card-title">{{ selectedAssignees.name }}{{ $t("usersActivity") }}</div>
         <q-btn type="a" :disable="disableRefreshButton" round color="primary" icon="refresh" @click="forceReload" >
           <q-tooltip anchor="top middle" self="center middle" v-if="showTooltip">
             {{ $t("waitForButtonCooldown") }}
@@ -15,11 +15,14 @@
       <div class="refresh-container">
 
       </div>
-      <div class="q-pa-md">
-        <div class="q-mb-sm">
-          <q-badge color="teal">
-            Date: {{ date }}
-          </q-badge>
+      <div class="date-container">
+        <div class="card date-spacer">
+          <span v-if="typeof(date) === 'string'">
+            {{ date }}
+          </span>
+          <span color="teal" v-if="typeof(date) === 'object'">
+            {{ date.from }}-{{ date.to }}
+          </span>
         </div>
 
         <q-btn icon="event" round color="primary">
@@ -151,18 +154,23 @@ export default {
   background: linear-gradient(90deg, rgba(41, 83, 101, 0.38) 0%, rgba(35, 140, 185, 0.29) 23.41%, rgba(253, 182, 0, 0.29) 65.06%, rgba(226, 177, 255, 0.62) 89.76%), #D9D9D9;
 }
 
-.card-title {
-  margin-left: -12px;
-  padding: 4px 8px 4px 28px;
+.card {
+  padding: 4px 8px 4px 8px;
   position: relative;
-  border-radius: 3px 5px 5px 0;
+  border-radius: 5px;
   background: #D8E1E5;
   color: #757575;
   font-size: 18px;
   letter-spacing: .7px;
-  margin-right: 8px;
   margin-top: 4px;
   margin-bottom: 4px;
+}
+
+.card-title {
+  border-radius: 3px 5px 5px 0;
+  padding: 4px 8px 4px 28px;
+  margin-left: -12px;
+  margin-right: 8px;
 }
 
 .card-title::after {
@@ -191,5 +199,14 @@ export default {
   display: flex;
   align-items: flex-start;
   height: 36px;
+}
+
+.date-container {
+  display: flex;
+  padding: 8px;
+}
+
+.date-spacer {
+  margin-inline-end: 8px;
 }
 </style>
