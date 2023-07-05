@@ -86,6 +86,7 @@ export default {
     {
       name: 'action',
       label: 'Action',
+      align: 'left',
       field: row => row.journals
     }
     ]);

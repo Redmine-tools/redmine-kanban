@@ -17,7 +17,7 @@
             :props="props"
             class="link"
           >
-            <a @click="open(props.row.id)">{{ props.value }}</a>
+            <a @click="open(props.row.issue.id)">{{ props.value }}</a>
           </q-td>
         </template>
       </q-table>
