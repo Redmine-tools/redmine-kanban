@@ -112,25 +112,25 @@ export default {
           activity.value.newValue = `${newIssue?.subject} (id: ${newIssue?.id})`
           activity.value.oldIssue = `${oldIssue?.subject} (id: ${oldIssue?.id})`
           break;
-        case "description":
-          activity.value.name = props.journal.name
-          activity.value.newValue = props.journal.new_value
-          activity.value.oldValue = props.journal.old_value
-          break;
         case "subject":
           activity.value.name = props.journal.name
           activity.value.newValue = props.journal.new_value
           activity.value.oldValue = props.journal.old_value
           break;
+        case "description":
         case "note":
           activity.value.name = props.journal.name
-          if (props.journal.new_value.length > 70) {
-            activity.value.newValue = props.journal.new_value.slice?.(0, 70) + '...';
+          let cutOutLenght = 70
+          if (props.journal.new_value && props.journal.old_value) {
+            cutOutLenght = 25
+          } 
+          if (props.journal.new_value.length > cutOutLenght) {
+            activity.value.newValue = props.journal.new_value.slice?.(0, cutOutLenght) + '...';
           } else {
             activity.value.newValue = props.journal.new_value
           }
-          if (props.journal.new_value.length > 70) {
-            activity.value.oldValue = props.journal.old_value.slice?.(0, 70) + '...';
+          if (props.journal.old_value.length > cutOutLenght) {
+            activity.value.oldValue = props.journal.old_value.slice?.(0, cutOutLenght) + '...';
           } else {
             activity.value.oldValue = props.journal.old_value
           }

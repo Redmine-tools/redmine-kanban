@@ -45,6 +45,7 @@ import {
 import RedmineService from '@/services/RedmineService';
 import ActivityCol from '@/components/ActivityCol';
 import TaskCol from '@/components/TaskCol';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'ActivityTable',
@@ -70,22 +71,22 @@ export default {
     const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
-
-    const columns = ref([{
+    const { t, locale } = useI18n({ useScope: 'global' });
+    const columns = computed(() => [{
       name: 'project',
-      label: 'Project',
+      label: t('project'),
       align: 'left',
       field: row => row.project.name
     },
     {
       name: 'task',
-      label: 'Task',
+      label: t('task'),
       align: 'left',
       field: row => getIssueData(row.id)
     },
     {
       name: 'action',
-      label: 'Action',
+      label: t('action'),
       align: 'left',
       field: row => row.journals
     }
@@ -94,8 +95,8 @@ export default {
     const getIssueData = (id) => {
       const issue = store.state.issues.filter(i => i.id === id)[0];
       const title = `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
-      if (title.length > 80) {
-        return title.slice?.(0, 80) + '...';
+      if (title.length > 50) {
+        return title.slice?.(0, 50) + '...';
       } else {
         return title;
       }
@@ -154,7 +155,6 @@ export default {
       let from;
       let to;
       if(typeof(range.value) === 'string') {
-        // d.setDate(d.getDate() - 5);
         from=new Date(range.value);
         to=new Date(range.value);
       }

@@ -7,7 +7,7 @@
         :options="availableAssignees"
         :option-label="'name'"
         stack-label
-        label="Assignee"
+        :label="$t('assigned_to_id')"
       />
     </header>
     <q-banner v-if="assignees.length > 1 && showBanner" class="text-white bg-red">

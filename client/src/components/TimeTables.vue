@@ -35,6 +35,7 @@ import {
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
 import TaskCol from '@/components/TaskCol';
+import { useI18n } from 'vue-i18n';
 
 export default {
   name: 'TimeTables',
@@ -58,27 +59,28 @@ export default {
     const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
-    const columns = ref([{
+    const { t, locale } = useI18n({ useScope: 'global' });
+    const columns = computed(() => [{
       name: 'project',
-      label: 'Project',
+      label: t('project'),
       align: 'left',
       field: row => row.project.name
     },
     {
       name: 'task',
-      label: 'Task',
+      label: t('task'),
       align: 'left',
       field: row => getIssueData(row.issue.id)
     },
     {
       name: 'hours',
-      label: 'Hours',
+      label: t('hours'),
       align: 'left',
       field: row => row.hours
     },
     {
       name: 'comment',
-      label: 'Comment',
+      label: t('comment'),
       align: 'left',
       field: row => row.comments
     }
