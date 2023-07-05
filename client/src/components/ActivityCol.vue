@@ -49,8 +49,14 @@ export default {
           activity.value.oldValue = trackers.filter(i => i.id == props.journal?.old_value)[0].name
           break;
         case "fixed_version_id":
-          const newFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.new_value)).data.version;
-          const oldFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.old_value)).data.version;
+          let newFixedVersion;
+          let oldFixedVersion;
+          if(props.journal.new_value) {
+            newFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.new_value)).data.version;
+          }
+          if(props.journal.old_value) {
+            const oldFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.old_value)).data.version;
+          }
           activity.value.name = props.journal.name
           activity.value.newValue = newFixedVersion.name
           activity.value.oldValue = oldFixedVersion.name
