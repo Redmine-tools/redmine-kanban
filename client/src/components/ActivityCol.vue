@@ -70,8 +70,13 @@ export default {
           break;
         case "category_id":
           const categories = (await RedmineService.getCategoriesByProjectId(store.state.user.api_key, store.state.project.id)).data.issue_categories;
-          activity.value.name = 'New category'
-          activity.value.newValue = categories.filter(i => i.id = props.journal[1])[0].name
+          activity.value.name = props.journal.name
+          if(props.journal.new_value) {
+            activity.value.newValue = categories.filter(i => i.id == props.journal.new_value)[0].name
+          }
+          if(props.journal.old_value) {
+            activity.value.oldValue = categories.filter(i => i.id == props.journal.old_value)[0].name
+          } 
           break;
         case "start_date":
           activity.value.name = props.journal.name
