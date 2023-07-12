@@ -30,11 +30,23 @@ export default {
     const getJournalDetails = async() => {
       switch(props.journal.name) {
         case "assigned_to_id":
-          const oldAssignee = props.journal?.old_value && (await RedmineService.getUserById(store.state.user.api_key, props.journal.old_value)).data.user;
-          const newAssignee = props.journal?.new_value && (await RedmineService.getUserById(store.state.user.api_key, props.journal.new_value)).data.user;
-          activity.value.oldValue = oldAssignee && `${oldAssignee.firstname} ${oldAssignee.lastname}`
+          if (props.journal?.old_value && (store.state.user.id === props.journal?.old_value)) {
+            activity.value.oldValue = `${props.state.user.firstname} ${props.state.user.lastname}`
+          } else if (props.journal?.old_value && (store.state.assignee.id === props.journal?.old_value)) {
+            activity.value.oldValue = props.state.assignee.name
+          } else {
+            const oldAssignee = props.journal?.old_value && (await RedmineService.getUserById(store.state.user.api_key, props.journal.old_value)).data.user;
+            activity.value.oldValue = oldAssignee && `${oldAssignee.firstname} ${oldAssignee.lastname}`
+          }
+          if(props.journal?.new_value && (store.state.user.id === props.journal?.new_value)) {
+            activity.value.newValue = `${props.state.user.firstname} ${props.state.user.lastname}`
+          } else if (props.journal?.new_value && (store.state.assignee.id === props.journal?.new_value)) {
+            activity.value.newValue = props.state.assignee.name
+          } else {
+            const newAssignee = props.journal?.new_value && (await RedmineService.getUserById(store.state.user.api_key, props.journal.new_value)).data.user;
+            activity.value.newValue = newAssignee && `${newAssignee.firstname} ${newAssignee.lastname}`
+          }
           activity.value.name = props.journal.name
-          activity.value.newValue = newAssignee && `${newAssignee.firstname} ${newAssignee.lastname}`
           break;
         case "status_id":
           const statuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses;
@@ -58,8 +70,8 @@ export default {
             const oldFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.old_value)).data.version;
           }
           activity.value.name = props.journal.name
-          activity.value.newValue = newFixedVersion.name
-          activity.value.oldValue = oldFixedVersion.name
+          activity.value.newValue = newFixedVersion?.name
+          activity.value.oldValue = oldFixedVersion?.name
           break;
         case "priority_id":
           const priorities = (await RedmineService.getRedminePriority(store.state.user.api_key)).data.issue_priorities;
@@ -124,12 +136,12 @@ export default {
           if (props.journal.new_value && props.journal.old_value) {
             cutOutLenght = 25
           } 
-          if (props.journal.new_value.length > cutOutLenght) {
+          if (props.journal.new_value?.length > cutOutLenght) {
             activity.value.newValue = props.journal.new_value.slice?.(0, cutOutLenght) + '...';
           } else {
             activity.value.newValue = props.journal.new_value
           }
-          if (props.journal.old_value.length > cutOutLenght) {
+          if (props.journal.old_value?.length > cutOutLenght) {
             activity.value.oldValue = props.journal.old_value.slice?.(0, cutOutLenght) + '...';
           } else {
             activity.value.oldValue = props.journal.old_value
