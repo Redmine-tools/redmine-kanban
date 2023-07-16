@@ -3,18 +3,6 @@
     <div class="header">
     </div>
     <div class="header-row">
-      <div class="banner-container">
-        <div class="card card-title">{{ selectedAssignees.name }}{{ $t("usersActivity") }}</div>
-        <q-btn type="a" :disable="disableRefreshButton" round color="primary" icon="refresh" @click="forceReload" >
-          <q-tooltip anchor="top middle" self="center middle" v-if="showTooltip">
-            {{ $t("waitForButtonCooldown") }}
-          </q-tooltip>
-        </q-btn>
-      </div>
-      <q-space />
-      <div class="refresh-container">
-
-      </div>
       <div class="date-container">
         <div class="card date-spacer">
           <span v-if="typeof(date) === 'string'">
@@ -37,6 +25,13 @@
               </div>
             </q-date>
           </q-popup-proxy>
+        </q-btn>
+      </div>
+      <div class="refresh-container">
+        <q-btn type="a" :disable="disableRefreshButton" round color="primary" icon="refresh" @click="forceReload" >
+          <q-tooltip anchor="top middle" self="center middle" v-if="showTooltip">
+            {{ $t("waitForButtonCooldown") }}
+          </q-tooltip>
         </q-btn>
       </div>
     </div>
@@ -155,37 +150,16 @@ export default {
 }
 
 .card {
-  padding: 4px 8px 4px 8px;
-  position: relative;
-  border-radius: 5px;
-  background: #D8E1E5;
-  color: #757575;
-  font-size: 18px;
+  display: flex;
+  align-items: center;
+  color: #000;
+  font-size: 20px;
   letter-spacing: .7px;
-  margin-top: 4px;
-  margin-bottom: 4px;
-}
-
-.card-title {
-  border-radius: 3px 5px 5px 0;
-  padding: 4px 8px 4px 28px;
-  margin-left: -12px;
-  margin-right: 8px;
-}
-
-.card-title::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 0;
-  height: 0;
-  border: 0 solid transparent;
-  border-width: 9px 0 0 11px;
-  border-top-color: #b0c2ca;
 }
 
 .header-row {
+  padding-block-start: 12px;
+  padding-inline-start: 12px;
   display: flex;
 }
 
@@ -210,3 +184,4 @@ export default {
   margin-inline-end: 8px;
 }
 </style>
+

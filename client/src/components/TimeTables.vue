@@ -148,11 +148,6 @@ export default {
 </script>
 
 <style scoped>
-
-section {
-  padding-block-start: 24px;
-}
-
 .link {
   text-decoration: underline;
   cursor: pointer;

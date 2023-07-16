@@ -26,6 +26,8 @@ export default {
       oldValue: '',
       newValue: '',
     });
+    const statuses = computed(() => store.state.issues.map(issue => issue.status))
+    console.log('status', statuses)
 
     const getJournalDetails = async() => {
       switch(props.journal.name) {
