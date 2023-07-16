@@ -125,8 +125,8 @@ export default {
           const newIssue = store.state.issues.filter(i => i.id == props.journal.new_value)[0]
           const oldIssue = store.state.issues.filter(i => i.id == props.journal.old_value)[0]
           activity.value.name = props.journal.name
-          activity.value.newValue = `${newIssue?.subject} (id: ${newIssue?.id})`
-          activity.value.oldIssue = `${oldIssue?.subject} (id: ${oldIssue?.id})`
+          activity.value.newValue = newIssue?.id ? `${newIssue?.subject} (id: ${newIssue?.id})` : null
+          activity.value.oldValue = oldIssue?.id ? `${oldIssue?.subject} (id: ${oldIssue?.id})` : null
           break;
         case "subject":
           activity.value.name = props.journal.name
