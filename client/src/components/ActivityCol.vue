@@ -111,7 +111,9 @@ export default {
         case "done_ratio":
           activity.value.name = props.journal.name
           activity.value.newValue = props.journal.new_value + '%'
-          activity.value.oldValue = props.journal.old_value + '%'
+          if(activity.value.oldValue) {
+            activity.value.oldValue = props.journal.old_value + '%'
+          }
           break;
         case "estimated_hours":
           activity.value.name = props.journal.name
