@@ -152,9 +152,14 @@ export default {
           }
           break;
         default:
-          activity.value.name = props.journal.name
-          activity.value.newValue = props.journal.new_value
-          activity.value.oldValue = props.journal.old_value
+          if(props.journal.property === 'attachment') {
+            activity.value.name = 'file'
+            activity.value.newValue = props.journal.new_value
+          } else {
+            activity.value.name = props.journal.name
+            activity.value.newValue = props.journal.new_value
+            activity.value.oldValue = props.journal.old_value
+          }
           break;
       }
     }
