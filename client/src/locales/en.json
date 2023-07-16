@@ -62,7 +62,7 @@
   "action": "Action",
   "timeReported": "Time reported",
   "comment": "Comment",
-  "hours": "hours",
+  "hours": "Hours",
   "selectUser": "Please select a user.",
   "selectUserWarning": "Selecting more than one user from the kanban board filter will be clipped and only one user will be kept.",
   "usersActivity": "'s activity",

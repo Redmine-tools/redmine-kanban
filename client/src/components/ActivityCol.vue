@@ -115,8 +115,8 @@ export default {
           break;
         case "estimated_hours":
           activity.value.name = props.journal.name
-          activity.value.newValue = props.journal.new_value + 'h'
-          activity.value.oldValue = props.journal.old_value + 'h'
+          activity.value.newValue = props.journal.new_value + ' h'
+          activity.value.oldValue = props.journal.old_value || 0 + ' h'
           break;
         case "relates":
         case "parent_id":
