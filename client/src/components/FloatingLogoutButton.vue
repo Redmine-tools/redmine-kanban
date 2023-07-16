@@ -28,7 +28,7 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
-    const { t, locale } = useI18n({ useScope: 'global' });
+    const { t, locale } = useI18n();
 
     function logout() {
       store.commit({

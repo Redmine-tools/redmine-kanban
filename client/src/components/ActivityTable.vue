@@ -71,7 +71,7 @@ export default {
     const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
-    const { t, locale } = useI18n({ useScope: 'global' });
+    const { t, locale } = useI18n();
     const columns = computed(() => [{
       name: 'project',
       label: t('project'),

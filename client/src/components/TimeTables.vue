@@ -52,14 +52,11 @@ export default {
   setup(props) {
     const store = useStore();
     const timeEntriesForUser = ref([]);
-    const today = new Date().toISOString().slice(0, 10);
-    const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24).toISOString().slice(0, 10);
-    const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7).toISOString().slice(0, 10);
     const range = computed(() => props.range);
     const key = computed(() => props.key);
     const loading = ref(false);
     const selectedAssignee = computed(() => store.state.assignee[0]);
-    const { t, locale } = useI18n({ useScope: 'global' });
+    const { t, locale } = useI18n();
     const columns = computed(() => [{
       name: 'project',
       label: t('project'),
@@ -113,8 +110,8 @@ export default {
         to=(range.value).replaceAll('/', '-');
       }
       if(typeof(range.value) === 'object') {
-        to=(range.value?.from).replaceAll('/', '-');
-        from=(range.value?.to).replaceAll('/', '-');
+        to=(range.value?.to).replaceAll('/', '-');
+        from=(range.value?.from).replaceAll('/', '-');
       }
       loading.value = true;
       timeEntriesForUser.value = (await RedmineService.getTimeEntriesByUser(
