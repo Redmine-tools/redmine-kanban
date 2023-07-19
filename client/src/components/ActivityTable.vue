@@ -64,9 +64,6 @@ export default {
   setup(props) {
     const store = useStore();
     const result = ref([]);
-    const today = new Date();
-    const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
-    const lastWeek = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24 * 7);
     const range = computed(() => props.range);
     const key = computed(() => props.key);
     const loading = ref(false);
@@ -121,24 +118,32 @@ export default {
       return journals.journals.some(issue => issue.user.id === selectedAssignee.value.id)
     }
 
+    const getTimeRanges = (range) => {
+      if(typeof(range) === 'string') {
+        return {
+          from: new Date(range),
+          to: new Date(range)
+        }
+      }
+      if(typeof(range) === 'object') {
+        return {
+          from: new Date(range?.from),
+          to: new Date(range?.to)
+        }
+      }
+    }
+
     const filterByTime = async (rangeToCheck) => {
       loading.value = true;
-      let from;
-      let to;
-      if(typeof(range.value) === 'string') {
-        from=new Date(range.value);
-        to=new Date(range.value);
-        to.setDate(to.getDate() + 1)
-      }
-      if(typeof(range.value) === 'object') {
-        from=new Date(range.value?.from);
-        to=new Date(range.value?.to);
-      }
+      let {from, to } = getTimeRanges(range.value);
+      to.setDate(to.getDate() + 1)
+
       for (const key of Object.keys(store.state.issues)) {
-        const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
-        if (lastUpdatedOn >= from && lastUpdatedOn <= to) {
+        const createdOn = new Date(store.state.issues[key].created_on);
+        if (from >= createdOn) {
           const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
-          if (issueWithJournals.assigned_to?.id === selectedAssignee.value.id || filterJournalsForUser(issueWithJournals)) {
+          const matchesTimeRange = issueWithJournals.journals.filter(i => (new Date(i.created_on) >= from && new Date(i.created_on) <= to ))
+          if ((issueWithJournals.assigned_to?.id === selectedAssignee.value.id || filterJournalsForUser(issueWithJournals)) &&  matchesTimeRange.length > 0) {
             store.commit({
               type: 'updateIssue',
               key,
@@ -152,16 +157,7 @@ export default {
     }
 
     const renderJournals = (journals) => {
-      let from;
-      let to;
-      if(typeof(range.value) === 'string') {
-        from=new Date(range.value);
-        to=new Date(range.value);
-      }
-      if(typeof(range.value) === 'object') {
-        from=new Date(range.value?.from);
-        to=new Date(range.value?.to);
-      }
+      let {from, to } = getTimeRanges(range.value);
       const actions = [];
       journals = journals.filter(journal => new Date(journal.created_on) >= from && new Date(journal.created_on) <= new Date(to.setDate(to.getDate() + 1)))
       for (let i = 0; i < journals.length; i += 1) {
