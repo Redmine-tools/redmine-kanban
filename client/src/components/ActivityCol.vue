@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import { computed, ref, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import RedmineService from '@/services/RedmineService';
@@ -26,7 +26,11 @@ export default {
       oldValue: '',
       newValue: '',
     });
-    const statuses = computed(() => store.state.issues.map(issue => issue.status))
+
+    const getCachedStatuses = () => {
+      const allStatuses = store.state.issues.map(issue => issue.status);
+      return allStatuses.filter((status, index) => allStatuses.findIndex(a => a['id'] === status['id']) === index);
+    }
 
     const getJournalDetails = async() => {
       switch(props.journal.name) {
@@ -50,7 +54,13 @@ export default {
           activity.value.name = props.journal.name
           break;
         case "status_id":
-          const statuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses;
+          const localStatuses = getCachedStatuses();
+          let statuses;
+          if(localStatuses.find(status => (status.id == props.journal?.new_value)) && localStatuses.find(status => (status.id == props.journal?.old_value))) {
+            statuses = localStatuses;
+          } else {
+            statuses = (await RedmineService.getRedmineStatuses(store.state.user.api_key)).data.issue_statuses;
+          }
           activity.value.name = props.journal.name
           activity.value.newValue = statuses.filter(i => i.id == props.journal?.new_value)[0].name
           activity.value.oldValue = statuses.filter(i => i.id == props.journal?.old_value)[0].name
