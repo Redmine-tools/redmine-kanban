@@ -8,7 +8,11 @@ function initialState() {
     query: {},
     issues: [],
     projectQueries: {},
-    assignee: '',
+    assignee: "",
+    statuses: [],
+    trackers: [],
+    priorities: [],
+    categories: [], 
   };
 }
 
@@ -19,7 +23,11 @@ const store = createStore({
     query: {},
     issues: [],
     projectQueries: {},
-    assignee: ""
+    assignee: "",
+    statuses: [],
+    trackers: [],
+    priorities: [],
+    categories: [],
   },
   mutations: {
     addUser(state, payload) {
@@ -32,7 +40,7 @@ const store = createStore({
       state.query = { ...payload.payload };
     },
     addAllIssues(state, payload) {
-      state.issues = [ ...payload.payload ];
+      state.issues = [...payload.payload];
     },
     updateIssue(state, payload) {
       state.issues[parseInt(payload.key, 10)] = payload.payload;
@@ -45,6 +53,18 @@ const store = createStore({
       Object.keys(s).forEach(key => {
         state[key] = s[key];
       });
+    },
+    addStatuses(state, payload) {
+      state.statuses = [...payload.payload];
+    },
+    addTrackers(state, payload) {
+      state.trackers = [...payload.payload];
+    },
+    addPriorities(state, payload) {
+      state.priorities = [...payload.payload];
+    },
+    addCategories(state, payload) {
+      state.categories = [...payload.payload]
     }
   },
   plugins: [
