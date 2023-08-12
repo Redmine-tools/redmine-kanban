@@ -105,9 +105,17 @@ export default {
     const getTimeEntriesForUser = async (range) => {
       let from;
       let to;
+      const today = new Date().toLocaleDateString('en-ZA');
       if(typeof(range.value) === 'string') {
-        from=(range.value).replaceAll('/', '-');
-        to=(range.value).replaceAll('/', '-');
+        if(today === (range.value).replaceAll('-', '/')) {
+          from=new Date(range.value);
+          from.setDate(from.getDate() - 1)
+          from = from.toLocaleDateString('en-ZA').replaceAll('/', '-')
+          to=(range.value).replaceAll('/', '-');
+        } else {
+          from=(range.value).replaceAll('/', '-');
+          to=(range.value).replaceAll('/', '-');
+        }
       }
       if(typeof(range.value) === 'object') {
         to=(range.value?.to).replaceAll('/', '-');

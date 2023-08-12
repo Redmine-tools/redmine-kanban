@@ -32,6 +32,26 @@ export default {
       return allStatuses.filter((status, index) => allStatuses.findIndex(a => a['id'] === status['id']) === index);
     }
 
+    const getCachedPriorities = () => {
+      const allpriorities = store.state.issues.map(issue => issue.priority);
+      return allpriorities.filter((priority, index) => allpriorities.findIndex(a => a['id'] === priority['id']) === index);
+    }
+
+    const getCachedTrackers = () => {
+      const allTrackers = store.state.issues.map(issue => issue.tracker);
+      return allTrackers.filter((tracker, index) => allTrackers.findIndex(a => a['id'] === tracker['id']) === index);
+    }
+
+    const getLocalFixedVersions = () => {
+      const allFixedVersions = store.state.issues.map(issue => issue.fixed_version).filter(Boolean);
+      return allFixedVersions.filter((fixed_version, index) => allFixedVersions.findIndex(a => a['id'] === fixed_version['id']) === index);
+    }
+
+    const getLocalProjects = () => {
+      const allProjects = store.state.issues.map(issue => issue.project).filter(Boolean);
+      return allProjects.filter((project, index) => allProjects.findIndex(a => a['id'] === project['id']) === index);
+    }
+
     const getJournalDetails = async() => {
       switch(props.journal.name) {
         case "assigned_to_id":
@@ -66,18 +86,32 @@ export default {
           activity.value.oldValue = statuses.filter(i => i.id == props.journal?.old_value)[0].name
           break;
         case "tracker_id":
-          const trackers = (await RedmineService.getRedmineTrackers(store.state.user.api_key)).data.trackers;
+          const localTrackers = getCachedTrackers();
+          let trackers;
+          if(localTrackers.find(tracker => (tracker.id == props.journal?.new_value)) && localTrackers.find(tracker => (tracker.id == props.journal?.old_value))) {
+            trackers = localTrackers;
+          } else {
+            trackers = (await RedmineService.getRedmineTrackers(store.state.user.api_key)).data.trackers;
+          }
           activity.value.name = props.journal.name
           activity.value.newValue = trackers.filter(i => i.id == props.journal?.new_value)[0].name
           activity.value.oldValue = trackers.filter(i => i.id == props.journal?.old_value)[0].name
           break;
         case "fixed_version_id":
+          const localFixedVersion = getLocalFixedVersions();
           let newFixedVersion;
           let oldFixedVersion;
-          if(props.journal.new_value) {
+          if(localFixedVersion.find(fixedVersion => (fixedVersion.id == props.journal?.new_value))) {
+            newFixedVersion = localFixedVersion.filter(i => i.id == props.journal?.new_value)[0];
+          }
+          else if(props.journal.new_value) {
             newFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.new_value)).data.version;
           }
-          if(props.journal.old_value) {
+
+          if(localFixedVersion.find(fixedVersion => (fixedVersion.id == props.journal?.old_value))) {
+            oldFixedVersion = localFixedVersion.filter(i => i.id == props.journal?.old_value)[0];
+          }
+          else if(props.journal.old_value) {
             const oldFixedVersion = (await RedmineService.getRedmineFixedVersion(store.state.user.api_key, props.journal.old_value)).data.version;
           }
           activity.value.name = props.journal.name
@@ -85,14 +119,34 @@ export default {
           activity.value.oldValue = oldFixedVersion?.name
           break;
         case "priority_id":
-          const priorities = (await RedmineService.getRedminePriority(store.state.user.api_key)).data.issue_priorities;
+          const localPriorities = getCachedPriorities();
+          let priorities;
+          if(localPriorities.find(prio => (prio.id == props.journal?.new_value)) && localPriorities.find(prio => (prio.id == props.journal?.old_value))) {
+            priorities = localPriorities;
+          } else {
+            priorities = (await RedmineService.getRedminePriority(store.state.user.api_key)).data.issue_priorities;
+          }
           activity.value.name = props.journal.name
           activity.value.newValue = priorities.filter(i => i.id == props.journal.new_value)[0].name
           activity.value.oldValue = priorities.filter(i => i.id == props.journal.old_value)[0].name
           break;
         case "project_id":
-          const newProject = (await RedmineService.getProjectById(store.state.user.api_key, props.journal.new_value)).data.project;
-          const oldProject = (await RedmineService.getProjectById(store.state.user.api_key, props.journal.old_value)).data.project;
+          const localProjects = getLocalProjects();
+          let newProject;
+          let oldProject;
+          if(localProjects.find(project => (project.id == props.journal?.new_value))) {
+            newProject = localProjects.filter(i => i.id == props.journal?.new_value)[0];
+          }
+          else if(props.journal.new_value) {
+            newProject = (await RedmineService.getProjectById(store.state.user.api_key, props.journal.new_value)).data.project;
+          }
+
+          if(localProjects.find(project => (project.id == props.journal?.old_value))) {
+            oldProject = localProjects.filter(i => i.id == props.journal?.old_value)[0];
+          }
+          else if(props.journal.old_value) {
+            oldProject = (await RedmineService.getProjectById(store.state.user.api_key, props.journal.old_value)).data.project;
+          }
           activity.value.name = props.journal.name
           activity.value.newValue = newProject.name
           activity.value.oldValue = oldProject.name

@@ -1,5 +1,7 @@
 import Api from '@/services/Api';
 
+const statuses = {}
+
 export default {
   getRedmineUrl() {
     return Api().get("redmine_url");
@@ -86,7 +88,7 @@ export default {
       }
     });
   },
-  getRedmineStatuses(apiKey, offset) {
+  getRedmineStatuses(apiKey) {
     return Api().get("issue_statuses.json", {
       headers: {
         "X-Redmine-API-Key": apiKey

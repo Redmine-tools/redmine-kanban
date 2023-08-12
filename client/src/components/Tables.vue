@@ -18,6 +18,7 @@
             <q-date
               v-model="proxyDate"
               range
+              today-btn
             >
               <div class="row items-center justify-end q-gutter-sm">
                 <q-btn label="Cancel" color="primary" flat v-close-popup />

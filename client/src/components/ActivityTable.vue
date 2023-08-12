@@ -25,7 +25,9 @@
             :props="props"
           >
             <ul v-for="journal in renderJournals(props.row.journals)" :key="journal.id">
-              <ActivityCol :journal="journal" />
+              <ActivityCol
+              :journal="journal"
+              />
             </ul>
           </q-td>
         </template>
@@ -51,7 +53,6 @@ export default {
   name: 'ActivityTable',
   props: {
     range: {
-      type: String,
     },
     key: {
       type: Number
@@ -137,10 +138,29 @@ export default {
       loading.value = true;
       let {from, to } = getTimeRanges(range.value);
       to.setDate(to.getDate() + 1)
+      const yesterday = new Date((new Date()).valueOf() - 1000 * 60 * 60 * 24);
+      const tomorrow = new Date((new Date()).valueOf() + 1000 * 60 * 60 * 24);
+      const today = new Date().toISOString().slice(0, 10);
 
       for (const key of Object.keys(store.state.issues)) {
         const createdOn = new Date(store.state.issues[key].created_on);
-        if (from >= createdOn) {
+        const lastUpdatedOn = new Date(store.state.issues[key].updated_on);
+        
+        if (lastUpdatedOn > yesterday) {
+          const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
+          const matchesTimeRange = issueWithJournals.journals.filter(i => (new Date(i.created_on) >= from && new Date(i.created_on) <= to ))
+          if ((issueWithJournals.assigned_to?.id === selectedAssignee.value.id || filterJournalsForUser(issueWithJournals)) &&  matchesTimeRange.length > 0) {
+            store.commit({
+              type: 'updateIssue',
+              key,
+              payload: issueWithJournals,
+            });
+            issueWithJournals?.journals.length > 0 && result.value.push(issueWithJournals);
+          }
+        }
+
+
+        else if (from >= createdOn && to.getDate() !== tomorrow.getDate()) {
           const issueWithJournals = (await RedmineService.getIssueJournals(store.state.user.api_key, store.state.issues[key].id)).data.issue;
           const matchesTimeRange = issueWithJournals.journals.filter(i => (new Date(i.created_on) >= from && new Date(i.created_on) <= to ))
           if ((issueWithJournals.assigned_to?.id === selectedAssignee.value.id || filterJournalsForUser(issueWithJournals)) &&  matchesTimeRange.length > 0) {
