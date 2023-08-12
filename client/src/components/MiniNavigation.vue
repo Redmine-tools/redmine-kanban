@@ -1,14 +1,14 @@
 <template>
   <aside class="mini-navigation">
     <router-link v-if="store.state?.issues.length > 0"  to="/kanban">
-      <q-icon name="leaderboard" size="24px">
+      <q-icon name="view_kanban" size="24px">
         <q-tooltip anchor="center end" self="center left">
           {{ $t("kanbanBoard") }}
         </q-tooltip>
       </q-icon>
     </router-link>
     <router-link v-if="store.state?.issues.length > 0"  to="/tasks">
-      <q-icon name="toys" size="24px">
+      <q-icon name="backup_table" size="24px">
         <q-tooltip anchor="center end" self="center left">
           {{ $t("tasks") }}
         </q-tooltip>
