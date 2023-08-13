@@ -93,7 +93,9 @@ export default {
     })
 
     const getIssueData = (id) => {
+      console.log('id', id)
       const issue = store.state.issues.filter(i => i.id === id)[0];
+      console.log('issue', issue)
       const title = `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
       if (title.length > 80) {
         return title.slice?.(0, 80) + '...';
@@ -103,6 +105,7 @@ export default {
     }
 
     const getTimeEntriesForUser = async (range) => {
+      const issueIds = store.state.issues.map(issue => issue.id)
       let from;
       let to;
       const today = new Date().toLocaleDateString('en-ZA');
@@ -129,6 +132,7 @@ export default {
         from,
         to)
       ).data.time_entries;
+      timeEntriesForUser.value = timeEntriesForUser.value.filter(entry => issueIds.includes(entry?.issue.id))
       loading.value = false;
     }
 
