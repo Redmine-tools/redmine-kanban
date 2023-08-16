@@ -79,7 +79,7 @@ export default {
       name: 'comment',
       label: t('comment'),
       align: 'left',
-      field: row => row.comments
+      field: row => getFormattedComment(row.comments)
     }
     ]);
 
@@ -92,16 +92,20 @@ export default {
       getTimeEntriesForUser(range)
     })
 
+    const getFormattedComment = (comment) => {
+      if (comment.length > 50) {
+        return comment.slice?.(0, 50) + '...';
+      }
+      return comment;
+    }
+
     const getIssueData = (id) => {
-      console.log('id', id)
       const issue = store.state.issues.filter(i => i.id === id)[0];
-      console.log('issue', issue)
       const title = `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
       if (title.length > 80) {
         return title.slice?.(0, 80) + '...';
-      } else {
-        return title;
       }
+      return title;
     }
 
     const getTimeEntriesForUser = async (range) => {

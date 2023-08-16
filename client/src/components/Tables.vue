@@ -104,13 +104,13 @@ export default {
     });
 
     const forceReload = () => {
-      showTooltip.value = true
       disableRefreshButton.value = true
+      showTooltip.value = true
       key.value+=1
       setTimeout(() => {
         showTooltip.value = false
         disableRefreshButton.value = false
-      }, 5000)
+      }, 60000)
     }
 
     return {

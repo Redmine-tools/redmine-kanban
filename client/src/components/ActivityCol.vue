@@ -85,6 +85,15 @@ export default {
       return store.state.categories
     } 
 
+    const getIssueData = (id) => {
+      const issue = store.state.issues.filter(i => i.id === id)[0];
+      const title = `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
+      if (title.length > 50) {
+        return title.slice?.(0, 50) + '...';
+      }
+      return title;
+    }
+
     const getJournalDetails = async() => {
       switch(props.journal.name) {
         case "assigned_to_id":
@@ -203,8 +212,8 @@ export default {
           const newIssue = store.state.issues.filter(i => i.id == props.journal.new_value)[0]
           const oldIssue = store.state.issues.filter(i => i.id == props.journal.old_value)[0]
           activity.value.name = props.journal.name
-          activity.value.newValue = newIssue?.id ? `${newIssue?.subject} (id: ${newIssue?.id})` : null
-          activity.value.oldValue = oldIssue?.id ? `${oldIssue?.subject} (id: ${oldIssue?.id})` : null
+          activity.value.newValue = newIssue?.id ? getIssueData(newIssue?.id) : null
+          activity.value.oldValue = oldIssue?.id ? getIssueData(oldIssue?.id): null
           break;
         case "subject":
           activity.value.name = props.journal.name

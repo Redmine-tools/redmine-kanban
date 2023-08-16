@@ -95,9 +95,8 @@ export default {
       const title = `${issue?.tracker.name} #${issue?.id}: ${issue?.subject}`
       if (title.length > 50) {
         return title.slice?.(0, 50) + '...';
-      } else {
-        return title;
       }
+      return title;
     }
 
     async function open(issueId) {
