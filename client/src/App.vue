@@ -14,7 +14,6 @@
       :width="315"
       :breakpoint="500"
       class="bg-white-3"
-      @click.capture="drawerClick"
     >
       <div
         class="q-mini-drawer-hide absolute"
