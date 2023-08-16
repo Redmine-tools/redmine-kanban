@@ -67,6 +67,7 @@
   "selectUserWarning": "Csak egy felhasználó jeleníthető meg feladatok nézetben.",
   "usersActivity": " aktivitása",
   "waitForButtonCooldown": "Kérlek várj pár másodpercet mielőtt újra frissítesz.",
-  "fixed_version_id": "Cél verzió id",
-  "file": "Fájl"
+  "fixed_version_id": "Cél verzió",
+  "file": "Fájl",
+  "setup": "Konfiguráció"
 }

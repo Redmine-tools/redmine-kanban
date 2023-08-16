@@ -14,6 +14,13 @@
         </q-tooltip>
       </q-icon>
     </router-link>
+    <router-link to="/setup">
+      <q-icon name="tune" size="24px">
+        <q-tooltip anchor="center end" self="center left">
+          {{ $t("setup") }}
+        </q-tooltip>
+      </q-icon>
+    </router-link>
   </aside>
 </template>
 

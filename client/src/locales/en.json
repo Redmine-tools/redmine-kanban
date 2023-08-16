@@ -67,6 +67,7 @@
   "selectUserWarning": "Selecting more than one user from the kanban board filter will be clipped and only one user will be kept.",
   "usersActivity": "'s activity",
   "waitForButtonCooldown": "Please wait a couple of seconds before refreshing again.",
-  "fixed_version_id": "Fixed version id",
-  "file": "File"
+  "fixed_version_id": "Fixed version",
+  "file": "File",
+  "setup": "Configuration"
 }

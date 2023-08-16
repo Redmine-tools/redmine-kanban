@@ -2,6 +2,7 @@
   <aside class="navigation">
     <router-link v-if="store.state?.issues.length > 0" to="/kanban"><q-icon name="view_kanban" size="24px" />{{ $t("kanbanBoard") }}</router-link>
     <router-link v-if="store.state?.issues.length > 0"  to="/tasks"><q-icon name="backup_table" size="24px" />{{ $t("tasks") }}</router-link>
+    <router-link to="/setup"><q-icon name="tune" size="24px" />{{ $t("setup") }}</router-link>
   </aside>
 </template>
 
