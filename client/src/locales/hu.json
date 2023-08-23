@@ -32,8 +32,8 @@
   "password": "Jelszó",
   "project": "Projekt",
   "query": "Lekérdezés",
-  "closePopup": "Ablak bezárása",
-  "openInRedmine": "Jegy megnyitása Redmine-ban",
+  "closePopup": "Bezár",
+  "openInRedmine": "Megnyit",
   "author": "Szerző",
   "assigned_to_id": "Felelős",
   "filter": "keresés (béta)",
@@ -69,5 +69,6 @@
   "waitForButtonCooldown": "Kérlek várj pár másodpercet mielőtt újra frissítesz.",
   "fixed_version_id": "Cél verzió",
   "file": "Fájl",
-  "setup": "Konfiguráció"
+  "setup": "Konfiguráció",
+  "subjectKeyword": "Tárgy"
 }

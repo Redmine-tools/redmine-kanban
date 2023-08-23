@@ -13,7 +13,7 @@
           </span>
         </div>
 
-        <q-btn icon="event" round color="primary">
+        <q-btn flat icon="event" text-color="black" round color="white">
           <q-popup-proxy @before-show="updateProxy" cover transition-show="scale" transition-hide="scale">
             <q-date
               v-model="proxyDate"
@@ -29,7 +29,7 @@
         </q-btn>
       </div>
       <div class="refresh-container">
-        <q-btn type="a" :disable="disableRefreshButton" round color="primary" icon="refresh" @click="forceReload" >
+        <q-btn flat type="a" :disable="disableRefreshButton" round color="white" icon="refresh" text-color="black" @click="forceReload" >
           <q-tooltip anchor="top middle" self="center middle" v-if="showTooltip">
             {{ $t("waitForButtonCooldown") }}
           </q-tooltip>

@@ -1,18 +1,11 @@
 <template>
-  <q-page-sticky
-    v-if="store.state.user.firstname"
-    position="top-right"
-    :offset="[18, 18]"
+  <q-btn
+    unelevated
+    rounded
+    @click="logout"
   >
-    <q-btn
-      unelevated
-      rounded
-      color="light-blue-8"
-      @click="logout"
-    >
-      {{ $t("logout") }}
-    </q-btn>
-  </q-page-sticky>
+    {{ $t("logout") }}
+  </q-btn>
 </template>
 
 <script>
@@ -47,4 +40,10 @@ export default {
 </script>
 
 <style scoped>
+  button {
+    margin-block-start: 24px;
+    margin-inline-start: 24px;
+    background: rgba(0, 0, 0, 0.1);
+    color: #000;
+  }
 </style>

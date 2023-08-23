@@ -13,6 +13,7 @@
           :option-label="'name'"
           use-chips
           label="Assignee"
+          options-cover
         />
         <q-input
           v-model="searchKeyWord"
@@ -91,20 +92,18 @@
     >
       <q-card>
         <header class="card-header">
-          <h4 class="text-h5">
-            {{ clickedIssue.subject }}
-          </h4>
-          <q-space />
-          <q-btn
-            v-close-popup
-            icon="close"
-            flat
-            round
-            dense
-          />
+          <div class="col">
+            <h4 class="text-h6">
+              {{ clickedIssue.subject }}
+            </h4>
+          </div>
+          <div class="col" v-if="clickedIssue.assigned_to?.name">
+            <span class="gray-text">{{ $t("assigned_to_id") }}:</span>
+            {{ clickedIssue.assigned_to.name }}
+          </div>
         </header>
 
-        <q-card-section class="row card-data">
+        <q-card-section flat bordered class="row card-data">
           <div>
             <span class="gray-text">{{ $t("subjectKeyword") }}:</span>
             {{ clickedIssue.subject }}
@@ -129,11 +128,8 @@
             <span class="gray-text">{{ $t("status") }}:</span>
             {{ clickedIssue.status.name }}
           </div>
-          <div v-if="clickedIssue.assigned_to?.name">
-            <span class="gray-text">{{ $t("assigned_to_id") }}:</span>
-            {{ clickedIssue.assigned_to.name }}
-          </div>
         </q-card-section>
+        <div class="separator" />
         <q-card-actions align="left">
           <q-btn
             v-close-popup
@@ -141,6 +137,7 @@
             class="action"
             @click="open()"
           />
+          <div class="spacer" />
           <q-btn
             v-close-popup
             :label="$t('closePopup')"
@@ -479,7 +476,8 @@ export default {
 }
 
 .card-header {
-  border-bottom: 2px solid #FDB600;
+  display: flex;
+  flex-direction: column;
 }
 
 .action {
@@ -488,7 +486,7 @@ export default {
 }
 
 .cancel {
-  background: rgba(0, 0, 0, 0.1);;
+  background: rgba(0, 0, 0, 0.1);
   color: #000;
 }
 
@@ -603,5 +601,15 @@ export default {
 
 .q-card__actions {
   padding-left: 0;
+  padding-top: 16px;
+}
+
+.spacer {
+  margin-inline-end: 16px;
+}
+
+.separator {
+  height: 2px;
+  background: linear-gradient(90deg, rgba(41, 83, 101, 0.38) 0%, rgba(35, 140, 185, 0.29) 23.41%, rgba(253, 182, 0, 0.29) 65.06%, rgba(226, 177, 255, 0.62) 89.76%), #D9D9D9;
 }
 </style>

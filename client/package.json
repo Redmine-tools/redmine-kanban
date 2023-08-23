@@ -1,6 +1,6 @@
 {
   "name": "redmine-kanban",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "serve": "export NODE_OPTIONS=--openssl-legacy-provider && vue-cli-service serve",

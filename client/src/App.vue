@@ -3,7 +3,6 @@
     view="hHh lpR fFf"
     style="background: #FBFBFB"
   >
-    <FloatingLogoutButton />
     <q-drawer
       v-if="store.state.user.api_key"
       v-model="leftDrawerOpen"
@@ -68,10 +67,8 @@
           v-if="!miniState"
           class="lang-select-container"
         >
-          <p class="settings-title">
-            <q-icon name="settings" /> {{ $t("langSelectTitle") }}
-          </p>
-          <div class="buttons">
+          <div>
+            <div class="buttons">
             <q-btn
               :color="locale === 'hu' ? 'black': 'grey-6'"
               outline
@@ -88,6 +85,8 @@
             >
               English
             </q-btn>
+            </div>
+            <FloatingLogoutButton />
           </div>
           <p class="version">
             v {{ version }}
