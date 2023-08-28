@@ -5,6 +5,16 @@
   >
     <header>
       <aside class="partial-header">
+        <q-select
+          v-model="selectedAssignees"
+          filled
+          multiple
+          :options="assignees"
+          :option-label="'name'"
+          use-chips
+          label="Assignee"
+          options-cover
+        />
         <q-input
           v-model="searchKeyWord"
           debounce="600"
@@ -15,15 +25,6 @@
             <q-icon name="search" />
           </template>
         </q-input>
-        <q-select
-          v-model="selectedAssignees"
-          filled
-          multiple
-          :options="assignees"
-          use-chips
-          stack-label
-          label="Assignee"
-        />
       </aside>
       <p class="path">
         <router-link to="/setup">
@@ -71,7 +72,7 @@
                     class="author-circle"
                   >
                     <span class="author-tooltiptext">
-                      {{ $t("assignedTo") }}: {{ element.assigned_to.name }}
+                      {{ $t("assigned_to_id") }}: {{ element.assigned_to.name }}
                     </span>
                     {{ element.assigned_to.name.split(' ').map(word => word[0]).join('') }}
                   </div>
@@ -91,22 +92,20 @@
     >
       <q-card>
         <header class="card-header">
-          <h4 class="text-h5">
-            {{ clickedIssue.subject }}
-          </h4>
-          <q-space />
-          <q-btn
-            v-close-popup
-            icon="close"
-            flat
-            round
-            dense
-          />
+          <div class="col">
+            <h4 class="text-h6">
+              {{ clickedIssue.subject }}
+            </h4>
+          </div>
+          <div class="col" v-if="clickedIssue.assigned_to?.name">
+            <span class="gray-text">{{ $t("assigned_to_id") }}:</span>
+            {{ clickedIssue.assigned_to.name }}
+          </div>
         </header>
 
-        <q-card-section class="row card-data">
+        <q-card-section flat bordered class="row card-data">
           <div>
-            <span class="gray-text">{{ $t("subject") }}:</span>
+            <span class="gray-text">{{ $t("subjectKeyword") }}:</span>
             {{ clickedIssue.subject }}
           </div>
           <div>
@@ -129,11 +128,8 @@
             <span class="gray-text">{{ $t("status") }}:</span>
             {{ clickedIssue.status.name }}
           </div>
-          <div v-if="clickedIssue.assigned_to?.name">
-            <span class="gray-text">{{ $t("assignedTo") }}:</span>
-            {{ clickedIssue.assigned_to.name }}
-          </div>
         </q-card-section>
+        <div class="separator" />
         <q-card-actions align="left">
           <q-btn
             v-close-popup
@@ -141,6 +137,7 @@
             class="action"
             @click="open()"
           />
+          <div class="spacer" />
           <q-btn
             v-close-popup
             :label="$t('closePopup')"
@@ -189,11 +186,19 @@ export default {
 
     const assignees = computed(() => {
       const names = props.issues.value
-        ? props?.issues?.value.filter((i) => i.assigned_to).map((i) => i.assigned_to.name)
+        ? props?.issues?.value.filter((i) => i.assigned_to).map((i) => i.assigned_to)
         : [];
-      return Array.from(new Set(names));
+      let resArr = [];
+      names.forEach(function(item){
+        let i = resArr.findIndex(x => x.name == item.name);
+        if(i <= -1){
+          resArr.push({id: item.id, name: item.name});
+        }
+      })
+      return resArr;
     });
-    const selectedAssignees = ref([]);
+
+    let selectedAssignees = ref();
 
     async function openTicket(element) {
       openIssueDialoge.value = true;
@@ -237,13 +242,22 @@ export default {
       return foundItems;
     };
 
+    function updateAssigneeInStore(assignee) {
+      store.commit({
+        type: 'updateAssignee',
+        payload: assignee,
+      });
+    }
+
     watch(selectedAssignees, () => {
       if (Object.keys(selectedAssignees.value).length === 0) {
+        updateAssigneeInStore(selectedAssignees.value);
         issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
       } else {
+        updateAssigneeInStore(selectedAssignees.value);
         issuesByStatus.value = JSON.parse(JSON.stringify(originalIssuesByStatus));
         for (const group in issuesByStatus.value) {
-          issuesByStatus.value[group] = issuesByStatus.value[group].filter((issue) => selectedAssignees.value.includes(issue?.assigned_to?.name));
+          issuesByStatus.value[group] = issuesByStatus.value[group].filter((issue) => selectedAssignees.value.some(person => person.name === issue?.assigned_to?.name));
         }
       }
     });
@@ -274,7 +288,7 @@ export default {
       setupColumnConfig();
       issuesByStatus.value = lodash.groupBy(props.issues.value, 'status.name');
       originalIssuesByStatus = JSON.parse(JSON.stringify(issuesByStatus.value));
-      console.log(originalIssuesByStatus);
+      selectedAssignees.value = store.state?.assignee ? [...store.state?.assignee] : [];
     });
 
     return {
@@ -301,19 +315,6 @@ export default {
   overflow-y: scroll;
 }
 
-.partial-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 56px;
-}
-
-@media screen and (max-width: 1024px) {
-  .partial-header {
-    flex-direction: column;
-  }
-}
-
 .list-item {
   background: #FFFFFF;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
@@ -330,6 +331,13 @@ export default {
 
 .list-item > div {
   padding-bottom: 5px;
+}
+
+.title-container {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
 }
 
 .title {
@@ -360,11 +368,6 @@ export default {
   color: rgba(0, 0, 0, 0.35);
 }
 
-.filter-field {
-  padding: 4px;
-  margin: 0 20px 20px;
-}
-
 .kanban-col {
   height: 92%;
   overflow: scroll;
@@ -376,12 +379,31 @@ export default {
   justify-content: center;
 }
 
-::-webkit-scrollbar {
-
+.kanban div:nth-child(1n) .kanban-col {
+   border-top: 5px solid #FDB600;
 }
 
-html {
-/* Firefox */
+.kanban div:nth-child(2n) .kanban-col {
+   border-top: 5px solid rgba(35, 140, 185, 0.38);
+}
+
+.kanban div:nth-child(3n) .kanban-col {
+   border-top: 5px solid #E2B1FF;
+}
+
+.kanban div:nth-child(4n) .kanban-col {
+   border-top: 5px solid #295365;
+}
+
+.partial-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+}
+
+.partial-header > .q-select {
+  padding-inline-end: 24px;
 }
 
 .kanban-container {
@@ -434,12 +456,15 @@ html {
 
 .kanban-container > .kanban {
   grid-area: kanban;
-
 }
 
 .q-field, .q-select {
   height: 57px;
   overflow: auto;
+}
+
+.q-field--auto-height .q-field__control {
+  height: -webkit-fill-available;
 }
 
 .kanban-container > .kanban > div:first-of-type {
@@ -451,7 +476,8 @@ html {
 }
 
 .card-header {
-  border-bottom: 2px solid #FDB600;
+  display: flex;
+  flex-direction: column;
 }
 
 .action {
@@ -460,7 +486,7 @@ html {
 }
 
 .cancel {
-  background: rgba(0, 0, 0, 0.1);;
+  background: rgba(0, 0, 0, 0.1);
   color: #000;
 }
 
@@ -477,9 +503,7 @@ html {
 }
 
 .q-select {
-  padding-inline-start: 24px;
   width: 280px;
-
 }
 
 .card-header {
@@ -516,22 +540,6 @@ html {
 
  .gray-text {
   color: rgba(0, 0, 0, 0.65);
-}
-
-.kanban div:nth-child(1n) .kanban-col {
-   border-top: 5px solid #FDB600;
-}
-
-.kanban div:nth-child(2n) .kanban-col {
-   border-top: 5px solid rgba(35, 140, 185, 0.38);
-}
-
-.kanban div:nth-child(3n) .kanban-col {
-   border-top: 5px solid #E2B1FF;
-}
-
-.kanban div:nth-child(4n) .kanban-col {
-   border-top: 5px solid #295365;
 }
 
 .author-circle {
@@ -591,14 +599,17 @@ html {
   height: 26px;
 }
 
-.title-container {
-  width: 100%;
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-}
-
 .q-card__actions {
   padding-left: 0;
+  padding-top: 16px;
+}
+
+.spacer {
+  margin-inline-end: 16px;
+}
+
+.separator {
+  height: 2px;
+  background: linear-gradient(90deg, rgba(41, 83, 101, 0.38) 0%, rgba(35, 140, 185, 0.29) 23.41%, rgba(253, 182, 0, 0.29) 65.06%, rgba(226, 177, 255, 0.62) 89.76%), #D9D9D9;
 }
 </style>

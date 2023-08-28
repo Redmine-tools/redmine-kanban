@@ -3,20 +3,6 @@
     view="hHh lpR fFf"
     style="background: #FBFBFB"
   >
-    <q-page-sticky
-      v-if="store.state.user.firstname"
-      position="top-right"
-      :offset="[18, 18]"
-    >
-      <q-btn
-        unelevated
-        rounded
-        color="light-blue-8"
-        @click="logout"
-      >
-        {{ $t("logout") }}
-      </q-btn>
-    </q-page-sticky>
     <q-drawer
       v-if="store.state.user.api_key"
       v-model="leftDrawerOpen"
@@ -27,7 +13,6 @@
       :width="315"
       :breakpoint="500"
       class="bg-white-3"
-      @click.capture="drawerClick"
     >
       <div
         class="q-mini-drawer-hide absolute"
@@ -76,15 +61,14 @@
           alt="company-logo"
         >
       </aside>
+      <Navigation :miniState="miniState" />
       <aside class="settings">
         <div
           v-if="!miniState"
           class="lang-select-container"
         >
-          <p class="settings-title">
-            <q-icon name="settings" /> {{ $t("langSelectTitle") }}
-          </p>
-          <div class="buttons">
+          <div>
+            <div class="buttons">
             <q-btn
               :color="locale === 'hu' ? 'black': 'grey-6'"
               outline
@@ -101,6 +85,8 @@
             >
               English
             </q-btn>
+            </div>
+            <FloatingLogoutButton />
           </div>
           <p class="version">
             v {{ version }}
@@ -125,10 +111,14 @@ import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useI18n } from 'vue-i18n';
 import { useRouter } from 'vue-router';
+import Navigation from '@/components/Navigation';
+import FloatingLogoutButton from '@/components/FloatingLogoutButton';
 
 export default {
   name: 'App',
   components: {
+    Navigation,
+    FloatingLogoutButton
   },
   setup() {
     const store = useStore();
@@ -149,13 +139,6 @@ export default {
       localStorage.setItem('locale', locale.value);
     }
 
-    function logout() {
-      store.commit({
-        type: 'resetState',
-      });
-      router.push('/');
-    }
-
     return {
       user,
       t,
@@ -164,7 +147,6 @@ export default {
       miniState,
       store,
       setLang,
-      logout,
       version,
     };
   },

@@ -54,6 +54,10 @@ export default {
           issuesForProject.value = [...issuesForProject.value, ...currentIssues];
         }
       }
+      store.commit({
+        type: 'addAllIssues',
+        payload: issuesForProject.value,
+      });
       loading.value = false;
     }
 
