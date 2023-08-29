@@ -4,6 +4,8 @@ services:
     build: 
       context: ./client
       dockerfile: Dockerfile
+      args:
+        - VUE_APP_BACKEND_URL=http://localhost:3000/api/
     ports: 
       - "8080:80"
     volumes:
