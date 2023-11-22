@@ -38,6 +38,13 @@ export default {
       }
     });
   },
+  getIssueById(apiKey, issueId) {
+    return Api().get(`issues/${issueId}.json`, {
+      headers: {
+        "X-Redmine-API-Key": apiKey
+      }
+    });
+  },
   getCategoriesByProjectId(apiKey, projectId) {
     return Api().get(`projects/${projectId}/issue_categories.json`, {
       headers: {

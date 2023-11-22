@@ -54,8 +54,10 @@
               issuesByStatus[status.name] :
               createNewStatusGroup(status.name)"
             item-key="id"
-            group="issues"
-            @add="add"
+            :group="{
+              name: 'issues',
+            }"
+            :move=add
           >
             <template #item="{ element }">
               <div
@@ -157,6 +159,8 @@ import {
 } from 'vue';
 import RedmineService from '@/services/RedmineService';
 import { useStore } from 'vuex';
+import { useQuasar } from 'quasar';
+import {useI18n} from "vue-i18n";
 
 export default {
   name: 'KanbanIssues',
@@ -178,6 +182,8 @@ export default {
       }
       return [];
     });
+    const $q = useQuasar()
+    const i18n = useI18n()
 
     const store = useStore();
     const columnConfig = ref([]);
@@ -228,9 +234,20 @@ export default {
 
     async function add(event) {
       const movedTo = event.to.id;
-      const movedId = parseInt(event.item.id, 10);
+      const movedId = parseInt(event.dragged.id, 10);
       const newStatus = columnConfig.value.find((i) => i.name === movedTo);
-      await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id);
+      await RedmineService.updateIssueStatus(store.state.user.api_key, movedId, newStatus.id).then(res => {
+        RedmineService.getIssueById(store.state.user.api_key, movedId).then(res => {
+          if(event.to.id !== res.data.issue.status.name) {
+            $q.notify({
+              message: i18n.t('redmineWorkflowError'),
+              color: 'negative',
+              position: 'top'
+            })
+            return -1;
+          }
+        })
+      })
     }
 
     const indexOfAll = (arr, val) => arr.reduce((acc, el, i) => ((el.toLowerCase()).includes(val.toLowerCase()) ? [...acc, i] : acc), []);

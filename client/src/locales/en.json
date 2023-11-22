@@ -70,5 +70,6 @@
   "fixed_version_id": "Fixed version",
   "file": "File",
   "setup": "Configuration",
-  "assignee": "Assignee"
+  "assignee": "Assignee",
+  "redmineWorkflowError": "This operation is unsupported by your redmine workflow. The status of this ticket will not change in your redmine system."
 }

@@ -71,5 +71,6 @@
   "file": "Fájl",
   "setup": "Konfiguráció",
   "subjectKeyword": "Tárgy",
-  "assignee": "Felelős"
+  "assignee": "Felelős",
+  "redmineWorkflowError": "Ez a művelet nem támogatott a redmine által. A jegy státusza nem változott a redmine rendszerben"
 }
