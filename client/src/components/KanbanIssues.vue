@@ -12,7 +12,7 @@
           :options="assignees"
           :option-label="'name'"
           use-chips
-          label="Assignee"
+          :label="$t('assignee')"
           options-cover
         />
         <q-input

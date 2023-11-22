@@ -69,5 +69,6 @@
   "waitForButtonCooldown": "Please wait a couple of seconds before refreshing again.",
   "fixed_version_id": "Fixed version",
   "file": "File",
-  "setup": "Configuration"
+  "setup": "Configuration",
+  "assignee": "Assignee"
 }

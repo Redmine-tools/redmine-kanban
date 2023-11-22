@@ -70,5 +70,6 @@
   "fixed_version_id": "Cél verzió",
   "file": "Fájl",
   "setup": "Konfiguráció",
-  "subjectKeyword": "Tárgy"
+  "subjectKeyword": "Tárgy",
+  "assignee": "Felelős"
 }
