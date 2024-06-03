@@ -36,7 +36,7 @@
     "eslint-plugin-vue": "^7.0.0",
     "execa": "latest",
     "rimraf": "^3.0.2",
-    "sass": "1.32.12",
+    "sass": "1.77.4",
     "sass-loader": "^10.1.0",
     "vue-cli-plugin-quasar": "~4.0.4"
   },
